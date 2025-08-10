@@ -1,13 +1,14 @@
 "use client";
+
 import React, { ReactNode, useMemo } from "react";
 import {
   PortfolioLayoutWidget,
   PortfolioLeftSidebarPath,
 } from "@orderly.network/portfolio";
-import { useNav } from "@/hooks/useNav";
-import { usePathWithoutLang } from "@/hooks/usePathWithoutLang";
 import { PathEnum } from "@/constant";
+import { useNav } from "@/hooks/useNav";
 import { useOrderlyConfig } from "@/hooks/useOrderlyConfig";
+import { usePathWithoutLang } from "@/hooks/usePathWithoutLang";
 
 export default function PortfolioLayout(props: { children: ReactNode }) {
   const config = useOrderlyConfig();

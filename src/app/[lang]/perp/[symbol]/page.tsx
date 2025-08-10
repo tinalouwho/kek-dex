@@ -7,11 +7,11 @@ type PerpPageProps = {
 };
 
 export async function generateMetadata(
-  props: PerpPageProps
+  props: PerpPageProps,
 ): Promise<Metadata> {
   const { symbol } = await props.params;
   return {
-    title: generatePageTitle(formatSymbol(symbol)),
+    title: generatePageTitle(formatSymbol(symbol, "base-type")),
   };
 }
 

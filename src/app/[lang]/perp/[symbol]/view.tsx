@@ -1,12 +1,13 @@
 "use client";
+
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { API } from "@orderly.network/types";
-import { TradingPage, TradingPageProps } from "@orderly.network/trading";
-import { updateSymbol } from "@/storage";
-import { useOrderlyConfig } from "@/hooks/useOrderlyConfig";
-import { PathEnum } from "@/constant";
 import { i18n, parseI18nLang } from "@orderly.network/i18n";
+import { TradingPage, TradingPageProps } from "@orderly.network/trading";
+import { API } from "@orderly.network/types";
+import { PathEnum } from "@/constant";
+import { useOrderlyConfig } from "@/hooks/useOrderlyConfig";
+import { updateSymbol } from "@/storage";
 
 export type PerpViewProps = Pick<TradingPageProps, "symbol">;
 
@@ -26,7 +27,7 @@ export default function PerpView(props: PerpViewProps) {
       setSymbol(symbol);
       router.push(`/${parseI18nLang(i18n.language)}${PathEnum.Perp}/${symbol}`);
     },
-    [router]
+    [router],
   );
 
   return (
