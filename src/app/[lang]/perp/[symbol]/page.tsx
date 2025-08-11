@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { formatSymbol, generatePageTitle } from "@/utils";
+import { formatSymbol } from "@orderly.network/utils";
+import { generatePageTitle } from "@/utils";
 import PerpView from "./view";
 
 type PerpPageProps = {
