@@ -1,8 +1,8 @@
 import React from "react";
 import { Metadata } from "next";
 import { PageTitleMap, PathEnum } from "@/constant";
-import AssetsView from "./view";
 import { generatePageTitle, generateLangParams } from "@/utils";
+import AssetsView from "./view";
 
 export const metadata: Metadata = {
   title: generatePageTitle(PageTitleMap[PathEnum.Assets]),

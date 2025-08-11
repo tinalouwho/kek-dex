@@ -1,8 +1,8 @@
 import React from "react";
 import { Metadata } from "next";
-import HistoryView from "./view";
 import { PageTitleMap, PathEnum } from "@/constant";
 import { generatePageTitle, generateLangParams } from "@/utils";
+import HistoryView from "./view";
 
 export const metadata: Metadata = {
   title: generatePageTitle(PageTitleMap[PathEnum.History]),

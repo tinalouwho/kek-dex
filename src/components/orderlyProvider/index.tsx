@@ -1,8 +1,7 @@
 "use client";
+
 import React, { FC, ReactNode, useEffect } from "react";
-import { WalletConnectorProvider } from "@orderly.network/wallet-connector";
-import { OrderlyAppProvider } from "@orderly.network/react-app";
-import { useOrderlyConfig } from "@/hooks/useOrderlyConfig";
+import { usePathname } from "next/navigation";
 import {
   LocaleProvider,
   LocaleCode,
@@ -10,9 +9,11 @@ import {
   getLocalePathFromPathname,
   i18n,
 } from "@orderly.network/i18n";
-import { usePathWithoutLang } from "@/hooks/usePathWithoutLang";
-import { usePathname } from "next/navigation";
+import { OrderlyAppProvider } from "@orderly.network/react-app";
+import { WalletConnectorProvider } from "@orderly.network/wallet-connector";
 import { useNav } from "@/hooks/useNav";
+import { useOrderlyConfig } from "@/hooks/useOrderlyConfig";
+import { usePathWithoutLang } from "@/hooks/usePathWithoutLang";
 
 const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
   const config = useOrderlyConfig();

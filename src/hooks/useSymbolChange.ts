@@ -1,7 +1,8 @@
 "use client";
+
 import { useCallback } from "react";
-import { API } from "@orderly.network/types";
 import { useRouter } from "next/navigation";
+import { API } from "@orderly.network/types";
 import { PathEnum } from "@/constant";
 import { updateSymbol } from "@/storage";
 
@@ -14,7 +15,7 @@ export function useSymbolChange() {
       updateSymbol(symbol);
       router.push(PathEnum.Root);
     },
-    [router]
+    [router],
   );
 
   return onSymbolChange;

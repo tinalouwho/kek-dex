@@ -1,16 +1,17 @@
 "use client";
+
 import { useCallback, useEffect, useState } from "react";
-import { API } from "@orderly.network/types";
+import { usePathname } from "next/navigation";
+import { useMarketMap } from "@orderly.network/hooks";
+import { generatePath } from "@orderly.network/i18n";
 import { TradingPage } from "@orderly.network/trading";
-import { getSymbol, updateSymbol } from "@/storage";
+import { API } from "@orderly.network/types";
+import { formatSymbol } from "@orderly.network/utils";
+import { BaseLayout } from "@/components/baseLayout";
 import { PathEnum } from "@/constant";
 import { useOrderlyConfig } from "@/hooks/useOrderlyConfig";
-import { generatePath } from "@orderly.network/i18n";
-import { BaseLayout } from "@/components/baseLayout";
-import { usePathname } from "next/navigation";
-import { formatSymbol } from "@orderly.network/utils";
+import { getSymbol, updateSymbol } from "@/storage";
 import { generatePageTitle, getSymbolFromPathname } from "@/utils";
-import { useMarketMap } from "@orderly.network/hooks";
 
 export function PerpPage() {
   const pathname = usePathname();

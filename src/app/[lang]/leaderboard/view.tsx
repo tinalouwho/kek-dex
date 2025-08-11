@@ -1,9 +1,10 @@
 "use client";
+
 import { useMemo } from "react";
-import { LeaderboardPage } from "@orderly.network/trading-leaderboard";
 import { i18n, parseI18nLang } from "@orderly.network/i18n";
-import { getSymbol } from "@/storage";
+import { LeaderboardPage } from "@orderly.network/trading-leaderboard";
 import { PathEnum } from "@/constant";
+import { getSymbol } from "@/storage";
 
 export default function LeaderboardView() {
   const tradingUrl = useMemo(() => {
