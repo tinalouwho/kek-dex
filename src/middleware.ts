@@ -1,79 +1,20 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { type LocaleCode } from "@orderly.network/i18n";
+import { i18nCookieKey } from "@orderly.network/i18n/constant";
+import {
+  getLocalePathFromPathname,
+  parseI18nLang,
+  removeLangPrefix,
+} from "@orderly.network/i18n/utils";
 import { PathEnum } from "./constant";
 import { DEFAULT_SYMBOL } from "./storage";
 
 const localePaths = Object.values(PathEnum);
 
-export const i18nCookieKey = "orderly_i18nLng";
-
-enum LocaleEnum {
-  /** English */
-  en = "en",
-  /** Chinese */
-  zh = "zh",
-  /** Japanese */
-  ja = "ja",
-  /** Spanish */
-  es = "es",
-  /** Korean */
-  ko = "ko",
-  /** Vietnamese */
-  vi = "vi",
-  /** German */
-  de = "de",
-  /** French */
-  fr = "fr",
-}
-
-export function parseI18nLang(
-  lang: string,
-  localeCodes?: LocaleCode[],
-  defaultLang?: LocaleCode,
-) {
-  localeCodes = localeCodes || Object.values(LocaleEnum);
-  defaultLang = defaultLang || LocaleEnum.en;
-
-  const regex = /^([a-z]{2})/i;
-  const match = lang?.match(regex);
-
-  if (!match) return defaultLang;
-
-  const matchLang = match[1];
-
-  if (localeCodes.includes(lang)) {
-    return lang;
-  }
-
-  if (localeCodes.includes(matchLang)) {
-    return matchLang;
-  }
-
-  return defaultLang;
-}
-
-export function getLocalePathFromPathname(
-  pathname: string,
-  localeCodes?: string[],
-) {
-  const locale = pathname.split("/")[1];
-  localeCodes = localeCodes || Object.values(LocaleEnum);
-  return localeCodes.includes(locale as LocaleEnum) ? locale : null;
-}
-
 // Get the locale from cookie
 function getLocaleFromCookie(request: NextRequest) {
   const lang = request.cookies.get(i18nCookieKey)?.value;
   return parseI18nLang(lang!);
-}
-
-function removeLangPrefix(pathname: string, localeCodes?: string[]) {
-  const localePath = getLocalePathFromPathname(pathname, localeCodes);
-
-  return localePath
-    ? pathname.replace(new RegExp(`^/${localePath}(?=/)`), "")
-    : pathname;
 }
 
 export function middleware(request: NextRequest) {
@@ -85,7 +26,7 @@ export function middleware(request: NextRequest) {
   const pathWithoutLang = removeLangPrefix(pathname);
 
   if (pathWithoutLang === PathEnum.Perp) {
-    request.nextUrl.pathname = `/${localePath}${PathEnum.Perp}/${DEFAULT_SYMBOL}`;
+    request.nextUrl.pathname = `${localePath ? `/${localePath}` : ""}${PathEnum.Perp}/${DEFAULT_SYMBOL}`;
     return NextResponse.redirect(request.nextUrl);
   }
 
