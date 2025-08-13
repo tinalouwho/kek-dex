@@ -1,9 +1,8 @@
 import React from "react";
 import { Metadata } from "next";
 import LeaderboardView from "./view";
-import { generatePageTitle } from "@/utils";
+import { generatePageTitle, generateLangParams } from "@/utils";
 import { PageTitleMap, PathEnum } from "@/constant";
-import { generateLangParams } from "@/staticParams";
 
 export const metadata: Metadata = {
   title: generatePageTitle(PageTitleMap[PathEnum.Leaderboard]),

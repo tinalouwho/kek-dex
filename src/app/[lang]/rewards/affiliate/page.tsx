@@ -1,9 +1,8 @@
 import React from "react";
 import { Metadata } from "next";
 import AffiliateView from "./view";
-import { generatePageTitle } from "@/utils";
 import { PageTitleMap, PathEnum } from "@/constant";
-import { generateLangParams } from "@/staticParams";
+import { generatePageTitle, generateLangParams } from "@/utils";
 
 export const metadata: Metadata = {
   title: generatePageTitle(PageTitleMap[PathEnum.RewardsAffiliate]),
