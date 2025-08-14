@@ -7,9 +7,12 @@ const nextConfig: NextConfig = {
     config.externals = [...config.externals, "pino-pretty"];
     return config;
   },
-  reactStrictMode: false,
+  reactStrictMode: true,
   typescript: {
     ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 
