@@ -19,8 +19,11 @@ export function useNav() {
       const lang = parseI18nLang(i18n.language);
 
       if (option.href === "/") {
-        const symbol = getSymbol();
-        router.push(`/${lang}/${PathEnum.Perp}/${symbol}`);
+        // const symbol = getSymbol();
+        // const path = `/${lang}/${PathEnum.Perp}/${symbol}`;
+        // router.push(path);
+        router.push(PathEnum.Root);
+
         return;
       }
 
