@@ -16,13 +16,14 @@ import { generatePageTitle, getSymbolFromPathname } from "@/utils";
 export function PerpPage() {
   const pathname = usePathname();
   const marketMap = useMarketMap();
+  const config = useOrderlyConfig();
+
   let urlSymbol = getSymbolFromPathname(pathname)!;
 
   if (!marketMap?.[urlSymbol]) {
     urlSymbol = getSymbol();
   }
 
-  const config = useOrderlyConfig();
   const [symbol, setSymbol] = useState(urlSymbol);
 
   useEffect(() => {
@@ -31,8 +32,15 @@ export function PerpPage() {
 
   useEffect(() => {
     updateSymbol(symbol);
+  }, [symbol]);
+
+  useEffect(() => {
+    // update title
     const title = formatSymbol(symbol, "base-type");
     document.title = generatePageTitle(title);
+  }, [symbol]);
+
+  useEffect(() => {
     const path = generatePath({
       path: `${PathEnum.Perp}/${symbol}`,
     });

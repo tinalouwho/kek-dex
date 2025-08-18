@@ -1,29 +1,16 @@
 "use client";
 
-import React, { useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { i18n, parseI18nLang } from "@orderly.network/i18n";
+import React from "react";
 import { PositionsModule } from "@orderly.network/portfolio";
 import { useTradingLocalStorage } from "@orderly.network/trading";
-import { API } from "@orderly.network/types";
 import { Box } from "@orderly.network/ui";
-import { PathEnum } from "@/constant";
 import { useOrderlyConfig } from "@/hooks/useOrderlyConfig";
-import { updateSymbol } from "@/storage";
+import { useSymbolChange } from "@/hooks/useSymbolChange";
 
 export default function PositionsView() {
   const config = useOrderlyConfig();
   const local = useTradingLocalStorage();
-  const router = useRouter();
-
-  const onSymbolChange = useCallback(
-    (data: API.Symbol) => {
-      const symbol = data.symbol;
-      updateSymbol(symbol);
-      router.push(`/${parseI18nLang(i18n.language)}${PathEnum.Perp}/${symbol}`);
-    },
-    [router],
-  );
+  const onSymbolChange = useSymbolChange();
 
   return (
     <Box

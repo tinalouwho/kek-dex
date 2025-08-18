@@ -8,23 +8,21 @@ import {
 } from "@orderly.network/i18n";
 import { PathEnum } from "@/constant";
 
-export function useClientRouting() {
+export function useClientRoute() {
   const router = useRouter();
   let currentLocale = parseI18nLang(i18n?.language);
   const pathname = usePathname();
   const localePath = getLocalePathFromPathname(pathname);
 
-  if (["/health", "/health/"].includes(pathname)) {
-    return;
-  }
-
   if (!localePath && pathname !== PathEnum.Root) {
     // redirect to the current locale path
     // /perp/PERP_ETH_USDC => /en/perp/PERP_ETH_USDC
+    // /markets => /en/markets
     const redirectPath = `/${currentLocale}${pathname}`;
     router.push(redirectPath);
     return;
   }
+
   if (localePath && localePath !== currentLocale) {
     currentLocale = localePath;
     i18n.changeLanguage(localePath);

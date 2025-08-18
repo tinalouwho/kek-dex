@@ -11,11 +11,13 @@ import {
 } from "@orderly.network/i18n";
 import { OrderlyAppProvider } from "@orderly.network/react-app";
 import { WalletConnectorProvider } from "@orderly.network/wallet-connector";
+import { useClientRoute } from "@/hooks/useClientRoute";
 import { useNav } from "@/hooks/useNav";
 import { useOrderlyConfig } from "@/hooks/useOrderlyConfig";
 import { usePathWithoutLang } from "@/hooks/usePathWithoutLang";
 
 const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
+  useClientRoute();
   const config = useOrderlyConfig();
   const path = usePathWithoutLang();
   const pathname = usePathname();

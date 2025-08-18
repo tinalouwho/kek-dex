@@ -1,4 +1,5 @@
 export enum PathEnum {
+  /** root path will render perp page */
   Root = "/",
   Perp = "/perp",
 

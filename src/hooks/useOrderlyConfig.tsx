@@ -63,7 +63,6 @@ export const useOrderlyConfig = () => {
               ],
             },
           ],
-          initialMenu: PathEnum.Root,
         },
         footerProps: {
           telegramUrl: "https://orderly.network",
