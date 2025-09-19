@@ -1,8 +1,10 @@
 :root {
-  --oui-font-family: 'Manrope', sans-serif;
+  --oui-font-family: "Inter", sans-serif;
+  --oui-font-weight-normal: 400;
+  --oui-font-weight-semibold: 600;
 
   /* colors */
-  --oui-color-primary: 176 132 233;
+  --oui-color-primary: 243 242 248;
   --oui-color-primary-light: 213 190 244;
   --oui-color-primary-darken: 137 76 209;
   --oui-color-primary-contrast: 255 255 255;
@@ -19,69 +21,70 @@
   --oui-color-danger-darken: 237 72 122;
   --oui-color-danger-contrast: 255 255 255;
 
-  --oui-color-success: 41 233 169;
-  --oui-color-success-light: 101 240 194;
-  --oui-color-success-darken: 0 161 120;
-  --oui-color-success-contrast: 255 255 255;
+  --oui-color-success: 0 255 55;
+  --oui-color-success-light: 0 255 55;
+  --oui-color-success-darken: 0 200 43;
+  --oui-color-success-contrast: 0 0 0;
 
-  --oui-color-warning: 255 209 70;
-  --oui-color-warning-light: 255 229 133;
-  --oui-color-warning-darken: 255 152 0;
+  --oui-color-warning: 254 225 7;
+  --oui-color-warning-light: 254 225 7;
+  --oui-color-warning-darken: 200 177 0;
   --oui-color-warning-contrast: 255 255 255;
 
-  --oui-color-fill: 36 32 47;
-  --oui-color-fill-active: 40 46 58;
+  --oui-color-fill: 35 35 35;
+  --oui-color-fill-active: 45 45 45;
 
-  --oui-color-base-1: 93 83 123;
-  --oui-color-base-2: 81 72 107;
-  --oui-color-base-3: 68 61 69;
-  --oui-color-base-4: 57 52 74;
-  --oui-color-base-5: 51 46 66;
-  --oui-color-base-6: 43 38 56;
-  --oui-color-base-7: 36 32 47;
-  --oui-color-base-8: 29 26 38;
-  --oui-color-base-9: 22 20 28;
-  --oui-color-base-10: 14 13 18;
+  --oui-color-base-1: 50 50 50;
+  --oui-color-base-2: 45 45 45;
+  --oui-color-base-3: 40 40 40;
+  --oui-color-base-4: 37 37 37;
+  --oui-color-base-5: 35 35 35;
+  --oui-color-base-6: 32 32 32;
+  --oui-color-base-7: 35 35 35;
+  --oui-color-base-8: 25 25 25;
+  --oui-color-base-9: 20 20 20;
+  --oui-color-base-10: 15 15 15;
 
   --oui-color-base-foreground: 255 255 255;
   --oui-color-line: 255 255 255;
+  --oui-color-border: 60 60 60;
 
-  --oui-color-trading-loss: 245 97 139;
+  --oui-color-trading-loss: 255 0 0;
   --oui-color-trading-loss-contrast: 255 255 255;
-  --oui-color-trading-profit: 41 233 169;
-  --oui-color-trading-profit-contrast: 255 255 255;
+  --oui-color-trading-profit: 0 255 55;
+  --oui-color-trading-profit-contrast: 0 0 0;
 
-  /* gradients */
-  --oui-gradient-primary-start: 40 0 97;
-  --oui-gradient-primary-end: 189 107 237;
+  /* KEK Terminal Gradients - Green to Blue */
+  --oui-gradient-primary-start: 0 255 55; /* Green chart line */
+  --oui-gradient-primary-end: 0 224 208; /* KEK blue */
 
-  --oui-gradient-secondary-start: 81 42 121;
-  --oui-gradient-secondary-end: 176 132 233;
+  --oui-gradient-secondary-start: 0 224 208; /* KEK blue */
+  --oui-gradient-secondary-end: 0 255 55; /* Green chart line */
 
-  --oui-gradient-success-start: 1 83 68;
-  --oui-gradient-success-end: 41 223 169;
+  --oui-gradient-success-start: 0 200 43; /* Darker green */
+  --oui-gradient-success-end: 0 255 55; /* Green chart line */
 
-  --oui-gradient-danger-start: 153 24 76;
-  --oui-gradient-danger-end: 245 97 139;
+  --oui-gradient-danger-start: 200 0 0; /* Darker red */
+  --oui-gradient-danger-end: 255 0 0; /* Red chart line */
 
-  --oui-gradient-brand-start: 231 219 249;
-  --oui-gradient-brand-end: 159 107 225;
-  --oui-gradient-brand-stop-start: 6.62%;
-  --oui-gradient-brand-stop-end: 86.5%;
-  --oui-gradient-brand-angle: 17.44deg;
+  --oui-gradient-brand-start: 0 255 55; /* Green chart line */
+  --oui-gradient-brand-end: 0 224 208; /* KEK blue */
+  --oui-gradient-brand-stop-start: 0%;
+  --oui-gradient-brand-stop-end: 100%;
+  --oui-gradient-brand-angle: 90deg;
 
-  --oui-gradient-warning-start: 152 58 8;
-  --oui-gradient-warning-end: 255 209 70;
+  --oui-gradient-warning-start: 200 177 0; /* Darker yellow */
+  --oui-gradient-warning-end: 254 225 7; /* KEK yellow */
 
-  --oui-gradient-neutral-start: 27 29 24;
-  --oui-gradient-neutral-end: 38 41 46;
+  --oui-gradient-neutral-start: 27 27 27; /* Dark background */
+  --oui-gradient-neutral-end: 40 40 40; /* Slightly lighter */
 
   /* rounded */
-  --oui-rounded-sm: 2px;
+  --oui-rounded-sm: 4px;
   --oui-rounded: 4px;
   --oui-rounded-md: 6px;
   --oui-rounded-lg: 8px;
-  --oui-rounded-xl:  12px;
+  --oui-rounded-xl: 12px;
   --oui-rounded-2xl: 16px;
   --oui-rounded-full: 9999px;
 
@@ -91,4 +94,514 @@
   --oui-spacing-md: 26.25rem;
   --oui-spacing-lg: 30rem;
   --oui-spacing-xl: 33.75rem;
+
+  /* KEK Terminal Colors */
+  --kek-green: 0 255 55;
+  --kek-blue: 0 224 208;
+  --kek-yellow: 254 225 7;
+  --kek-red: 255 0 0;
+}
+
+/* KEK Terminal Button Styles */
+.oui-button {
+  background: linear-gradient(
+    to right,
+    rgb(var(--kek-green)),
+    rgb(var(--kek-blue))
+  ) !important;
+  color: black !important;
+  border: none !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 0 10px rgba(var(--kek-green), 0.3) !important;
+}
+
+.oui-button:hover {
+  background: linear-gradient(
+    to right,
+    rgb(var(--kek-blue)),
+    rgb(var(--kek-green))
+  ) !important;
+  color: black !important;
+  box-shadow: 0 0 15px rgba(var(--kek-green), 0.6) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Ensure icons in gradient buttons are black */
+.oui-button svg,
+.oui-button img,
+.oui-button i,
+.oui-button .icon,
+.oui-button [class*="icon"],
+.oui-button [data-icon],
+.oui-button [class*="svg"] {
+  color: black !important;
+  fill: black !important;
+  stroke: black !important;
+}
+
+/* Ensure icons in gradient buttons stay black on hover */
+.oui-button:hover svg,
+.oui-button:hover img,
+.oui-button:hover i,
+.oui-button:hover .icon,
+.oui-button:hover [class*="icon"],
+.oui-button:hover [data-icon],
+.oui-button:hover [class*="svg"] {
+  color: black !important;
+  fill: black !important;
+  stroke: black !important;
+}
+
+.oui-button-primary {
+  background: linear-gradient(
+    to right,
+    rgb(var(--kek-green)),
+    rgb(var(--kek-blue))
+  ) !important;
+  color: black !important;
+  border: none !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+}
+
+.oui-button-primary:hover {
+  background: linear-gradient(
+    to right,
+    rgb(var(--kek-blue)),
+    rgb(var(--kek-green))
+  ) !important;
+  box-shadow: 0 0 20px rgba(var(--kek-green), 0.8) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Ensure icons in primary gradient buttons are black */
+.oui-button-primary svg,
+.oui-button-primary img,
+.oui-button-primary i,
+.oui-button-primary .icon,
+.oui-button-primary [class*="icon"],
+.oui-button-primary [data-icon],
+.oui-button-primary [class*="svg"] {
+  color: black !important;
+  fill: black !important;
+  stroke: black !important;
+}
+
+/* Ensure icons in primary gradient buttons stay black on hover */
+.oui-button-primary:hover svg,
+.oui-button-primary:hover img,
+.oui-button-primary:hover i,
+.oui-button-primary:hover .icon,
+.oui-button-primary:hover [class*="icon"],
+.oui-button-primary:hover [data-icon],
+.oui-button-primary:hover [class*="svg"] {
+  color: black !important;
+  fill: black !important;
+  stroke: black !important;
+}
+
+/* Zap Hover Effect (from KEK Terminal) */
+.zap-hover {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.zap-hover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(var(--kek-green), 0.3),
+    transparent
+  );
+  transition: left 0.6s ease-out;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.zap-hover:hover::before,
+.zap-hover:focus-visible::before {
+  left: 100%;
+}
+
+.zap-hover > * {
+  position: relative;
+  z-index: 10;
+}
+
+.zap-hover:hover,
+.zap-hover:focus-visible {
+  background: linear-gradient(
+    to right,
+    rgb(var(--kek-green)),
+    rgb(var(--kek-blue))
+  ) !important;
+  color: black !important;
+  text-shadow: 0 0 6px rgba(var(--kek-green), 0.5);
+  box-shadow:
+    0 0 15px rgba(var(--kek-green), 0.7),
+    inset 0 0 15px rgba(var(--kek-green), 0.3);
+}
+
+/* Specific Orderly Button IDs */
+#orderly-order-entry-confirm-button {
+  background: linear-gradient(
+    to right,
+    rgb(var(--kek-green)),
+    rgb(var(--kek-blue))
+  ) !important;
+  color: black !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  box-shadow: 0 0 15px rgba(var(--kek-green), 0.6) !important;
+}
+
+#orderly-deposit-confirm-button,
+#orderly-withdraw-confirm-button {
+  background: linear-gradient(
+    to right,
+    rgb(var(--kek-green)),
+    rgb(var(--kek-blue))
+  ) !important;
+  color: black !important;
+  font-weight: 600 !important;
+}
+
+/* Add subtle border to main portfolio cards */
+.oui-card[class*="portfolio"],
+.oui-card[class*="overview"],
+.oui-card[class*="assets"],
+.oui-card[class*="performance"],
+.oui-card[class*="positions"],
+.oui-card[class*="orders"],
+.oui-card[class*="fee"],
+.oui-card[class*="api"],
+.oui-card[class*="settings"],
+[class*="portfolio-card"],
+[class*="overview-card"],
+[class*="assets-card"],
+[class*="performance-card"],
+[class*="positions-card"],
+[class*="orders-card"],
+[class*="fee-card"],
+[class*="api-card"],
+[class*="settings-card"] {
+  border: 1px solid rgb(var(--oui-color-border)) !important;
+  border-radius: var(--oui-rounded-md) !important;
+}
+
+/* Announcement bar styling - make background match card color */
+.oui-banner,
+.oui-alert,
+.oui-notice,
+.oui-announcement,
+[class*="banner"],
+[class*="announcement"],
+[class*="alert"],
+[class*="notice"],
+[class*="promotion"],
+[class*="warning-bar"],
+[class*="top-bar"] {
+  background-color: rgb(var(--oui-color-fill)) !important;
+  border: 1px solid rgb(var(--oui-color-border)) !important;
+  border-radius: var(--oui-rounded-md) !important;
+}
+
+/* Color overrides for orange and blue elements */
+[style*="orange"],
+[style*="255, 165, 0"],
+[style*="#ffa500"],
+[style*="#FFA500"],
+[style*="rgb(255, 165, 0)"],
+[style*="rgba(255, 165, 0"] {
+  color: #fee107 !important;
+  background-color: #fee107 !important;
+  border-color: #fee107 !important;
+}
+
+[style*="blue"],
+[style*="0, 0, 255"],
+[style*="#0000ff"],
+[style*="#0000FF"],
+[style*="rgb(0, 0, 255)"],
+[style*="rgba(0, 0, 255"] {
+  color: rgb(var(--kek-blue)) !important;
+  background-color: rgb(var(--kek-blue)) !important;
+  border-color: rgb(var(--kek-blue)) !important;
+}
+
+/* Specific orange color class overrides */
+.orange,
+.text-orange,
+.bg-orange,
+.border-orange {
+  color: #fee107 !important;
+  background-color: #fee107 !important;
+  border-color: #fee107 !important;
+}
+
+/* Specific blue color class overrides */
+.blue,
+.text-blue,
+.bg-blue,
+.border-blue {
+  color: rgb(var(--kek-blue)) !important;
+  background-color: rgb(var(--kek-blue)) !important;
+  border-color: rgb(var(--kek-blue)) !important;
+}
+
+/* Hover text color - use KEK Terminal green */
+*:hover {
+  color: rgb(var(--kek-green)) !important;
+}
+
+/* Specific hover overrides for different element types */
+a:hover,
+button:hover,
+[role="button"]:hover,
+.oui-link:hover,
+[class*="button"]:hover,
+[class*="link"]:hover,
+[class*="nav"]:hover,
+[class*="menu"]:hover,
+[class*="item"]:hover,
+[class*="tab"]:hover,
+[class*="option"]:hover {
+  color: rgb(var(--kek-green)) !important;
+}
+
+/* Exclude gradient buttons from green hover text - keep them black */
+.oui-button:hover,
+.oui-button-primary:hover {
+  color: black !important;
+}
+
+/* Hover effects for text elements */
+span:hover,
+div:hover,
+p:hover,
+h1:hover,
+h2:hover,
+h3:hover,
+h4:hover,
+h5:hover,
+h6:hover,
+label:hover,
+.oui-text:hover,
+.oui-label:hover,
+.oui-typography:hover {
+  color: rgb(var(--kek-green)) !important;
+}
+
+/* Top Gainers title gradient styling */
+[class*="top-gainers"],
+[class*="topGainers"],
+[class*="gainers-title"],
+[class*="gainers-header"],
+[data-testid*="top-gainers"],
+[data-testid*="topGainers"],
+[aria-label*="Top Gainers"],
+[title*="Top Gainers"],
+[title*="top gainers"] {
+  background: linear-gradient(
+    to right,
+    rgb(var(--kek-green)),
+    rgb(var(--kek-blue))
+  ) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  font-weight: 600 !important;
+}
+
+/* Target elements that contain "Top Gainers" text specifically */
+/* Target elements containing these text strings */
+[data-title*="Top Gainers" i],
+[title*="Top Gainers" i],
+.top-gainers {
+  background: linear-gradient(
+    to right,
+    rgb(var(--kek-green)),
+    rgb(var(--kek-blue))
+  ) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  font-weight: 600 !important;
+}
+
+/* More specific targeting for markets section titles */
+[class*="markets"] h1,
+[class*="markets"] h2,
+[class*="markets"] h3,
+[class*="markets"] h4,
+[class*="markets"] h5,
+[class*="markets"] h6,
+[class*="markets"] [class*="title"],
+[class*="markets"] [class*="heading"],
+[class*="markets"] [class*="header"] {
+  background: linear-gradient(
+    to right,
+    rgb(var(--kek-green)),
+    rgb(var(--kek-blue))
+  ) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  font-weight: 600 !important;
+}
+
+/* Hover effects for interactive elements */
+[class*="clickable"]:hover,
+[class*="selectable"]:hover,
+[class*="interactive"]:hover,
+[style*="cursor: pointer"]:hover {
+  color: rgb(var(--kek-green)) !important;
+}
+
+/* Change dark gray text to purple-200 */
+[style*="color: #666"],
+[style*="color: #666666"],
+[style*="color: rgb(102, 102, 102)"],
+[style*="color: #555"],
+[style*="color: #555555"],
+[style*="color: rgb(85, 85, 85)"],
+[style*="color: #777"],
+[style*="color: #777777"],
+[style*="color: rgb(119, 119, 119)"],
+[style*="color: #888"],
+[style*="color: #888888"],
+[style*="color: rgb(136, 136, 136)"],
+[style*="color: #999"],
+[style*="color: #999999"],
+[style*="color: rgb(153, 153, 153)"],
+[style*="color: #aaa"],
+[style*="color: #aaaaaa"],
+[style*="color: rgb(170, 170, 170)"],
+[style*="color: #bbb"],
+[style*="color: #bbbbbb"],
+[style*="color: rgb(187, 187, 187)"],
+[style*="color: #ccc"],
+[style*="color: #cccccc"],
+[style*="color: rgb(204, 204, 204)"],
+[style*="color: gray"],
+[style*="color: darkgray"],
+[style*="color: dimgray"] {
+  color: #e9d5ff !important; /* purple-200 */
+}
+
+/* Target dark gray text classes */
+.text-gray-600,
+.text-gray-700,
+.text-gray-800,
+.text-gray-900,
+.text-slate-600,
+.text-slate-700,
+.text-slate-800,
+.text-slate-900,
+.text-zinc-600,
+.text-zinc-700,
+.text-zinc-800,
+.text-zinc-900,
+.text-neutral-600,
+.text-neutral-700,
+.text-neutral-800,
+.text-neutral-900,
+.text-stone-600,
+.text-stone-700,
+.text-stone-800,
+.text-stone-900 {
+  color: #e9d5ff !important; /* purple-200 */
+}
+
+/* Target elements with gray color classes */
+.gray-600,
+.gray-700,
+.gray-800,
+.gray-900,
+.slate-600,
+.slate-700,
+.slate-800,
+.slate-900,
+.zinc-600,
+.zinc-700,
+.zinc-800,
+.zinc-900,
+.neutral-600,
+.neutral-700,
+.neutral-800,
+.neutral-900,
+.stone-600,
+.stone-700,
+.stone-800,
+.stone-900 {
+  color: #e9d5ff !important; /* purple-200 */
+}
+
+/* Target Orderly components with dark gray text */
+.oui-text[style*="color: #"],
+.oui-label[style*="color: #"],
+.oui-typography[style*="color: #"],
+[class*="oui-"][style*="color: #"] {
+  color: #e9d5ff !important; /* purple-200 */
+}
+
+/* Target common dark gray color patterns */
+[style*="color: rgba(0, 0, 0, 0.6)"],
+[style*="color: rgba(0, 0, 0, 0.7)"],
+[style*="color: rgba(0, 0, 0, 0.8)"],
+[style*="color: rgba(0, 0, 0, 0.9)"],
+[style*="color: rgba(255, 255, 255, 0.4)"],
+[style*="color: rgba(255, 255, 255, 0.5)"],
+[style*="color: rgba(255, 255, 255, 0.6)"],
+[style*="color: rgba(255, 255, 255, 0.7)"] {
+  color: #e9d5ff !important; /* purple-200 */
+}
+
+/* Additional font overrides to ensure Inter is used */
+* {
+  font-family: var(--oui-font-family) !important;
+}
+
+/* Specific button font weight override */
+.oui-button,
+button,
+[role="button"] {
+  font-weight: var(--oui-font-weight-semibold) !important;
+}
+
+/* Normal text font weight */
+body,
+.oui-text,
+.oui-label,
+.oui-input,
+.oui-cell,
+.oui-row,
+.oui-nav,
+.oui-menu,
+.oui-list,
+.oui-item,
+.oui-link,
+.oui-span,
+.oui-div,
+p,
+span,
+div,
+label,
+input,
+textarea,
+select {
+  font-weight: var(--oui-font-weight-normal) !important;
 }

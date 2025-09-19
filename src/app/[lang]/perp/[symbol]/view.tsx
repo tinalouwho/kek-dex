@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { i18n, parseI18nLang } from "@orderly.network/i18n";
 import { TradingPage, TradingPageProps } from "@orderly.network/trading";
 import { API } from "@orderly.network/types";
+import { OrderlyAuthWrapper } from "@/components/OrderlyAuthWrapper";
 import { PathEnum } from "@/constant";
 import { useOrderlyConfig } from "@/hooks/useOrderlyConfig";
 import { updateSymbol } from "@/storage";
@@ -31,11 +32,13 @@ export default function PerpView(props: PerpViewProps) {
   );
 
   return (
-    <TradingPage
-      symbol={symbol}
-      onSymbolChange={onSymbolChange}
-      tradingViewConfig={config.tradingPage.tradingViewConfig}
-      sharePnLConfig={config.tradingPage.sharePnLConfig}
-    />
+    <OrderlyAuthWrapper>
+      <TradingPage
+        symbol={symbol}
+        onSymbolChange={onSymbolChange}
+        tradingViewConfig={config.tradingPage.tradingViewConfig}
+        sharePnLConfig={config.tradingPage.sharePnLConfig}
+      />
+    </OrderlyAuthWrapper>
   );
 }

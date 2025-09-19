@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import Image from "next/image";
 import { type RestrictedInfoOptions } from "@orderly.network/hooks";
 import { useTranslation } from "@orderly.network/i18n";
 import { AppLogos } from "@orderly.network/react-app";
@@ -75,15 +76,18 @@ export const useOrderlyConfig = () => {
         appIcons: {
           main: {
             component: (
-              <img
-                alt="Orderly logo"
-                src="/images/orderly-logo.svg"
-                style={{ width: 100, height: 40 }}
+              <Image
+                alt="KEK Terminal logo"
+                src="/images/keklogo2.png"
+                width={100}
+                height={100}
+                priority
+                className="w-14 h-14 ml-2 mt-1 object-cover"
               />
             ),
           },
           secondary: {
-            img: "/images/orderly-logo-secondary.svg",
+            img: "/images/keklogo2.png",
           },
         },
         restrictedInfo: {
@@ -97,6 +101,43 @@ export const useOrderlyConfig = () => {
           scriptSRC: "/tradingview/charting_library/charting_library.js",
           library_path: "/tradingview/charting_library/",
           customCssUrl: "/tradingview/chart.css",
+          theme: "dark",
+          toolbar_bg: "#1b1b1b",
+          loading_screen: {
+            backgroundColor: "#0a0a0a",
+            foregroundColor: "#00ff37",
+          },
+          overrides: {
+            "paneProperties.background": "#0a0a0a",
+            "paneProperties.backgroundType": "solid",
+            "scalesProperties.backgroundColor": "#0a0a0a",
+            "scalesProperties.lineColor": "#3c3c3c",
+            "scalesProperties.textColor": "rgba(255, 255, 255, 0.98)",
+            "mainSeriesProperties.candleStyle.upColor": "#00ff37",
+            "mainSeriesProperties.candleStyle.downColor": "#ff0000",
+            "mainSeriesProperties.candleStyle.borderUpColor": "#00ff37",
+            "mainSeriesProperties.candleStyle.borderDownColor": "#ff0000",
+            "mainSeriesProperties.candleStyle.wickUpColor": "#00ff37",
+            "mainSeriesProperties.candleStyle.wickDownColor": "#ff0000",
+            "mainSeriesProperties.candleStyle.barColorsOnPrevClose": false,
+            "paneProperties.vertGridProperties.color": "#3c3c3c",
+            "paneProperties.horzGridProperties.color": "#3c3c3c",
+            "paneProperties.crossHairProperties.color": "#00ff37",
+            // Volume colors
+            "volume.volume.color.0": "#ff0000",
+            "volume.volume.color.1": "#00ff37",
+            "volume.volume.transparency": 0,
+            "volume.precision": 0,
+            "volume.scale": 0,
+            "volume.volume ma.visible": false,
+            "Volume.volume.color.0": "#ff0000",
+            "Volume.volume.color.1": "#00ff37",
+            "Volume.scale": 0,
+            // Bollinger Bands colors
+            "bollinger bands.median.color": "#00e0d0",
+            "bollinger bands.upper.color": "#ff0000",
+            "bollinger bands.lower.color": "#00ff37",
+          },
         },
         sharePnLConfig: {
           backgroundImages: [
@@ -107,8 +148,8 @@ export const useOrderlyConfig = () => {
           ],
 
           color: "rgba(255, 255, 255, 0.98)",
-          profitColor: "rgba(41, 223, 169, 1)",
-          lossColor: "rgba(245, 97, 139, 1)",
+          profitColor: "rgba(0, 255, 55, 1)", // KEK Terminal green
+          lossColor: "rgba(255, 0, 0, 1)", // KEK Terminal red
           brandColor: "rgba(255, 255, 255, 0.98)",
 
           // ref

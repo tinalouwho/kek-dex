@@ -38,7 +38,8 @@ export function middleware(request: NextRequest) {
   const cookieLocale = getLocaleFromCookie(request);
 
   if (pathname === "/") {
-    newPathname = `/${cookieLocale}${PathEnum.Perp}/${DEFAULT_SYMBOL}`;
+    // Allow root path to show landing page
+    return;
   } else if (localePaths.includes(pathname as PathEnum)) {
     newPathname = `/${cookieLocale}${pathname}`;
   } else if (pathname.startsWith(PathEnum.Perp)) {

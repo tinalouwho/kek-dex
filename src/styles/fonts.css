@@ -1,20 +1,79 @@
+/* Legacy Manrope fonts (keeping for compatibility) */
 @font-face {
-  font-family: 'Manrope';
-  src: url('/fonts/Manrope/Manrope-Medium.ttf') format('truetype');
+  font-family: "Manrope";
+  src: url("/fonts/Manrope/Manrope-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Manrope';
-  src: url('/fonts/Manrope/Manrope-SemiBold.ttf') format('truetype');
+  font-family: "Manrope";
+  src: url("/fonts/Manrope/Manrope-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Manrope';
-  src: url('/fonts/Manrope/Manrope-Bold.ttf') format('truetype');
+  font-family: "Manrope";
+  src: url("/fonts/Manrope/Manrope-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
+}
+
+/* Font utility classes */
+.font-inter {
+  font-family: "Inter", sans-serif;
+}
+
+.font-orbitron {
+  font-family: "Orbitron", monospace;
+}
+
+/* Force Inter font on all Orderly components with normal weight */
+body,
+.oui-input,
+.oui-table,
+.oui-card,
+.oui-text,
+.oui-label,
+.oui-typography,
+.oui-cell,
+.oui-row,
+.oui-header,
+.oui-footer,
+.oui-nav,
+.oui-menu,
+.oui-list,
+.oui-item,
+.oui-link,
+.oui-span,
+.oui-div,
+[class*="oui-"] {
+  font-family: var(--font-sans), "Inter", sans-serif !important;
+  font-weight: 400 !important; /* Normal weight */
+}
+
+/* Use Orbitron for headers and secondary elements */
+.oui-heading,
+.oui-title,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-orbitron {
+  font-family: var(--font-mono), "Orbitron", monospace !important;
+  font-weight: 400 !important;
+}
+
+/* Buttons should use Inter with semibold weight */
+.oui-button,
+button,
+[role="button"],
+[type="button"],
+[type="submit"],
+[type="reset"] {
+  font-family: var(--font-sans), "Inter", sans-serif !important;
+  font-weight: 600 !important; /* Semibold weight */
 }
