@@ -114,9 +114,11 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
   if (!isReady) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-black">
-        <div className="text-white text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p>Initializing KEK Terminal...</p>
+        <div className="text-purple-100 font-bold font-mono text-2xl text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-kek-green mx-auto mb-4"></div>
+          <p className="text-purple-100 font-bold font-mono text-2xl text-center">
+            Initializing KEK DEX...
+          </p>
         </div>
       </div>
     );

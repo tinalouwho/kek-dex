@@ -369,7 +369,7 @@ body,
 .oui-text,
 .oui-label,
 .oui-typography {
-  color: rgb(255, 255, 255) !important;
+  color: rgb(250, 245, 255) !important; /* purple-50 */
 }
 
 /* Fix markets page text color flash */
@@ -379,7 +379,7 @@ body,
 [class*="markets"] span,
 [class*="markets"] div,
 [class*="markets"] p {
-  color: rgb(255, 255, 255) !important;
+  color: rgb(250, 245, 255) !important; /* purple-50 */
 }
 
 /* Ensure markets page elements don't flash green */
@@ -392,14 +392,12 @@ body,
 a:hover,
 button:hover,
 [role="button"]:hover,
+/* More specific hover rules - only for actual interactive elements */
 .oui-link:hover,
-[class*="button"]:hover,
-[class*="link"]:hover,
-[class*="nav"]:hover,
-[class*="menu"]:hover,
-[class*="item"]:hover,
-[class*="tab"]:hover,
-[class*="option"]:hover {
+.oui-button:hover:not(.oui-button-primary),
+.oui-tab:hover,
+.oui-menu-item:hover,
+.oui-nav-item:hover {
   color: rgb(var(--kek-green)) !important;
 }
 
@@ -409,22 +407,8 @@ button:hover,
   color: black !important;
 }
 
-/* Hover effects for text elements */
-span:hover,
-div:hover,
-p:hover,
-h1:hover,
-h2:hover,
-h3:hover,
-h4:hover,
-h5:hover,
-h6:hover,
-label:hover,
-.oui-text:hover,
-.oui-label:hover,
-.oui-typography:hover {
-  color: rgb(var(--kek-green)) !important;
-}
+/* Removed aggressive hover effects for text elements */
+/* Text elements should maintain their default colors on hover */
 
 /* Top Gainers title gradient styling */
 [class*="top-gainers"],

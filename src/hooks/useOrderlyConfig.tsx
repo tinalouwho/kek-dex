@@ -120,8 +120,8 @@ export const useOrderlyConfig = () => {
             "mainSeriesProperties.candleStyle.wickUpColor": "#00ff37",
             "mainSeriesProperties.candleStyle.wickDownColor": "#ff0000",
             "mainSeriesProperties.candleStyle.barColorsOnPrevClose": false,
-            "paneProperties.vertGridProperties.color": "rgba(60, 60, 60, 0.15)",
-            "paneProperties.horzGridProperties.color": "rgba(60, 60, 60, 0.15)",
+            "paneProperties.vertGridProperties.color": "rgba(0, 0, 0, 1)",
+            "paneProperties.horzGridProperties.color": "rgba(0, 0, 0, 1)",
             "paneProperties.crossHairProperties.color": "#00ff37",
             // Volume colors
             "volume.volume.color.0": "#ff0000",

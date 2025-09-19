@@ -10,17 +10,32 @@ export default function Header() {
     router.push("/en/perp/PERP_ETH_USDC");
   };
   return (
-    <div className="header-component   w-full px-4 py-2 flex justify-between items-center">
-      <div className="flex items-center space-x-2">
+    <div className="header-component bg-black/75 backdrop-blur-sm w-full lg:px-4 px-1 lg:py-2 py-1 flex justify-between items-center relative z-20">
+      <div className="flex items-center lg:space-x-2 ">
         <Image
           src="/images/keklogo2.png"
           alt="KEK DEX"
           width={60}
           height={46}
         />
-        <span className="text-2xl font-mono text-purple-50 font-bold">
+        <p className="lg:text-2xl font-mono text-purple-100 font-bold">
           KEK DEX
-        </span>
+        </p>
+        <div className="flex items-center gap-12 pl-20 max-[1200px]:hidden">
+          <button className="lg:text-2xl font-mono text-purple-200 font-bold">
+            Documentation
+          </button>
+          <button className="lg:text-2xl font-mono text-purple-200 font-bold">
+            Product
+          </button>
+
+          <button className="lg:text-2xl font-mono text-purple-200 font-bold">
+            $KEK Token
+          </button>
+          <button className="lg:text-2xl font-mono text-purple-200 font-bold">
+            Community
+          </button>
+        </div>
       </div>
       <button
         onClick={handleStartTrading}

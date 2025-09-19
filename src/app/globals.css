@@ -144,7 +144,44 @@
   }
 }
 
-/* All button styling now handled by Tailwind with important: true */
+/* Header button specific styling */
+.header-start-button {
+  background: linear-gradient(to right, #00ff37, #00e0d0) !important;
+  color: black !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
+  font-weight: 600 !important;
+}
+
+.header-start-button:hover {
+  background: linear-gradient(to right, #00e0d0, #00ff37) !important;
+  box-shadow: 0 0 20px rgba(0, 255, 55, 0.4) !important;
+  color: black !important;
+  transform: scale(1.05) !important;
+}
+
+.header-start-button:active {
+  transform: scale(0.98) !important;
+}
+
+/* Landing page primary button styles (Start Trading) */
+.landing-page .primary-button {
+  font-weight: 600 !important;
+  background: linear-gradient(to right, #00ff37, #00e0d0) !important;
+  color: black !important;
+  border: none !important;
+  transition: all 0.3s ease !important;
+}
+
+.landing-page .primary-button:hover {
+  background: linear-gradient(to right, #00e0d0, #00ff37) !important;
+  box-shadow: 0 0 20px rgba(0, 255, 55, 0.4) !important;
+  transform: scale(1.05) !important;
+}
+
+.landing-page .primary-button:active {
+  transform: scale(0.98) !important;
+}
 
 /* Additional isolation for any other custom components */
 .custom-component {
