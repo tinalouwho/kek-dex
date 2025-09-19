@@ -1,6 +1,8 @@
 "use client";
 
 import React, { FC, ReactNode, useEffect } from "react";
+import { Adapter } from "@solana/wallet-adapter-base";
+import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom";
 import { usePathname } from "next/navigation";
 import { OrderlyKeyStore, LocalStorageStore } from "@orderly.network/core";
 import {
@@ -32,6 +34,53 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
 
   // Initialize Orderly key store for WebSocket authentication
   const keyStore = new LocalStorageStore();
+
+  // Clear any cached keys from different network if network changed
+  useEffect(() => {
+    const cachedNetworkId = keyStore.getItem("networkId");
+    console.log(
+      `🔍 Current network: ${envConfig.network}, cached network: ${cachedNetworkId}`,
+    );
+
+    // Log all localStorage keys for debugging
+    if (typeof window !== "undefined") {
+      const allKeys = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key) allKeys.push(key);
+      }
+      console.log("📦 All localStorage keys:", allKeys);
+    }
+
+    if (cachedNetworkId && cachedNetworkId !== envConfig.network) {
+      console.log(
+        `🔄 Network changed from ${cachedNetworkId} to ${envConfig.network}, clearing cached keys`,
+      );
+
+      // Clear specific Orderly-related keys rather than all localStorage
+      if (typeof window !== "undefined") {
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (
+            key &&
+            (key.includes("orderly") ||
+              key.includes("Orderly") ||
+              key.includes("account") ||
+              key.includes("key"))
+          ) {
+            keysToRemove.push(key);
+          }
+        }
+        keysToRemove.forEach((key) => localStorage.removeItem(key));
+        console.log(
+          `🧹 Removed ${keysToRemove.length} cached keys:`,
+          keysToRemove,
+        );
+      }
+    }
+    keyStore.setItem("networkId", envConfig.network);
+  }, [envConfig.network, keyStore]);
 
   // Get Privy configuration from environment
   const privyAppId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
@@ -87,24 +136,7 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
           },
         }}
         wagmiConfig={{
-          connectors: [
-            wagmiConnectors.injected(),
-            wagmiConnectors.walletConnect({
-              projectId:
-                process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ||
-                "your_walletconnect_project_id_here",
-              showQrModal: true,
-              metadata: {
-                name: "KEK Terminal",
-                description: "KEK Terminal - AI-Powered DeFi Trading",
-                url: "https://kek.ai",
-                icons: [
-                  config.orderlyAppProvider.appIcons?.main ||
-                    "/orderly-logo.svg",
-                ],
-              },
-            }),
-          ],
+          connectors: [wagmiConnectors.injected()],
         }}
         solanaConfig={{
           endpoint:
@@ -114,6 +146,10 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
             process.env.NEXT_PUBLIC_SOLANA_NETWORK === "devnet"
               ? "devnet"
               : "mainnet-beta",
+          wallets: [new PhantomWalletAdapter()] as Adapter[],
+          onError: (error: any, adapter?: Adapter) => {
+            console.error("Solana wallet error:", error, adapter);
+          },
         }}
       >
         <OrderlyAppProvider

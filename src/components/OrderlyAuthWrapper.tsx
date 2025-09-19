@@ -23,9 +23,9 @@ export const OrderlyAuthWrapper: React.FC<OrderlyAuthWrapperProps> = ({
   if (isGeneratingKey) {
     return (
       <div className="flex items-center justify-center min-h-[400px] p-4">
-        <div className="w-full max-w-md bg-white rounded-lg shadow-lg border p-6">
+        <div className="w-full max-w-md bg-black rounded-lg shadow-lg border p-6">
           <div className="text-center">
-            <h2 className="text-xl font-semibold mb-2 flex items-center justify-center gap-2">
+            <h2 className="text-xl font-semibold text-white mb-2 flex items-center justify-center gap-2">
               🔑 Setting Up Trading Account
             </h2>
             <p className="text-gray-600 mb-4">
@@ -75,9 +75,13 @@ export const OrderlyAuthWrapper: React.FC<OrderlyAuthWrapperProps> = ({
 
   // Show success state and render children once authenticated
   if (isAuthenticated && accountId) {
+    console.log(
+      "🚀 OrderlyAuthWrapper: Rendering trading interface with authenticated account:",
+      accountId,
+    );
     return (
       <>
-        <div className=" p-3 flex items-center justify-center bg-[#1B1B1B] shadow-lg rounded-lg mx-2 mt-2">
+        <div className=" p-3 flex items-center justify-between bg-[#1B1B1B] shadow-lg rounded-lg mx-2 mt-2">
           <p className="text-sm text-[#00FF37]">
             Trading account authenticated successfully
             {accountId && (
@@ -86,6 +90,12 @@ export const OrderlyAuthWrapper: React.FC<OrderlyAuthWrapperProps> = ({
               </span>
             )}
           </p>
+          <button
+            onClick={retryKeyGeneration}
+            className="text-xs px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium"
+          >
+            🔄 Regenerate Keys
+          </button>
         </div>
         {children}
       </>

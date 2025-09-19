@@ -359,9 +359,35 @@
   border-color: rgb(var(--kek-blue)) !important;
 }
 
-/* Hover text color - use KEK Terminal green */
-*:hover {
-  color: rgb(var(--kek-green)) !important;
+/* Hover text color - use KEK Terminal green for specific interactive elements only */
+
+/* Prevent flash of incorrect colors during hydration */
+html {
+  color-scheme: dark;
+}
+
+/* Ensure proper text color inheritance */
+body,
+.oui-text,
+.oui-label,
+.oui-typography {
+  color: rgb(255, 255, 255) !important;
+}
+
+/* Fix markets page text color flash */
+[class*="markets"] .oui-text,
+[class*="markets"] .oui-label,
+[class*="markets"] .oui-typography,
+[class*="markets"] span,
+[class*="markets"] div,
+[class*="markets"] p {
+  color: rgb(255, 255, 255) !important;
+}
+
+/* Ensure markets page elements don't flash green */
+[class*="markets"]
+  *:not(.oui-button):not(.oui-button-primary):not([class*="button"]) {
+  color: rgb(255, 255, 255) !important;
 }
 
 /* Specific hover overrides for different element types */

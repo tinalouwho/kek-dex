@@ -38,8 +38,8 @@ export default function LandingPage() {
             height={40}
             className="w-10 h-10"
           />
-          <span className="text-2xl font-bold bg-gradient-to-r from-[#00FF37] to-[#00E0D0] bg-clip-text text-transparent">
-            KEK Terminal
+          <span className="text-2xl font-mono bg-gradient-to-r from-[#00FF37] to-[#00E0D0] bg-clip-text text-transparent">
+            KEK DEX
           </span>
         </div>
 
@@ -57,7 +57,7 @@ export default function LandingPage() {
           className={`text-center max-w-4xl mx-auto transition-all duration-1000 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
         >
           <h1 className="text-6xl lg:text-8xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-[#00FF37] via-[#00E0D0] to-[#00FF37] bg-clip-text text-transparent animate-gradient">
+            <span className="font-mono bg-gradient-to-r from-[#00FF37] via-[#00E0D0] to-[#00FF37] bg-clip-text text-transparent animate-gradient">
               Trading
             </span>
             <br />
@@ -116,7 +116,7 @@ export default function LandingPage() {
             <h2 className="text-4xl lg:text-6xl font-bold mb-6">
               <span className="text-white">YOU DON'T LEARN IT.</span>
               <br />
-              <span className="bg-gradient-to-r from-[#00FF37] to-[#00E0D0] bg-clip-text text-transparent">
+              <span className="font-mono bg-gradient-to-r from-[#00FF37] to-[#00E0D0] bg-clip-text text-transparent">
                 YOU JUST DEPOSIT AND TRADE.
               </span>
             </h2>
@@ -179,7 +179,7 @@ export default function LandingPage() {
           <h2 className="text-4xl lg:text-6xl font-bold mb-8">
             <span className="text-white">200+ perp & spot markets</span>
             <br />
-            <span className="bg-gradient-to-r from-[#00FF37] to-[#00E0D0] bg-clip-text text-transparent">
+            <span className="font-mono bg-gradient-to-r from-[#00FF37] to-[#00E0D0] bg-clip-text text-transparent">
               in one UI.
             </span>
           </h2>
@@ -204,7 +204,7 @@ export default function LandingPage() {
               height={32}
               className="w-8 h-8"
             />
-            <span className="text-lg font-bold bg-gradient-to-r from-[#00FF37] to-[#00E0D0] bg-clip-text text-transparent">
+            <span className="text-lg font-bold font-mono bg-gradient-to-r from-[#00FF37] to-[#00E0D0] bg-clip-text text-transparent">
               KEK Terminal
             </span>
           </div>
