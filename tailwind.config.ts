@@ -53,6 +53,8 @@ const config: Config = {
         "cyan-400": "#00E0D0",
         "yellow-400": "#FEE107",
         "red-500": "#FF0000",
+        // Proper purple-100 from OKLCH
+        "purple-100": "rgb(240, 171, 252)", // oklch(94.6% 0.033 307.174)
       },
       animation: {
         gradient: "gradient 3s ease infinite",

@@ -168,6 +168,7 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
             brokerId={envConfig.brokerId}
             networkId={envConfig.network}
             brokerName={envConfig.brokerName || "KEK DEX"}
+            appIcons={config.orderlyAppProvider.appIcons}
           >
             {props.children}
           </OrderlyAppProvider>
