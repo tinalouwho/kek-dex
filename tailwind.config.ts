@@ -1,5 +1,7 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from "tailwindcss";
+
+const config: Config = {
+  important: true, // This adds !important to all Tailwind utilities to override Orderly CSS
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -8,8 +10,33 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        mono: ["var(--font-mono)", "Orbitron", "monospace"],
-        sans: ["var(--font-sans)", "Inter", "sans-serif"],
+        mono: [
+          "var(--font-mono)",
+          "Orbitron",
+          "ui-monospace",
+          "SFMono-Regular",
+          "SF Mono",
+          "Menlo",
+          "Monaco",
+          "Consolas",
+          "Liberation Mono",
+          "Courier New",
+          "monospace",
+        ],
+        sans: [
+          "var(--font-sans)",
+          "Inter",
+          "ui-sans-serif",
+          "system-ui",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "Noto Sans",
+          "sans-serif",
+        ],
       },
       colors: {
         // KEK Terminal colors
@@ -21,6 +48,11 @@ module.exports = {
         "bg-main": "#0A0A0A",
         "bg-card": "#1B1B1B",
         "bg-border": "#3C3C3C",
+        // Extended color palette for easier Tailwind usage
+        "green-400": "#00FF37",
+        "cyan-400": "#00E0D0",
+        "yellow-400": "#FEE107",
+        "red-500": "#FF0000",
       },
       animation: {
         gradient: "gradient 3s ease infinite",
@@ -48,3 +80,5 @@ module.exports = {
   },
   plugins: [],
 };
+
+export default config;

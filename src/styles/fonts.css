@@ -25,9 +25,7 @@
   font-family: "Inter", sans-serif;
 }
 
-.font-orbitron {
-  font-family: "Orbitron", monospace;
-}
+/* Removed - use font-mono instead */
 
 /* Force Inter font on all Orderly components with normal weight */
 body,
@@ -61,8 +59,7 @@ h2,
 h3,
 h4,
 h5,
-h6,
-.font-orbitron {
+h6 {
   font-family: var(--font-mono), "Orbitron", monospace !important;
   font-weight: 400 !important;
 }

@@ -185,8 +185,6 @@
 .oui-button-primary [data-icon],
 .oui-button-primary [class*="svg"] {
   color: black !important;
-  fill: black !important;
-  stroke: black !important;
 }
 
 /* Ensure icons in primary gradient buttons stay black on hover */
@@ -601,10 +599,11 @@ label:hover,
   font-family: var(--oui-font-family) !important;
 }
 
-/* Specific button font weight override */
+/* Specific button font weight override - only for Orderly components */
 .oui-button,
-button,
-[role="button"] {
+.oui-button-primary,
+[class*="oui-"] button,
+[class*="oui-"] [role="button"] {
   font-weight: var(--oui-font-weight-semibold) !important;
 }
 

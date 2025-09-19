@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Orbitron, Inter } from "next/font/google";
 import ClientPolyfills from "@/components/ClientPolyfills";
-import OrderlyProvider from "@/components/orderlyProvider";
+import { OrderlyProvider } from "@/components/orderlyProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,12 +13,15 @@ export const metadata: Metadata = {
 const orbitron = Orbitron({
   subsets: ["latin"],
   variable: "--font-mono",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-sans",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 type RootLayoutProps = Readonly<{

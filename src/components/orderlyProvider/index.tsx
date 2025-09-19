@@ -2,9 +2,17 @@
 
 import React, { FC, ReactNode, useEffect } from "react";
 import { Adapter } from "@solana/wallet-adapter-base";
-import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom";
+import {
+  PhantomWalletAdapter,
+  CoinbaseWalletAdapter,
+  SolflareWalletAdapter,
+  TorusWalletAdapter,
+  TrustWalletAdapter,
+  LedgerWalletAdapter,
+  MathWalletAdapter,
+} from "@solana/wallet-adapter-wallets";
 import { usePathname } from "next/navigation";
-import { OrderlyKeyStore, LocalStorageStore } from "@orderly.network/core";
+import { LocalStorageStore } from "@orderly.network/core";
 import {
   LocaleProvider,
   LocaleCode,
@@ -12,12 +20,13 @@ import {
   getLocalePathFromPathname,
   i18n,
 } from "@orderly.network/i18n";
-import { OrderlyAppProvider, NetworkId } from "@orderly.network/react-app";
+import { OrderlyAppProvider } from "@orderly.network/react-app";
 import {
   WalletConnectorPrivyProvider,
   Network,
   wagmiConnectors,
 } from "@orderly.network/wallet-connector-privy";
+import { OrderlyErrorBoundary } from "@/components/OrderlyErrorBoundary";
 import { useNav } from "@/hooks/useNav";
 import { useOrderlyConfig } from "@/hooks/useOrderlyConfig";
 import { usePathWithoutLang } from "@/hooks/usePathWithoutLang";
@@ -28,6 +37,7 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
   const path = usePathWithoutLang();
   const pathname = usePathname();
   const { onRouteChange } = useNav();
+  const [isReady, setIsReady] = React.useState(false);
 
   // Validate environment configuration on startup
   const envConfig = validateOrderlyEnv();
@@ -35,60 +45,51 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
   // Initialize Orderly key store for WebSocket authentication
   const keyStore = new LocalStorageStore();
 
-  // Clear any cached keys from different network if network changed
+  // Initialize basic browser compatibility without clearing storage
   useEffect(() => {
-    const cachedNetworkId = keyStore.getItem("networkId");
-    console.log(
-      `🔍 Current network: ${envConfig.network}, cached network: ${cachedNetworkId}`,
-    );
-
-    // Log all localStorage keys for debugging
     if (typeof window !== "undefined") {
-      const allKeys = [];
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key) allKeys.push(key);
+      // Fix navigator.wallets compatibility issue
+      if (!window.navigator.wallets) {
+        window.navigator.wallets = [];
       }
-      console.log("📦 All localStorage keys:", allKeys);
-    }
 
-    if (cachedNetworkId && cachedNetworkId !== envConfig.network) {
-      console.log(
-        `🔄 Network changed from ${cachedNetworkId} to ${envConfig.network}, clearing cached keys`,
-      );
-
-      // Clear specific Orderly-related keys rather than all localStorage
-      if (typeof window !== "undefined") {
-        const keysToRemove = [];
-        for (let i = 0; i < localStorage.length; i++) {
-          const key = localStorage.key(i);
-          if (
-            key &&
-            (key.includes("orderly") ||
-              key.includes("Orderly") ||
-              key.includes("account") ||
-              key.includes("key"))
-          ) {
-            keysToRemove.push(key);
-          }
-        }
-        keysToRemove.forEach((key) => localStorage.removeItem(key));
-        console.log(
-          `🧹 Removed ${keysToRemove.length} cached keys:`,
-          keysToRemove,
-        );
-      }
+      // Only set network ID without clearing storage
+      keyStore.setItem("networkId", envConfig.network);
+      console.log("🔧 Network configured:", envConfig.network);
     }
-    keyStore.setItem("networkId", envConfig.network);
   }, [envConfig.network, keyStore]);
 
   // Get Privy configuration from environment
   const privyAppId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
 
-  if (!privyAppId) {
-    console.error("Missing NEXT_PUBLIC_PRIVY_APP_ID in environment variables");
-    throw new Error("Privy App ID is required for wallet authentication");
-  }
+  // Configure Solana wallet adapters
+  const solanaWallets: Adapter[] = [
+    new PhantomWalletAdapter(),
+    new CoinbaseWalletAdapter(),
+    new SolflareWalletAdapter(),
+    new TorusWalletAdapter(),
+    new TrustWalletAdapter(),
+    new LedgerWalletAdapter(),
+    new MathWalletAdapter(),
+  ];
+
+  // Simple client-side initialization without aggressive WebSocket checks
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      console.log("🚀 Client-side ready, initializing providers");
+      if (privyAppId) {
+        console.log("✅ Privy unified wallet support enabled (EVM + Solana)");
+      } else {
+        console.log("⚠️ Privy not configured, Solana wallets only");
+      }
+      console.log("✅ Solana wallet support enabled for", envConfig.network);
+      console.log(
+        "✅ Available Solana wallets:",
+        solanaWallets.map((w) => w.name).join(", "),
+      );
+      setIsReady(true);
+    }
+  }, [privyAppId, envConfig.network]);
 
   const onLanguageChanged = async (lang: LocaleCode) => {
     window.history.replaceState({}, "", `/${lang}${path}`);
@@ -110,6 +111,17 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
     }
   }, [pathname]);
 
+  if (!isReady) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-black">
+        <div className="text-white text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p>Initializing KEK Terminal...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <LocaleProvider
       onLanguageChanged={onLanguageChanged}
@@ -119,52 +131,51 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
         network={
           envConfig.network === "mainnet" ? Network.mainnet : Network.testnet
         }
-        privyConfig={{
-          appid: privyAppId || "",
-          config: {
-            appearance: {
-              theme: "dark",
-              accentColor: "#181C23",
-              logo:
-                config.orderlyAppProvider.appIcons?.main || "/orderly-logo.svg",
-              showWalletLoginFirst: true,
-            },
-            loginMethods: ["wallet", "email", "google", "twitter"],
-            embeddedWallets: {
-              createOnLogin: "users-without-wallets",
-            },
-          },
-        }}
-        wagmiConfig={{
-          connectors: [wagmiConnectors.injected()],
-        }}
+        privyConfig={
+          privyAppId
+            ? {
+                appid: privyAppId,
+                config: {
+                  appearance: {
+                    theme: "dark",
+                    accentColor: "#00FF37", // KEK Terminal green
+                  },
+                  loginMethods: ["wallet"],
+                  supportedChains: [1], // Ethereum mainnet
+                  defaultChain: 1,
+                },
+              }
+            : undefined
+        }
+        wagmiConfig={
+          privyAppId
+            ? {
+                connectors: [wagmiConnectors.injected()],
+              }
+            : undefined
+        }
         solanaConfig={{
-          endpoint:
-            process.env.NEXT_PUBLIC_SOLANA_RPC_URL ||
-            "https://api.mainnet-beta.solana.com",
-          network:
-            process.env.NEXT_PUBLIC_SOLANA_NETWORK === "devnet"
-              ? "devnet"
-              : "mainnet-beta",
-          wallets: [new PhantomWalletAdapter()] as Adapter[],
+          mainnetRpc: "https://api.mainnet-beta.solana.com",
+          devnetRpc: "https://api.devnet.solana.com",
+          wallets: solanaWallets,
           onError: (error: any, adapter?: Adapter) => {
-            console.error("Solana wallet error:", error, adapter);
+            console.log("Solana wallet error:", error, adapter);
           },
         }}
       >
-        <OrderlyAppProvider
-          brokerId={envConfig.brokerId}
-          brokerName={envConfig.brokerName}
-          networkId={envConfig.network as NetworkId}
-          keyStore={keyStore}
-          appIcons={config.orderlyAppProvider.appIcons}
-          onRouteChange={onRouteChange}
-        >
-          {props.children}
-        </OrderlyAppProvider>
+        <OrderlyErrorBoundary>
+          <OrderlyAppProvider
+            brokerId={envConfig.brokerId}
+            networkId={envConfig.network}
+            brokerName={envConfig.brokerName || "KEK DEX"}
+          >
+            {props.children}
+          </OrderlyAppProvider>
+        </OrderlyErrorBoundary>
       </WalletConnectorPrivyProvider>
     </LocaleProvider>
   );
 };
 
+export { OrderlyProvider };
 export default OrderlyProvider;
