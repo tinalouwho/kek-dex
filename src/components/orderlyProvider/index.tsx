@@ -1,16 +1,8 @@
 "use client";
 
 import React, { FC, ReactNode, useEffect } from "react";
-import { Adapter } from "@solana/wallet-adapter-base";
-import {
-  PhantomWalletAdapter,
-  CoinbaseWalletAdapter,
-  SolflareWalletAdapter,
-  TorusWalletAdapter,
-  TrustWalletAdapter,
-  LedgerWalletAdapter,
-  MathWalletAdapter,
-} from "@solana/wallet-adapter-wallets";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { LocalStorageStore } from "@orderly.network/core";
 import {
@@ -21,11 +13,7 @@ import {
   i18n,
 } from "@orderly.network/i18n";
 import { OrderlyAppProvider } from "@orderly.network/react-app";
-import {
-  WalletConnectorPrivyProvider,
-  Network,
-  wagmiConnectors,
-} from "@orderly.network/wallet-connector-privy";
+import { WalletConnectorProvider } from "@orderly.network/wallet-connector";
 import { OrderlyErrorBoundary } from "@/components/OrderlyErrorBoundary";
 import { useNav } from "@/hooks/useNav";
 import { useOrderlyConfig } from "@/hooks/useOrderlyConfig";
@@ -40,10 +28,7 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
   const [isReady, setIsReady] = React.useState(false);
 
   // Validate environment configuration on startup
-  console.log("🎯 OrderlyProvider initializing...");
   const envConfig = validateOrderlyEnv();
-  console.log("🎯 Environment config loaded:", envConfig);
-  console.log("🎯 Solana RPC URL from envConfig:", envConfig.solanaRpcUrl);
 
   // Initialize Orderly key store for WebSocket authentication
   const keyStore = new LocalStorageStore();
@@ -65,31 +50,15 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
   // Get Privy configuration from environment
   const privyAppId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
 
-  // Configure Solana wallet adapters
-  const solanaWallets: Adapter[] = [
-    new PhantomWalletAdapter(),
-    new CoinbaseWalletAdapter(),
-    new SolflareWalletAdapter(),
-    new TorusWalletAdapter(),
-    new TrustWalletAdapter(),
-    new LedgerWalletAdapter(),
-    new MathWalletAdapter(),
-  ];
-
   // Simple client-side initialization without aggressive WebSocket checks
   useEffect(() => {
     if (typeof window !== "undefined") {
       console.log("🚀 Client-side ready, initializing providers");
-      if (privyAppId) {
-        console.log("✅ Privy unified wallet support enabled (EVM + Solana)");
-      } else {
-        console.log("⚠️ Privy not configured, Solana wallets only");
-      }
-      console.log("✅ Solana wallet support enabled for", envConfig.network);
       console.log(
-        "✅ Available Solana wallets:",
-        solanaWallets.map((w) => w.name).join(", "),
+        "✅ Orderly standard wallet connector enabled for",
+        envConfig.network,
       );
+      console.log("✅ Solana wallet support enabled");
       setIsReady(true);
     }
   }, [privyAppId, envConfig.network]);
@@ -117,8 +86,14 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
   if (!isReady) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-black">
-        <div className="text-purple-100 font-bold font-mono text-2xl text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-kek-green mx-auto mb-4"></div>
+        <div className="text-purple-100 font-bold font-mono flex flex-col items-center justify-center  text-2xl text-center">
+          <Image
+            src="/images/keklogo2.png"
+            alt="KEK Terminal"
+            width={100}
+            height={100}
+            className="animate-pulse"
+          />
           <p className="text-purple-100 font-bold font-mono text-2xl text-center">
             Initializing KEK DEX...
           </p>
@@ -132,68 +107,23 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
       onLanguageChanged={onLanguageChanged}
       backend={{ loadPath }}
     >
-      <WalletConnectorPrivyProvider
-        network={
-          envConfig.network === "mainnet" ? Network.mainnet : Network.testnet
-        }
-        privyConfig={
-          privyAppId
-            ? {
-                appid: privyAppId,
-                config: {
-                  appearance: {
-                    theme: "dark",
-                    accentColor: "#00FF37", // KEK Terminal green
-                  },
-                  loginMethods: ["wallet"],
-                  supportedChains: [1], // Ethereum mainnet
-                  defaultChain: 1,
-                  solana: {
-                    rpcUrl:
-                      envConfig.solanaRpcUrl ||
-                      "https://api.mainnet-beta.solana.com",
-                  },
-                },
-              }
-            : undefined
-        }
-        wagmiConfig={
-          privyAppId
-            ? {
-                connectors: [wagmiConnectors.injected()],
-              }
-            : undefined
-        }
-        solanaConfig={{
-          mainnetRpc: (() => {
-            const rpcUrl =
-              envConfig.solanaRpcUrl || "https://api.mainnet-beta.solana.com";
-            console.log("🎯 Setting solanaConfig.mainnetRpc to:", rpcUrl);
-            console.log(
-              "🎯 envConfig.solanaRpcUrl is:",
-              envConfig.solanaRpcUrl,
-            );
-            console.log("🎯 Using fallback?", !envConfig.solanaRpcUrl);
-            return rpcUrl;
-          })(),
-          devnetRpc: "https://api.devnet.solana.com",
-          wallets: solanaWallets,
-          onError: (error: any, adapter?: Adapter) => {
-            console.log("Solana wallet error:", error, adapter);
-          },
+      <WalletConnectorProvider
+        solanaInitial={{
+          network:
+            envConfig.network === "mainnet"
+              ? WalletAdapterNetwork.Mainnet
+              : WalletAdapterNetwork.Devnet,
         }}
       >
-        <OrderlyErrorBoundary>
-          <OrderlyAppProvider
-            brokerId={envConfig.brokerId}
-            networkId={envConfig.network}
-            brokerName={envConfig.brokerName || "KEK DEX"}
-            appIcons={config.orderlyAppProvider.appIcons}
-          >
-            {props.children}
-          </OrderlyAppProvider>
-        </OrderlyErrorBoundary>
-      </WalletConnectorPrivyProvider>
+        <OrderlyAppProvider
+          brokerId={envConfig.brokerId}
+          networkId={envConfig.network}
+          brokerName={envConfig.brokerName || "KEK DEX"}
+          appIcons={config.orderlyAppProvider.appIcons}
+        >
+          <OrderlyErrorBoundary>{props.children}</OrderlyErrorBoundary>
+        </OrderlyAppProvider>
+      </WalletConnectorProvider>
     </LocaleProvider>
   );
 };
