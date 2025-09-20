@@ -13,7 +13,10 @@ import {
   i18n,
 } from "@orderly.network/i18n";
 import { OrderlyAppProvider } from "@orderly.network/react-app";
-import { WalletConnectorProvider } from "@orderly.network/wallet-connector";
+import {
+  WalletConnectorPrivyProvider,
+  Network,
+} from "@orderly.network/wallet-connector-privy";
 import { OrderlyErrorBoundary } from "@/components/OrderlyErrorBoundary";
 import { useNav } from "@/hooks/useNav";
 import { useOrderlyConfig } from "@/hooks/useOrderlyConfig";
@@ -24,14 +27,11 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
   const config = useOrderlyConfig();
   const path = usePathWithoutLang();
   const pathname = usePathname();
-  const { onRouteChange } = useNav();
+  const {} = useNav();
   const [isReady, setIsReady] = React.useState(false);
 
   // Validate environment configuration on startup
   const envConfig = validateOrderlyEnv();
-
-  // Initialize Orderly key store for WebSocket authentication
-  const keyStore = new LocalStorageStore();
 
   // Initialize basic browser compatibility without clearing storage
   useEffect(() => {
@@ -41,11 +41,13 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
         window.navigator.wallets = [];
       }
 
+      // Initialize Orderly key store for WebSocket authentication
+      const keyStore = new LocalStorageStore();
       // Only set network ID without clearing storage
-      keyStore.setItem("networkId", envConfig.network);
+      (keyStore as any).setItem("networkId", envConfig.network);
       console.log("🔧 Network configured:", envConfig.network);
     }
-  }, [envConfig.network, keyStore]);
+  }, [envConfig.network]);
 
   // Get Privy configuration from environment
   const privyAppId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
@@ -54,10 +56,8 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       console.log("🚀 Client-side ready, initializing providers");
-      console.log(
-        "✅ Orderly standard wallet connector enabled for",
-        envConfig.network,
-      );
+      console.log("✅ Privy wallet connector enabled for", envConfig.network);
+      console.log("✅ Privy App ID:", privyAppId ? "configured" : "missing");
       console.log("✅ Solana wallet support enabled");
       setIsReady(true);
     }
@@ -107,23 +107,45 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
       onLanguageChanged={onLanguageChanged}
       backend={{ loadPath }}
     >
-      <WalletConnectorProvider
-        solanaInitial={{
-          network:
+      <WalletConnectorPrivyProvider
+        network={
+          envConfig.network === "mainnet" ? Network.mainnet : Network.testnet
+        }
+        privyConfig={{
+          appid: privyAppId!,
+          config: {
+            appearance: {
+              theme: "dark",
+              accentColor: "#00FF37",
+              logo: "/images/keklogo2.png",
+            },
+          },
+        }}
+        solanaConfig={{
+          mainnetRpc:
             envConfig.network === "mainnet"
-              ? WalletAdapterNetwork.Mainnet
-              : WalletAdapterNetwork.Devnet,
+              ? process.env.NEXT_PUBLIC_SOLANA_RPC_URL ||
+                "https://api.mainnet-beta.solana.com"
+              : undefined,
+          devnetRpc:
+            envConfig.network === "testnet"
+              ? "https://api.devnet.solana.com"
+              : undefined,
+          wallets: [],
+          onError: (error: any, adapter: any) => {
+            console.log("Solana wallet error:", error, adapter);
+          },
         }}
       >
         <OrderlyAppProvider
           brokerId={envConfig.brokerId}
-          networkId={envConfig.network}
+          networkId={envConfig.network as "mainnet" | "testnet"}
           brokerName={envConfig.brokerName || "KEK DEX"}
           appIcons={config.orderlyAppProvider.appIcons}
         >
           <OrderlyErrorBoundary>{props.children}</OrderlyErrorBoundary>
         </OrderlyAppProvider>
-      </WalletConnectorProvider>
+      </WalletConnectorPrivyProvider>
     </LocaleProvider>
   );
 };
