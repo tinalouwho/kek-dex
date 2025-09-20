@@ -1,40 +1,126 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function Header() {
   const router = useRouter();
+  const [showCommunityPopup, setShowCommunityPopup] = useState(false);
 
   const handleStartTrading = () => {
     console.log("Button clicked, navigating to trading page...");
     router.push("/en/perp/PERP_ETH_USDC");
   };
-  return (
-    <div className="header-component bg-black/75 backdrop-blur-sm w-full lg:px-4 px-1 lg:py-2 py-1 flex justify-between items-center relative z-20">
-      <div className="flex items-center lg:space-x-2 ">
-        <Image
-          src="/images/keklogo2.png"
-          alt="KEK DEX"
-          width={60}
-          height={46}
-        />
-        <p className="lg:text-2xl font-mono text-purple-100 font-bold">
-          KEK DEX
-        </p>
-        <div className="flex items-center gap-12 pl-20 max-[1200px]:hidden">
-          <button className="lg:text-2xl font-mono text-purple-200 font-bold">
-            Documentation
-          </button>
-          <button className="lg:text-2xl font-mono text-purple-200 font-bold">
-            Product
-          </button>
 
-          <button className="lg:text-2xl font-mono text-purple-200 font-bold">
+  const communityLinks = [
+    {
+      name: "DEX",
+      icon: "/dex-logo.png",
+      url: "https://dex.kekkoin.com",
+      alt: "KEK DEX",
+    },
+    {
+      name: "Telegram",
+      icon: "/tg-logo.png",
+      url: "https://t.me/kekkoin",
+      alt: "Telegram",
+    },
+    {
+      name: "Twitter",
+      icon: "/x-logo.png",
+      url: "https://twitter.com/kekkoin",
+      alt: "Twitter/X",
+    },
+  ];
+  return (
+    <div className="header-component bg-black/75 backdrop-blur-sm w-full lg:px-4 px-2 lg:py-2 py-1 flex justify-between items-center relative z-20">
+      <div className="flex items-center lg:space-x-2 ">
+        <Link
+          href="/"
+          target="_blank"
+          className="flex items-center lg:space-x-2 "
+        >
+          <Image
+            src="/images/keklogo2.png"
+            alt="KEK DEX"
+            width={60}
+            height={46}
+          />
+          <p className="lg:text-2xl text-xl font-mono text-purple-100 font-bold">
+            KEK DEX
+          </p>
+        </Link>
+        <div className="flex items-center gap-12 pl-20 max-[1200px]:hidden">
+          <Link
+            href="https://kekkoin.com/docs"
+            target="_blank"
+            className=" text-purple-200 font-bold"
+          >
+            Documentation
+          </Link>
+          <Link
+            href="https://terminal.kekkoin.com"
+            target="_blank"
+            className=" text-purple-200 font-bold"
+          >
+            KEK Terminal
+          </Link>
+
+          <Link
+            href="https://solscan.io/token/GXkoESRmdKJcQAPJrZCce6YR2bJe33QMC7fNVtTjvirt"
+            target="_blank"
+            className=" text-purple-200 font-bold"
+          >
             $KEK Token
-          </button>
-          <button className="lg:text-2xl font-mono text-purple-200 font-bold">
-            Community
-          </button>
+          </Link>
+          <div
+            className="relative"
+            onMouseEnter={() => setShowCommunityPopup(true)}
+            onMouseLeave={() => setShowCommunityPopup(false)}
+            onClick={() => setShowCommunityPopup(!showCommunityPopup)}
+          >
+            <button className="lg:text-2xl font-mono text-purple-200 font-bold hover:text-[#00FF37] transition-colors duration-300">
+              Community
+            </button>
+
+            {/* Community Popup */}
+            {showCommunityPopup && (
+              <div className="absolute top-full left-1/2 transform -translate-x-1/2 pt-2 z-50">
+                {/* Invisible bridge to prevent gap issues */}
+                <div className="w-full h-2 bg-transparent"></div>
+
+                <div className="bg-black/90 backdrop-blur-sm border border-[#3C3C3C] rounded-xl p-4 shadow-2xl min-w-[200px]">
+                  <div className="flex flex-col gap-3">
+                    {communityLinks.map((link, index) => (
+                      <Link
+                        key={index}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#00FF37]/10 transition-all duration-300 group"
+                      >
+                        <div className="w-8 h-8 relative">
+                          <Image
+                            src={link.icon}
+                            alt={link.alt}
+                            width={32}
+                            height={32}
+                            className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
+                          />
+                        </div>
+                        <span className="text-purple-200 font-semibold group-hover:text-[#00FF37] transition-colors duration-300">
+                          {link.name}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+
+                  {/* Arrow pointing up */}
+                  <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-black/90 border-l border-t border-[#3C3C3C] rotate-45"></div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <button

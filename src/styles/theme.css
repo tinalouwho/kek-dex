@@ -153,6 +153,15 @@
   stroke: black !important;
 }
 
+/* Ensure text in gradient buttons stays black on hover */
+.oui-button:hover {
+  color: black !important;
+}
+
+.oui-button-primary:hover {
+  color: black !important;
+}
+
 .oui-button-primary {
   background: linear-gradient(
     to right,

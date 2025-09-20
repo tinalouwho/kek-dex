@@ -16,14 +16,6 @@ interface OrderlyEnvConfig {
 }
 
 export function validateOrderlyEnv(): OrderlyEnvConfig {
-  console.log("🔍 Starting environment validation...");
-  console.log(
-    "🔍 All env vars starting with NEXT_PUBLIC_:",
-    Object.keys(process.env)
-      .filter((key) => key.startsWith("NEXT_PUBLIC_"))
-      .map((key) => `${key}=${process.env[key]}`),
-  );
-
   const requiredVars = {
     brokerId: process.env.NEXT_PUBLIC_ORDERLY_BROKER_ID,
     brokerName: process.env.NEXT_PUBLIC_ORDERLY_BROKER_NAME,
@@ -38,13 +30,6 @@ export function validateOrderlyEnv(): OrderlyEnvConfig {
     solanaRpcUrl: process.env.NEXT_PUBLIC_SOLANA_RPC_URL,
     solanaNetwork: process.env.NEXT_PUBLIC_SOLANA_NETWORK,
   };
-
-  console.log("🔍 Required vars loaded:", requiredVars);
-  console.log("🔍 Optional vars loaded:", optionalVars);
-  console.log(
-    "🔍 Specific SOLANA_RPC_URL value:",
-    process.env.NEXT_PUBLIC_SOLANA_RPC_URL,
-  );
 
   const missing: string[] = [];
   const config: Partial<OrderlyEnvConfig> = {};
@@ -93,12 +78,8 @@ export function validateOrderlyEnv(): OrderlyEnvConfig {
 
   // Add optional Solana configuration
   for (const [key, value] of Object.entries(optionalVars)) {
-    console.log(`🔍 Processing optional var ${key}:`, value);
     if (value) {
       config[key as keyof OrderlyEnvConfig] = value;
-      console.log(`✅ Added ${key} to config:`, value);
-    } else {
-      console.log(`❌ Skipping ${key} - value is undefined or empty`);
     }
   }
 
@@ -109,17 +90,7 @@ export function validateOrderlyEnv(): OrderlyEnvConfig {
     );
   }
 
-  // Log Solana configuration if present
-  if (config.solanaRpcUrl && config.solanaNetwork) {
-    console.log(`✅ Solana wallet support enabled for ${config.solanaNetwork}`);
-  }
-
-  console.log(
-    `✅ Orderly Network configured for ${config.network} with broker: ${config.brokerName} (${config.brokerId})`,
-  );
-
-  console.log("🔍 Final config object:", config);
-  console.log("🔍 Final config.solanaRpcUrl:", config.solanaRpcUrl);
+  // Solana configuration validated silently
 
   return config as OrderlyEnvConfig;
 }
