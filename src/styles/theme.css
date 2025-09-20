@@ -684,7 +684,7 @@ div[class*="orderly"] button[class*="sell"]:hover,
 [class*="trading"] [class*="sell"]:hover,
 [class*="order-entry"] [class*="sell"]:hover,
 [class*="order-form"] [class*="sell"]:hover {
-  background: linear-gradient(to right, #ff0000, #ff00d4) !important;
+  background: linear-gradient(to right, #ff00d4, #ff0000) !important;
   color: black !important;
   box-shadow: 0 0 15px rgba(255, 0, 212, 0.4) !important;
   transform: scale(1.02) !important;
