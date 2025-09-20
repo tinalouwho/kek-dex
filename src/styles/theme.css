@@ -398,21 +398,36 @@ body,
 }
 
 /* Specific hover overrides for different element types */
+/* IMPORTANT: Excluding all buttons with gradients to prevent green text on hover */
 a:hover,
-button:hover,
-[role="button"]:hover,
+button:not(.oui-button):not(.oui-button-primary):not([class*="gradient"]):hover,
+[role="button"]:not(.oui-button):not(.oui-button-primary):not([class*="gradient"]):hover,
 /* More specific hover rules - only for actual interactive elements */
 .oui-link:hover,
-.oui-button:hover:not(.oui-button-primary),
 .oui-tab:hover,
 .oui-menu-item:hover,
 .oui-nav-item:hover {
   color: rgb(var(--kek-green)) !important;
 }
 
-/* Exclude gradient buttons from green hover text - keep them black */
+/* Ensure ALL gradient buttons (including Orderly buttons) keep black text on hover */
 .oui-button:hover,
-.oui-button-primary:hover {
+.oui-button-primary:hover,
+button[class*="gradient"]:hover,
+[role="button"][class*="gradient"]:hover,
+.oui-button:hover *,
+.oui-button-primary:hover *,
+/* Additional specificity for Orderly trading buttons */
+[class*="orderly"] button:hover,
+[class*="orderly"] .oui-button:hover,
+[class*="orderly"] .oui-button-primary:hover,
+[class*="trading"] button:hover,
+[class*="order-entry"] button:hover,
+/* Ensure all child elements also stay black */
+.oui-button:hover span,
+.oui-button:hover div,
+.oui-button-primary:hover span,
+.oui-button-primary:hover div {
   color: black !important;
 }
 
@@ -646,7 +661,7 @@ div[class*="orderly"] button[class*="sell"],
 [class*="order-entry"] [class*="sell"],
 [class*="order-form"] [class*="sell"] {
   background: linear-gradient(to right, #ff00d4, #ff0000) !important;
-  color: white !important;
+  color: black !important;
   border: none !important;
   font-weight: 600 !important;
   transition: all 0.3s ease !important;
@@ -670,6 +685,7 @@ div[class*="orderly"] button[class*="sell"]:hover,
 [class*="order-entry"] [class*="sell"]:hover,
 [class*="order-form"] [class*="sell"]:hover {
   background: linear-gradient(to right, #ff0000, #ff00d4) !important;
+  color: black !important;
   box-shadow: 0 0 15px rgba(255, 0, 212, 0.4) !important;
   transform: scale(1.02) !important;
 }
@@ -703,8 +719,8 @@ button:has-text("sell"),
 *[aria-label*="sell"],
 *[title*="sell"] {
   background: linear-gradient(to right, #ff00d4, #ff0000) !important;
-  color: white !important;
-  border: 2px solid #ff00d4 !important;
+  color: black !important;
+  border: none !important;
   font-weight: 600 !important;
   transition: all 0.3s ease !important;
 }

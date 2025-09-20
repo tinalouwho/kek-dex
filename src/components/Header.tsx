@@ -48,7 +48,7 @@ export default function Header() {
             KEK DEX
           </p>
         </Link>
-        <div className="flex items-center gap-12 pl-20 max-[1200px]:hidden">
+        <div className="flex items-center gap-12 pl-16 max-[1200px]:hidden">
           <Link
             href="https://kekkoin.com/docs"
             target="_blank"
@@ -227,9 +227,9 @@ export default function Header() {
                         <Image
                           src={link.icon}
                           alt={link.alt}
-                          width={24}
-                          height={24}
-                          className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
+                          width={30}
+                          height={30}
+                          className="w-full h-full rounded-full object-contain group-hover:scale-110 transition-transform duration-300"
                         />
                       </div>
                     </Link>
