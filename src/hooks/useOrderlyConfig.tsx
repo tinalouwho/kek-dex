@@ -77,7 +77,7 @@ export const useOrderlyConfig = () => {
           main: {
             component: (
               <Image
-                alt="KEK Terminal logo"
+                alt="KEK DEX logo"
                 src="/images/keklogo2.png"
                 width={100}
                 height={100}
@@ -108,10 +108,10 @@ export const useOrderlyConfig = () => {
             foregroundColor: "#00ff37",
           },
           overrides: {
-            "paneProperties.background": "#0a0a0a",
+            "paneProperties.background": "#1b1b1b",
             "paneProperties.backgroundType": "solid",
-            "scalesProperties.backgroundColor": "#0a0a0a",
-            "scalesProperties.lineColor": "rgba(60, 60, 60, 0.2)",
+            "scalesProperties.backgroundColor": "#1b1b1b",
+            "scalesProperties.lineColor": "1b1b1b",
             "scalesProperties.textColor": "rgba(255, 255, 255, 0.98)",
             "mainSeriesProperties.candleStyle.upColor": "#00ff37",
             "mainSeriesProperties.candleStyle.downColor": "#ff0000",

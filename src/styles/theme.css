@@ -614,3 +614,88 @@ textarea,
 select {
   font-weight: var(--oui-font-weight-normal) !important;
 }
+
+/* Custom Sell Button Gradient Styling - Comprehensive Approach */
+.oui-button-danger,
+[class*="sell"],
+[data-action="sell"],
+button[class*="sell"],
+[role="button"][class*="sell"],
+/* Common Orderly button patterns */
+[class*="orderly"][class*="sell"],
+[class*="orderly"][class*="button"][class*="sell"],
+[class*="orderly"][class*="danger"],
+button[class*="danger"],
+button[class*="red"],
+[class*="button"][class*="sell"],
+/* More specific selectors */
+div[class*="sell"] button,
+div[class*="orderly"][class*="sell"] button,
+div[class*="orderly"] button[class*="sell"],
+/* Trading interface specific */
+[class*="trading"] [class*="sell"],
+[class*="order-entry"] [class*="sell"],
+[class*="order-form"] [class*="sell"] {
+  background: linear-gradient(to right, #ff00d4, #ff0000) !important;
+  color: white !important;
+  border: none !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.oui-button-danger:hover,
+[class*="sell"]:hover,
+[data-action="sell"]:hover,
+button[class*="sell"]:hover,
+[role="button"][class*="sell"]:hover,
+[class*="orderly"][class*="sell"]:hover,
+[class*="orderly"][class*="button"][class*="sell"]:hover,
+[class*="orderly"][class*="danger"]:hover,
+button[class*="danger"]:hover,
+button[class*="red"]:hover,
+[class*="button"][class*="sell"]:hover,
+div[class*="sell"] button:hover,
+div[class*="orderly"][class*="sell"] button:hover,
+div[class*="orderly"] button[class*="sell"]:hover,
+[class*="trading"] [class*="sell"]:hover,
+[class*="order-entry"] [class*="sell"]:hover,
+[class*="order-form"] [class*="sell"]:hover {
+  background: linear-gradient(to right, #ff0000, #ff00d4) !important;
+  box-shadow: 0 0 15px rgba(255, 0, 212, 0.4) !important;
+  transform: scale(1.02) !important;
+}
+
+.oui-button-danger:active,
+[class*="sell"]:active,
+[data-action="sell"]:active,
+button[class*="sell"]:active,
+[role="button"][class*="sell"]:active,
+[class*="orderly"][class*="sell"]:active,
+[class*="orderly"][class*="button"][class*="sell"]:active,
+[class*="orderly"][class*="danger"]:active,
+button[class*="danger"]:active,
+button[class*="red"]:active,
+[class*="button"][class*="sell"]:active,
+div[class*="sell"] button:active,
+div[class*="orderly"][class*="sell"] button:active,
+div[class*="orderly"] button[class*="sell"]:active,
+[class*="trading"] [class*="sell"]:active,
+[class*="order-entry"] [class*="sell"]:active,
+[class*="order-form"] [class*="sell"]:active {
+  transform: scale(0.98) !important;
+}
+
+/* Ultra-broad sell button selector for debugging */
+button:has-text("Sell"),
+button:has-text("SELL"),
+button:has-text("sell"),
+*[class*="sell"]:not([class*="buy"]),
+*[data-testid*="sell"],
+*[aria-label*="sell"],
+*[title*="sell"] {
+  background: linear-gradient(to right, #ff00d4, #ff0000) !important;
+  color: white !important;
+  border: 2px solid #ff00d4 !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}

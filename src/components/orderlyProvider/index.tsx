@@ -40,7 +40,10 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
   const [isReady, setIsReady] = React.useState(false);
 
   // Validate environment configuration on startup
+  console.log("🎯 OrderlyProvider initializing...");
   const envConfig = validateOrderlyEnv();
+  console.log("🎯 Environment config loaded:", envConfig);
+  console.log("🎯 Solana RPC URL from envConfig:", envConfig.solanaRpcUrl);
 
   // Initialize Orderly key store for WebSocket authentication
   const keyStore = new LocalStorageStore();
@@ -145,6 +148,11 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
                   loginMethods: ["wallet"],
                   supportedChains: [1], // Ethereum mainnet
                   defaultChain: 1,
+                  solana: {
+                    rpcUrl:
+                      envConfig.solanaRpcUrl ||
+                      "https://api.mainnet-beta.solana.com",
+                  },
                 },
               }
             : undefined
@@ -157,7 +165,17 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
             : undefined
         }
         solanaConfig={{
-          mainnetRpc: "https://api.mainnet-beta.solana.com",
+          mainnetRpc: (() => {
+            const rpcUrl =
+              envConfig.solanaRpcUrl || "https://api.mainnet-beta.solana.com";
+            console.log("🎯 Setting solanaConfig.mainnetRpc to:", rpcUrl);
+            console.log(
+              "🎯 envConfig.solanaRpcUrl is:",
+              envConfig.solanaRpcUrl,
+            );
+            console.log("🎯 Using fallback?", !envConfig.solanaRpcUrl);
+            return rpcUrl;
+          })(),
           devnetRpc: "https://api.devnet.solana.com",
           wallets: solanaWallets,
           onError: (error: any, adapter?: Adapter) => {

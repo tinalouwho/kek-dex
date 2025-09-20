@@ -90,7 +90,7 @@ div[data-section-name="extendLeftTradingLine"] {
   --tv-color-border: #3c3c3c;
   --tv-color-text-primary: rgba(255, 255, 255, 0.98);
   --tv-color-text-secondary: rgba(255, 255, 255, 0.7);
-  --tv-color-grid: #3c3c3c;
+  --tv-color-grid: #000000;
   --tv-color-crosshair: #00ff37;
 }
 
