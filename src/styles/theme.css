@@ -639,7 +639,7 @@ select {
   font-weight: var(--oui-font-weight-normal) !important;
 }
 
-/* Custom Sell Button Gradient Styling - Comprehensive Approach */
+/* Custom Buy/Sell Button Styling - Inactive State */
 .oui-button-danger,
 [class*="sell"],
 [data-action="sell"],
@@ -659,14 +659,29 @@ div[class*="orderly"] button[class*="sell"],
 /* Trading interface specific */
 [class*="trading"] [class*="sell"],
 [class*="order-entry"] [class*="sell"],
-[class*="order-form"] [class*="sell"] {
-  background: linear-gradient(to right, #ff00d4, #ff0000) !important;
-  color: black !important;
-  border: none !important;
+[class*="order-form"] [class*="sell"],
+/* Buy button inactive state */
+[class*="buy"],
+[data-action="buy"],
+button[class*="buy"],
+[role="button"][class*="buy"],
+[class*="orderly"][class*="buy"],
+[class*="orderly"][class*="button"][class*="buy"],
+[class*="button"][class*="buy"],
+div[class*="buy"] button,
+div[class*="orderly"][class*="buy"] button,
+div[class*="orderly"] button[class*="buy"],
+[class*="trading"] [class*="buy"],
+[class*="order-entry"] [class*="buy"],
+[class*="order-form"] [class*="buy"] {
+  background: transparent !important;
+  color: rgb(var(--kek-green)) !important;
+  border: 1px solid rgb(var(--kek-green)) !important;
   font-weight: 600 !important;
   transition: all 0.3s ease !important;
 }
 
+/* Hover state for inactive buy/sell buttons */
 .oui-button-danger:hover,
 [class*="sell"]:hover,
 [data-action="sell"]:hover,
@@ -683,13 +698,29 @@ div[class*="orderly"][class*="sell"] button:hover,
 div[class*="orderly"] button[class*="sell"]:hover,
 [class*="trading"] [class*="sell"]:hover,
 [class*="order-entry"] [class*="sell"]:hover,
-[class*="order-form"] [class*="sell"]:hover {
-  background: linear-gradient(to right, #ff00d4, #ff0000) !important;
-  color: black !important;
-  box-shadow: 0 0 15px rgba(255, 0, 212, 0.4) !important;
+[class*="order-form"] [class*="sell"]:hover,
+/* Buy button hover state */
+[class*="buy"]:hover,
+[data-action="buy"]:hover,
+button[class*="buy"]:hover,
+[role="button"][class*="buy"]:hover,
+[class*="orderly"][class*="buy"]:hover,
+[class*="orderly"][class*="button"][class*="buy"]:hover,
+[class*="button"][class*="buy"]:hover,
+div[class*="buy"] button:hover,
+div[class*="orderly"][class*="buy"] button:hover,
+div[class*="orderly"] button[class*="buy"]:hover,
+[class*="trading"] [class*="buy"]:hover,
+[class*="order-entry"] [class*="buy"]:hover,
+[class*="order-form"] [class*="buy"]:hover {
+  background: transparent !important;
+  color: rgb(var(--kek-green)) !important;
+  border: 1px solid rgb(var(--kek-green)) !important;
+  box-shadow: 0 0 15px rgba(0, 255, 55, 0.3) !important;
   transform: scale(1.02) !important;
 }
 
+/* Active state for inactive buy/sell buttons */
 .oui-button-danger:active,
 [class*="sell"]:active,
 [data-action="sell"]:active,
@@ -706,21 +737,112 @@ div[class*="orderly"][class*="sell"] button:active,
 div[class*="orderly"] button[class*="sell"]:active,
 [class*="trading"] [class*="sell"]:active,
 [class*="order-entry"] [class*="sell"]:active,
-[class*="order-form"] [class*="sell"]:active {
+[class*="order-form"] [class*="sell"]:active,
+/* Buy button active state */
+[class*="buy"]:active,
+[data-action="buy"]:active,
+button[class*="buy"]:active,
+[role="button"][class*="buy"]:active,
+[class*="orderly"][class*="buy"]:active,
+[class*="orderly"][class*="button"][class*="buy"]:active,
+[class*="button"][class*="buy"]:active,
+div[class*="buy"] button:active,
+div[class*="orderly"][class*="buy"] button:active,
+div[class*="orderly"] button[class*="buy"]:active,
+[class*="trading"] [class*="buy"]:active,
+[class*="order-entry"] [class*="buy"]:active,
+[class*="order-form"] [class*="buy"]:active {
   transform: scale(0.98) !important;
 }
 
-/* Ultra-broad sell button selector for debugging */
-button:has-text("Sell"),
-button:has-text("SELL"),
-button:has-text("sell"),
-*[class*="sell"]:not([class*="buy"]),
-*[data-testid*="sell"],
-*[aria-label*="sell"],
-*[title*="sell"] {
-  background: linear-gradient(to right, #ff00d4, #ff0000) !important;
+/* Active Buy/Sell Button Styling - Green/Blue Gradient with Black Text */
+[class*="sell"].active,
+[class*="buy"].active,
+[data-action="sell"].active,
+[data-action="buy"].active,
+button[class*="sell"].active,
+button[class*="buy"].active,
+[role="button"][class*="sell"].active,
+[role="button"][class*="buy"].active,
+[class*="orderly"][class*="sell"].active,
+[class*="orderly"][class*="buy"].active,
+[class*="orderly"][class*="button"][class*="sell"].active,
+[class*="orderly"][class*="button"][class*="buy"].active,
+[class*="button"][class*="sell"].active,
+[class*="button"][class*="buy"].active,
+div[class*="sell"] button.active,
+div[class*="buy"] button.active,
+div[class*="orderly"][class*="sell"] button.active,
+div[class*="orderly"][class*="buy"] button.active,
+div[class*="orderly"] button[class*="sell"].active,
+div[class*="orderly"] button[class*="buy"].active,
+[class*="trading"] [class*="sell"].active,
+[class*="trading"] [class*="buy"].active,
+[class*="order-entry"] [class*="sell"].active,
+[class*="order-entry"] [class*="buy"].active,
+[class*="order-form"] [class*="sell"].active,
+[class*="order-form"] [class*="buy"].active,
+/* Alternative active selectors */
+[class*="sell"][data-active="true"],
+[class*="buy"][data-active="true"],
+button[class*="sell"][data-active="true"],
+button[class*="buy"][data-active="true"],
+[class*="sell"][aria-selected="true"],
+[class*="buy"][aria-selected="true"],
+button[class*="sell"][aria-selected="true"],
+button[class*="buy"][aria-selected="true"] {
+  background: linear-gradient(
+    to right,
+    rgb(var(--kek-green)),
+    rgb(var(--kek-blue))
+  ) !important;
   color: black !important;
   border: none !important;
   font-weight: 600 !important;
   transition: all 0.3s ease !important;
+}
+
+/* Hover state for active buttons */
+[class*="sell"].active:hover,
+[class*="buy"].active:hover,
+[data-action="sell"].active:hover,
+[data-action="buy"].active:hover,
+button[class*="sell"].active:hover,
+button[class*="buy"].active:hover,
+[role="button"][class*="sell"].active:hover,
+[role="button"][class*="buy"].active:hover,
+[class*="orderly"][class*="sell"].active:hover,
+[class*="orderly"][class*="buy"].active:hover,
+[class*="orderly"][class*="button"][class*="sell"].active:hover,
+[class*="orderly"][class*="button"][class*="buy"].active:hover,
+[class*="button"][class*="sell"].active:hover,
+[class*="button"][class*="buy"].active:hover,
+div[class*="sell"] button.active:hover,
+div[class*="buy"] button.active:hover,
+div[class*="orderly"][class*="sell"] button.active:hover,
+div[class*="orderly"][class*="buy"] button.active:hover,
+div[class*="orderly"] button[class*="sell"].active:hover,
+div[class*="orderly"] button[class*="buy"].active:hover,
+[class*="trading"] [class*="sell"].active:hover,
+[class*="trading"] [class*="buy"].active:hover,
+[class*="order-entry"] [class*="sell"].active:hover,
+[class*="order-entry"] [class*="buy"].active:hover,
+[class*="order-form"] [class*="sell"].active:hover,
+[class*="order-form"] [class*="buy"].active:hover,
+[class*="sell"][data-active="true"]:hover,
+[class*="buy"][data-active="true"]:hover,
+button[class*="sell"][data-active="true"]:hover,
+button[class*="buy"][data-active="true"]:hover,
+[class*="sell"][aria-selected="true"]:hover,
+[class*="buy"][aria-selected="true"]:hover,
+button[class*="sell"][aria-selected="true"]:hover,
+button[class*="buy"][aria-selected="true"]:hover {
+  background: linear-gradient(
+    to right,
+    rgb(var(--kek-green)),
+    rgb(var(--kek-blue))
+  ) !important;
+  color: black !important;
+  box-shadow: 0 0 20px rgba(0, 255, 55, 0.4) !important;
+  transform: scale(1.02) !important;
 }
