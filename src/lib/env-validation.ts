@@ -51,12 +51,18 @@ export function validateOrderlyEnv(): OrderlyEnvConfig {
 
   // Validate network-specific configuration
   if (config.network === "mainnet") {
-    if (!config.apiUrl?.includes("api-evm.orderly.org")) {
+    if (
+      !config.apiUrl?.includes("api.orderly.org") &&
+      !config.apiUrl?.includes("api-evm.orderly.org")
+    ) {
       console.warn(
         "⚠️  WARNING: Mainnet network specified but API URL does not match mainnet endpoint",
       );
     }
-    if (!config.wsUrl?.includes("ws-evm.orderly.org")) {
+    if (
+      !config.wsUrl?.includes("ws.orderly.org") &&
+      !config.wsUrl?.includes("ws-evm.orderly.org")
+    ) {
       console.warn(
         "⚠️  WARNING: Mainnet network specified but WebSocket URL does not match mainnet endpoint",
       );
@@ -64,12 +70,18 @@ export function validateOrderlyEnv(): OrderlyEnvConfig {
   }
 
   if (config.network === "testnet") {
-    if (!config.apiUrl?.includes("testnet-api-evm.orderly.org")) {
+    if (
+      !config.apiUrl?.includes("testnet-api.orderly.org") &&
+      !config.apiUrl?.includes("testnet-api-evm.orderly.org")
+    ) {
       console.warn(
         "⚠️  WARNING: Testnet network specified but API URL does not match testnet endpoint",
       );
     }
-    if (!config.wsUrl?.includes("testnet-ws-evm.orderly.org")) {
+    if (
+      !config.wsUrl?.includes("testnet-ws.orderly.org") &&
+      !config.wsUrl?.includes("testnet-ws-evm.orderly.org")
+    ) {
       console.warn(
         "⚠️  WARNING: Testnet network specified but WebSocket URL does not match testnet endpoint",
       );
