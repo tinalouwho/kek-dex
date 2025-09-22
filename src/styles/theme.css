@@ -639,41 +639,42 @@ select {
   font-weight: var(--oui-font-weight-normal) !important;
 }
 
-/* Custom Buy/Sell Button Styling - Inactive State */
-.oui-button-danger,
-[class*="sell"],
-[data-action="sell"],
-button[class*="sell"],
-[role="button"][class*="sell"],
+/* Inactive Buy/Sell Button Styling - No Background, Green Border/Text */
+/* Only apply to buttons that are NOT active */
+.oui-button-danger:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+[class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+[data-action="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+button[class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+[role="button"][class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
 /* Common Orderly button patterns */
-[class*="orderly"][class*="sell"],
-[class*="orderly"][class*="button"][class*="sell"],
-[class*="orderly"][class*="danger"],
-button[class*="danger"],
-button[class*="red"],
-[class*="button"][class*="sell"],
+[class*="orderly"][class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+[class*="orderly"][class*="button"][class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+[class*="orderly"][class*="danger"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+button[class*="danger"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+button[class*="red"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+[class*="button"][class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
 /* More specific selectors */
-div[class*="sell"] button,
-div[class*="orderly"][class*="sell"] button,
-div[class*="orderly"] button[class*="sell"],
+div[class*="sell"] button:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+div[class*="orderly"][class*="sell"] button:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+div[class*="orderly"] button[class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
 /* Trading interface specific */
-[class*="trading"] [class*="sell"],
-[class*="order-entry"] [class*="sell"],
-[class*="order-form"] [class*="sell"],
+[class*="trading"] [class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+[class*="order-entry"] [class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+[class*="order-form"] [class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
 /* Buy button inactive state */
-[class*="buy"],
-[data-action="buy"],
-button[class*="buy"],
-[role="button"][class*="buy"],
-[class*="orderly"][class*="buy"],
-[class*="orderly"][class*="button"][class*="buy"],
-[class*="button"][class*="buy"],
-div[class*="buy"] button,
-div[class*="orderly"][class*="buy"] button,
-div[class*="orderly"] button[class*="buy"],
-[class*="trading"] [class*="buy"],
-[class*="order-entry"] [class*="buy"],
-[class*="order-form"] [class*="buy"] {
+[class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+[data-action="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+button[class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+[role="button"][class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+[class*="orderly"][class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+[class*="orderly"][class*="button"][class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+[class*="button"][class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+div[class*="buy"] button:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+div[class*="orderly"][class*="buy"] button:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+div[class*="orderly"] button[class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+[class*="trading"] [class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+[class*="order-entry"] [class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]),
+[class*="order-form"] [class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]) {
   background: transparent !important;
   color: rgb(var(--kek-green)) !important;
   border: 1px solid rgb(var(--kek-green)) !important;
@@ -682,37 +683,37 @@ div[class*="orderly"] button[class*="buy"],
 }
 
 /* Hover state for inactive buy/sell buttons */
-.oui-button-danger:hover,
-[class*="sell"]:hover,
-[data-action="sell"]:hover,
-button[class*="sell"]:hover,
-[role="button"][class*="sell"]:hover,
-[class*="orderly"][class*="sell"]:hover,
-[class*="orderly"][class*="button"][class*="sell"]:hover,
-[class*="orderly"][class*="danger"]:hover,
-button[class*="danger"]:hover,
-button[class*="red"]:hover,
-[class*="button"][class*="sell"]:hover,
-div[class*="sell"] button:hover,
-div[class*="orderly"][class*="sell"] button:hover,
-div[class*="orderly"] button[class*="sell"]:hover,
-[class*="trading"] [class*="sell"]:hover,
-[class*="order-entry"] [class*="sell"]:hover,
-[class*="order-form"] [class*="sell"]:hover,
+.oui-button-danger:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+[class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+[data-action="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+button[class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+[role="button"][class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+[class*="orderly"][class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+[class*="orderly"][class*="button"][class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+[class*="orderly"][class*="danger"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+button[class*="danger"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+button[class*="red"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+[class*="button"][class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+div[class*="sell"] button:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+div[class*="orderly"][class*="sell"] button:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+div[class*="orderly"] button[class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+[class*="trading"] [class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+[class*="order-entry"] [class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+[class*="order-form"] [class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
 /* Buy button hover state */
-[class*="buy"]:hover,
-[data-action="buy"]:hover,
-button[class*="buy"]:hover,
-[role="button"][class*="buy"]:hover,
-[class*="orderly"][class*="buy"]:hover,
-[class*="orderly"][class*="button"][class*="buy"]:hover,
-[class*="button"][class*="buy"]:hover,
-div[class*="buy"] button:hover,
-div[class*="orderly"][class*="buy"] button:hover,
-div[class*="orderly"] button[class*="buy"]:hover,
-[class*="trading"] [class*="buy"]:hover,
-[class*="order-entry"] [class*="buy"]:hover,
-[class*="order-form"] [class*="buy"]:hover {
+[class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+[data-action="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+button[class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+[role="button"][class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+[class*="orderly"][class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+[class*="orderly"][class*="button"][class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+[class*="button"][class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+div[class*="buy"] button:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+div[class*="orderly"][class*="buy"] button:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+div[class*="orderly"] button[class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+[class*="trading"] [class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+[class*="order-entry"] [class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover,
+[class*="order-form"] [class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):hover {
   background: transparent !important;
   color: rgb(var(--kek-green)) !important;
   border: 1px solid rgb(var(--kek-green)) !important;
@@ -721,38 +722,63 @@ div[class*="orderly"] button[class*="buy"]:hover,
 }
 
 /* Active state for inactive buy/sell buttons */
-.oui-button-danger:active,
-[class*="sell"]:active,
-[data-action="sell"]:active,
-button[class*="sell"]:active,
-[role="button"][class*="sell"]:active,
-[class*="orderly"][class*="sell"]:active,
-[class*="orderly"][class*="button"][class*="sell"]:active,
-[class*="orderly"][class*="danger"]:active,
-button[class*="danger"]:active,
-button[class*="red"]:active,
-[class*="button"][class*="sell"]:active,
-div[class*="sell"] button:active,
-div[class*="orderly"][class*="sell"] button:active,
-div[class*="orderly"] button[class*="sell"]:active,
-[class*="trading"] [class*="sell"]:active,
-[class*="order-entry"] [class*="sell"]:active,
-[class*="order-form"] [class*="sell"]:active,
+.oui-button-danger:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+[class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+[data-action="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+button[class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+[role="button"][class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+[class*="orderly"][class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+[class*="orderly"][class*="button"][class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+[class*="orderly"][class*="danger"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+button[class*="danger"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+button[class*="red"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+[class*="button"][class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+div[class*="sell"] button:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+div[class*="orderly"][class*="sell"] button:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+div[class*="orderly"] button[class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+[class*="trading"] [class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+[class*="order-entry"] [class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+[class*="order-form"] [class*="sell"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
 /* Buy button active state */
-[class*="buy"]:active,
-[data-action="buy"]:active,
-button[class*="buy"]:active,
-[role="button"][class*="buy"]:active,
-[class*="orderly"][class*="buy"]:active,
-[class*="orderly"][class*="button"][class*="buy"]:active,
-[class*="button"][class*="buy"]:active,
-div[class*="buy"] button:active,
-div[class*="orderly"][class*="buy"] button:active,
-div[class*="orderly"] button[class*="buy"]:active,
-[class*="trading"] [class*="buy"]:active,
-[class*="order-entry"] [class*="buy"]:active,
-[class*="order-form"] [class*="buy"]:active {
+[class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+[data-action="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+button[class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+[role="button"][class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+[class*="orderly"][class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+[class*="orderly"][class*="button"][class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+[class*="button"][class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+div[class*="buy"] button:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+div[class*="orderly"][class*="buy"] button:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+div[class*="orderly"] button[class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+[class*="trading"] [class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+[class*="order-entry"] [class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active,
+[class*="order-form"] [class*="buy"]:not(.active):not([data-active="true"]):not([aria-selected="true"]):active {
   transform: scale(0.98) !important;
+}
+
+/* Default Active State - Buy button should be active by default */
+/* This ensures buy button has gradient background when no specific active state is set */
+[class*="buy"]:not([class*="sell"]),
+button[class*="buy"]:not([class*="sell"]),
+[role="button"][class*="buy"]:not([class*="sell"]),
+[class*="orderly"][class*="buy"]:not([class*="sell"]),
+[class*="orderly"][class*="button"][class*="buy"]:not([class*="sell"]),
+[class*="button"][class*="buy"]:not([class*="sell"]),
+div[class*="buy"] button:not([class*="sell"]),
+div[class*="orderly"][class*="buy"] button:not([class*="sell"]),
+div[class*="orderly"] button[class*="buy"]:not([class*="sell"]),
+[class*="trading"] [class*="buy"]:not([class*="sell"]),
+[class*="order-entry"] [class*="buy"]:not([class*="sell"]),
+[class*="order-form"] [class*="buy"]:not([class*="sell"]) {
+  background: linear-gradient(
+    to right,
+    rgb(var(--kek-green)),
+    rgb(var(--kek-blue))
+  ) !important;
+  color: black !important;
+  border: none !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
 }
 
 /* Active Buy/Sell Button Styling - Green/Blue Gradient with Black Text */

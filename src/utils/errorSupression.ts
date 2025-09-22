@@ -28,6 +28,9 @@ if (typeof window !== "undefined") {
     /spell it as lowercase `tipformatter` instead/,
     /did you mean `tipformatter`/,
     /If you want to write it to the DOM, pass a string instead/,
+    /Cannot read properties of null \(reading 'tradingViewApi'\)/,
+    /TradingView/,
+    /charting_library/,
   ];
 
   // Override the console methods more aggressively to handle third-party interceptors

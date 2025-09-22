@@ -54,16 +54,16 @@ export const OrderlyAccountGuard: React.FC<OrderlyAccountGuardProps> = ({
 
       console.log("📊 Account state:", readableStatus, {
         rawStatus: account.state.status,
-        isWalletConnected: account.state.isWalletConnected,
         address: account.state.address,
+        isWalletConnected: account.state?.isWalletConnected,
+        fullState: account.state,
       });
 
       // Check if user is connected but doesn't have an Orderly account
       // Handle both string and numeric status values
       const isNotConnected =
         account.state.status === "not_connected" || account.state.status === 3;
-      const hasWalletConnected =
-        account.state.isWalletConnected === true || account.state.address; // If we have an address, wallet is connected
+      const hasWalletConnected = Boolean(account.state.address); // If we have an address, wallet is connected
 
       if (isNotConnected && hasWalletConnected && !isCreatingAccount) {
         setIsCreatingAccount(true);
@@ -101,12 +101,7 @@ export const OrderlyAccountGuard: React.FC<OrderlyAccountGuardProps> = ({
     };
 
     checkAndCreateAccount();
-  }, [
-    account.state?.status,
-    account.state?.address,
-    account.state?.isWalletConnected,
-    isCreatingAccount,
-  ]);
+  }, [account.state?.status, account.state?.address, isCreatingAccount]);
 
   // Show loading state while creating account
   if (isCreatingAccount) {

@@ -80,8 +80,8 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
     "wallet" | "email" | "google" | "twitter"
   > => {
     if (isMobileOrTablet) {
-      // On mobile, prioritize wallet connections and reduce social options
-      return ["wallet", "email"];
+      // On mobile, ONLY show wallet to force wallet connections
+      return ["wallet"];
     }
     // On desktop, show all options
     return ["wallet", "email", "google", "twitter"];
@@ -93,14 +93,18 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
       config: {
         appearance: {
           theme: "dark" as const,
-          accentColor: "#00FF37",
+          accentColor: "#00FF37" as `#${string}`,
           logo: "/images/keklogo2.png",
-          showWalletLoginFirst: isMobileOrTablet, // Show wallet options first on mobile
+          showWalletLoginFirst: true, // Always show wallet options first
+          landingHeader: isMobileOrTablet
+            ? "Connect Wallet"
+            : "Connect Your Wallet",
           loginMessage: isMobileOrTablet
-            ? "Connect your wallet to start trading"
+            ? "Choose your wallet to start trading"
             : "Connect your wallet or create an account",
         },
         loginMethods: getPrivyLoginMethods(),
+        // Simplified for mobile compatibility
       },
     }),
     [privyAppId, isMobileOrTablet, getPrivyLoginMethods],
@@ -179,7 +183,7 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
             ? {
                 mobile: (
                   <div className="text-purple-100 text-sm text-center py-2">
-                    Connect your wallet to access trading features
+                    Choose your wallet to connect
                   </div>
                 ),
               }
