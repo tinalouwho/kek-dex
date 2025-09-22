@@ -22,6 +22,31 @@ import { useNav } from "@/hooks/useNav";
 import { useOrderlyConfig } from "@/hooks/useOrderlyConfig";
 import { usePathWithoutLang } from "@/hooks/usePathWithoutLang";
 import { validateOrderlyEnv } from "@/lib/env-validation";
+import "@/utils/errorSupression";
+
+// Import error suppression
+
+// Register Solana Mobile Wallet Adapter for mobile Solana wallets
+if (typeof window !== "undefined") {
+  try {
+    import("@solana-mobile/wallet-standard-mobile")
+      .then(({ registerWalletStandardMobileWallet }) => {
+        registerWalletStandardMobileWallet({
+          appIdentity: {
+            name: "KEK DEX",
+            uri: "https://kekkoin.com",
+            icon: "/images/keklogo2.png",
+          },
+        });
+        console.log("✅ Solana Mobile Wallet Adapter registered");
+      })
+      .catch(() => {
+        console.log("ℹ️ Solana Mobile Wallet Adapter not available");
+      });
+  } catch (error) {
+    console.log("ℹ️ Solana Mobile Wallet Adapter not available");
+  }
+}
 
 const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
   const config = useOrderlyConfig();
@@ -118,18 +143,37 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
               theme: "dark",
               accentColor: "#00FF37",
               logo: "/images/keklogo2.png",
-              walletChainType: "ethereum-and-solana",
-              walletList: [
-                "detected_wallets",
-                "metamask",
-                "coinbase_wallet",
-                "rainbow",
-                "wallet_connect",
-                "phantom",
-                "solflare",
-              ],
             },
             loginMethods: ["wallet", "email", "google", "twitter"],
+            // Enable both EVM and Solana support
+            supportedChains: [
+              // Ethereum Mainnet
+              {
+                id: 1,
+                name: "Ethereum",
+                rpcUrl: `https://mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY || ""}`,
+                nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+                blockExplorerUrl: "https://etherscan.io",
+              },
+              // Arbitrum One
+              {
+                id: 42161,
+                name: "Arbitrum One",
+                rpcUrl: "https://arb1.arbitrum.io/rpc",
+                nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+                blockExplorerUrl: "https://arbiscan.io",
+              },
+              // Solana Mainnet
+              {
+                id: 101,
+                name: "Solana",
+                rpcUrl:
+                  process.env.NEXT_PUBLIC_SOLANA_RPC_URL ||
+                  "https://api.mainnet-beta.solana.com",
+                nativeCurrency: { name: "SOL", symbol: "SOL", decimals: 9 },
+                blockExplorerUrl: "https://explorer.solana.com",
+              },
+            ],
             walletConnectCloudProjectId:
               process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
           },
@@ -144,7 +188,7 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
             envConfig.network === "testnet"
               ? "https://api.devnet.solana.com"
               : undefined,
-          wallets: [],
+          wallets: [], // Let the connector auto-detect wallets
           onError: (error: any, adapter: any) => {
             console.log("Solana wallet error:", error, adapter);
           },

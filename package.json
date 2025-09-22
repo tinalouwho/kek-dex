@@ -29,6 +29,7 @@
     "@orderly.network/wallet-connector-privy": "^2.6.0",
     "@privy-io/react-auth": "^3.0.1",
     "@privy-io/wagmi": "^2.0.0",
+    "@solana-mobile/wallet-standard-mobile": "^0.4.1",
     "@solana/wallet-adapter-base": "^0.9.27",
     "@solana/wallet-adapter-phantom": "^0.9.28",
     "@solana/wallet-adapter-wallets": "^0.19.37",

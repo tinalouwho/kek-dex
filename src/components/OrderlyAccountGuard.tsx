@@ -17,13 +17,40 @@ export const OrderlyAccountGuard: React.FC<OrderlyAccountGuardProps> = ({
 
   useEffect(() => {
     const checkAndCreateAccount = async () => {
-      if (!account.state) return;
+      if (!account.state) {
+        console.log("🔄 Waiting for account state...");
+        return;
+      }
+
+      // Convert numeric status to readable string
+      const statusMap: { [key: number]: string } = {
+        0: "idle",
+        1: "connecting",
+        2: "connected",
+        3: "not_connected",
+        4: "disconnected",
+        5: "connected", // This seems to be your current status
+      };
+
+      const readableStatus =
+        typeof account.state.status === "number"
+          ? statusMap[account.state.status] || `unknown_${account.state.status}`
+          : account.state.status;
+
+      console.log("📊 Account state:", readableStatus, {
+        rawStatus: account.state.status,
+        isWalletConnected: account.state.isWalletConnected,
+        address: account.state.address,
+      });
 
       // Check if user is connected but doesn't have an Orderly account
-      if (
-        account.state.status === "not_connected" &&
-        account.state.isWalletConnected
-      ) {
+      // Handle both string and numeric status values
+      const isNotConnected =
+        account.state.status === "not_connected" || account.state.status === 3;
+      const hasWalletConnected =
+        account.state.isWalletConnected === true || account.state.address; // If we have an address, wallet is connected
+
+      if (isNotConnected && hasWalletConnected) {
         setIsCreatingAccount(true);
         setError(null);
 
@@ -45,6 +72,18 @@ export const OrderlyAccountGuard: React.FC<OrderlyAccountGuardProps> = ({
           );
           setIsCreatingAccount(false);
         }
+      }
+
+      // If account is connected, clear any creation state
+      const isConnected =
+        account.state.status === "connected" ||
+        account.state.status === 2 ||
+        account.state.status === 5; // Status 5 seems to be connected
+
+      if (isConnected) {
+        console.log("✅ Account is connected and ready");
+        setIsCreatingAccount(false);
+        setError(null);
       }
     };
 
