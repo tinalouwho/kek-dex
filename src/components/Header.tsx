@@ -3,6 +3,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ConnectWalletButton } from "./ConnectWalletButton";
 
 export default function Header() {
   const router = useRouter();
@@ -122,13 +123,16 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Desktop Start Trading Button */}
-      <button
-        onClick={handleStartTrading}
-        className="header-start-button z-50 hover:cursor-pointer flex items-center justify-center px-6 w-40 h-[35px] py-2 bg-gradient-to-r from-[#00FF37] to-[#00E0D0] text-black font-semibold rounded-full hover:text-black transition-all duration-300 transform hover:scale-105 max-[1200px]:hidden"
-      >
-        Start Trading
-      </button>
+      {/* Desktop Connect Wallet & Start Trading Buttons */}
+      <div className="flex items-center gap-3 max-[1200px]:hidden">
+        <ConnectWalletButton className="px-4 py-2 border border-[#00FF37] text-[#00FF37] font-semibold rounded-full hover:bg-[#00FF37] hover:text-black transition-all duration-300" />
+        <button
+          onClick={handleStartTrading}
+          className="header-start-button z-50 hover:cursor-pointer flex items-center justify-center px-6 w-40 h-[35px] py-2 bg-gradient-to-r from-[#00FF37] to-[#00E0D0] text-black font-semibold rounded-full hover:text-black transition-all duration-300 transform hover:scale-105"
+        >
+          Start Trading
+        </button>
+      </div>
 
       {/* Mobile Hamburger Menu */}
       <button
@@ -198,16 +202,21 @@ export default function Header() {
                 $KEK Token
               </Link>
 
-              {/* Start Trading Button */}
-              <button
-                onClick={() => {
-                  handleStartTrading();
-                  setShowMobileMenu(false);
-                }}
-                className="header-start-button z-50 hover:cursor-pointer flex items-center justify-center px-6 w-40 h-[35px] py-2 bg-gradient-to-r from-[#00FF37] to-[#00E0D0] text-black font-semibold rounded-full hover:text-black transition-all duration-300 transform hover:scale-105 max-[1200px]:hidden"
-              >
-                Start Trading
-              </button>
+              {/* Connect Wallet & Start Trading Buttons */}
+              <div className="flex flex-col gap-4 pt-4">
+                <ConnectWalletButton className="px-4 py-3 border border-[#00FF37] text-[#00FF37] font-semibold rounded-full hover:bg-[#00FF37] hover:text-black transition-all duration-300 text-center">
+                  Connect Wallet
+                </ConnectWalletButton>
+                <button
+                  onClick={() => {
+                    handleStartTrading();
+                    setShowMobileMenu(false);
+                  }}
+                  className="px-6 py-3 bg-gradient-to-r from-[#00FF37] to-[#00E0D0] text-black font-semibold rounded-full hover:text-black transition-all duration-300 transform hover:scale-105"
+                >
+                  Start Trading
+                </button>
+              </div>
             </div>
 
             {/* Social Links at Bottom */}
