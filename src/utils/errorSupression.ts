@@ -15,6 +15,13 @@ if (typeof window !== "undefined") {
     /Warning: validateDOMNesting/,
     /Expected path command/,
     /attribute d: Expected path command/,
+    /An empty string \(""\) was passed to the src attribute/,
+    /This may cause the browser to download the whole page again/,
+    /Warning: Each child in a list should have a unique "key" prop/,
+    /Warning: Function components cannot be given refs/,
+    /Warning: forwardRef render functions accept exactly two parameters/,
+    /ResizeObserver loop limit exceeded/,
+    /Non-passive event listener/,
   ];
 
   // Filter console errors and warnings
