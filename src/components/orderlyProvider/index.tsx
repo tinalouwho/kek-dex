@@ -118,7 +118,20 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
               theme: "dark",
               accentColor: "#00FF37",
               logo: "/images/keklogo2.png",
+              walletChainType: "ethereum-and-solana",
+              walletList: [
+                "detected_wallets",
+                "metamask",
+                "coinbase_wallet",
+                "rainbow",
+                "wallet_connect",
+                "phantom",
+                "solflare",
+              ],
             },
+            loginMethods: ["wallet", "email", "google", "twitter"],
+            walletConnectCloudProjectId:
+              process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
           },
         }}
         solanaConfig={{
