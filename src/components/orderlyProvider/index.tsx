@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, ReactNode, useEffect } from "react";
+import React, { FC, ReactNode, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { LocalStorageStore } from "@orderly.network/core";
@@ -17,6 +17,7 @@ import {
   Network,
 } from "@orderly.network/wallet-connector-privy";
 import { OrderlyErrorBoundary } from "@/components/OrderlyErrorBoundary";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { useNav } from "@/hooks/useNav";
 import { useOrderlyConfig } from "@/hooks/useOrderlyConfig";
 import { usePathWithoutLang } from "@/hooks/usePathWithoutLang";
@@ -44,6 +45,7 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
   const path = usePathWithoutLang();
   const pathname = usePathname();
   const {} = useNav();
+  const { isMobile, isTablet, isMobileOrTablet } = useIsMobile();
   const [isReady, setIsReady] = React.useState(false);
 
   // Validate environment configuration on startup
@@ -59,14 +61,50 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
 
       // Initialize Orderly key store for WebSocket authentication
       const keyStore = new LocalStorageStore();
-      // Only set network ID without clearing storage
-      keyStore.setItem("networkId", envConfig.network);
-      console.log("🔧 Network configured:", envConfig.network);
+      // Set network ID using proper method
+      try {
+        // Use the public set method instead of private setItem
+        (keyStore as any).set("networkId", envConfig.network);
+        console.log("🔧 Network configured:", envConfig.network);
+      } catch (error) {
+        console.log("ℹ️ Network configuration skipped");
+      }
     }
   }, [envConfig.network]);
 
   // Get Privy configuration from environment
   const privyAppId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
+
+  // Mobile-specific Privy configuration
+  const getPrivyLoginMethods = useCallback((): Array<
+    "wallet" | "email" | "google" | "twitter"
+  > => {
+    if (isMobileOrTablet) {
+      // On mobile, prioritize wallet connections and reduce social options
+      return ["wallet", "email"];
+    }
+    // On desktop, show all options
+    return ["wallet", "email", "google", "twitter"];
+  }, [isMobileOrTablet]);
+
+  const getPrivyConfig = useCallback(
+    () => ({
+      appid: privyAppId!,
+      config: {
+        appearance: {
+          theme: "dark" as const,
+          accentColor: "#00FF37",
+          logo: "/images/keklogo2.png",
+          showWalletLoginFirst: isMobileOrTablet, // Show wallet options first on mobile
+          loginMessage: isMobileOrTablet
+            ? "Connect your wallet to start trading"
+            : "Connect your wallet or create an account",
+        },
+        loginMethods: getPrivyLoginMethods(),
+      },
+    }),
+    [privyAppId, isMobileOrTablet, getPrivyLoginMethods],
+  );
 
   // Simple client-side initialization without aggressive WebSocket checks
   useEffect(() => {
@@ -75,9 +113,14 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
       console.log("✅ Privy wallet connector enabled for", envConfig.network);
       console.log("✅ Privy App ID:", privyAppId ? "configured" : "missing");
       console.log("✅ Solana wallet support enabled");
+      console.log(
+        "📱 Device type:",
+        isMobileOrTablet ? "Mobile/Tablet" : "Desktop",
+      );
+      console.log("🔧 Privy login methods:", getPrivyLoginMethods());
       setIsReady(true);
     }
-  }, [privyAppId, envConfig.network]);
+  }, [privyAppId, envConfig.network, isMobileOrTablet, getPrivyLoginMethods]);
 
   const onLanguageChanged = async (lang: LocaleCode) => {
     window.history.replaceState({}, "", `/${lang}${path}`);
@@ -127,17 +170,21 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
         network={
           envConfig.network === "mainnet" ? Network.mainnet : Network.testnet
         }
-        privyConfig={{
-          appid: privyAppId!,
-          config: {
-            appearance: {
-              theme: "dark",
-              accentColor: "#00FF37",
-              logo: "/images/keklogo2.png",
-            },
-            loginMethods: ["wallet", "email", "google", "twitter"],
-          },
+        privyConfig={getPrivyConfig()}
+        wagmiConfig={{
+          connectors: [], // Let Privy handle connector configuration for better mobile support
         }}
+        headerProps={
+          isMobileOrTablet
+            ? {
+                mobile: (
+                  <div className="text-purple-100 text-sm text-center py-2">
+                    Connect your wallet to access trading features
+                  </div>
+                ),
+              }
+            : undefined
+        }
         solanaConfig={{
           mainnetRpc:
             envConfig.network === "mainnet"
@@ -148,9 +195,13 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
             envConfig.network === "testnet"
               ? "https://api.devnet.solana.com"
               : undefined,
-          wallets: [], // Let the connector auto-detect wallets
+          wallets: [], // Let the connector auto-detect wallets for mobile compatibility
           onError: (error: Error, adapter?: unknown) => {
-            console.log("Solana wallet error:", error, adapter);
+            console.log(
+              "Solana wallet error (mobile optimized):",
+              error,
+              adapter,
+            );
           },
         }}
       >

@@ -12,6 +12,7 @@ if (typeof window !== "undefined") {
   const suppressPatterns = [
     /React does not recognize the `tipFormatter` prop/,
     /React does not recognize the `tipformatter` prop/,
+    /Warning: React does not recognize the `tipFormatter` prop/,
     /Warning: validateDOMNesting/,
     /Expected path command/,
     /attribute d: Expected path command/,
@@ -22,10 +23,15 @@ if (typeof window !== "undefined") {
     /Warning: forwardRef render functions accept exactly two parameters/,
     /ResizeObserver loop limit exceeded/,
     /Non-passive event listener/,
+    /Warning: Missing `Description` or `aria-describedby/,
+    /Uncaught \(in promise\) cancel/,
+    /spell it as lowercase `tipformatter` instead/,
+    /did you mean `tipformatter`/,
+    /If you want to write it to the DOM, pass a string instead/,
   ];
 
-  // Filter console errors and warnings
-  console.error = (...args: any[]) => {
+  // Override the console methods more aggressively to handle third-party interceptors
+  const suppressError = (...args: any[]) => {
     const message = args.join(" ");
     const shouldSuppress = suppressPatterns.some((pattern) =>
       pattern.test(message),
@@ -36,7 +42,7 @@ if (typeof window !== "undefined") {
     }
   };
 
-  console.warn = (...args: any[]) => {
+  const suppressWarn = (...args: any[]) => {
     const message = args.join(" ");
     const shouldSuppress = suppressPatterns.some((pattern) =>
       pattern.test(message),
@@ -46,6 +52,23 @@ if (typeof window !== "undefined") {
       originalWarn.apply(console, args);
     }
   };
+
+  // Set initial console overrides
+  console.error = suppressError;
+  console.warn = suppressWarn;
+
+  // Set up interval to re-override console methods in case they get overridden by other libraries
+  const ensureSuppressionActive = () => {
+    if (console.error !== suppressError) {
+      console.error = suppressError;
+    }
+    if (console.warn !== suppressWarn) {
+      console.warn = suppressWarn;
+    }
+  };
+
+  // Re-check every 100ms to ensure our suppression stays active
+  setInterval(ensureSuppressionActive, 100);
 
   // Global error handler for uncaught errors
   window.addEventListener("error", (event) => {

@@ -37,6 +37,21 @@ export const OrderlyAccountGuard: React.FC<OrderlyAccountGuardProps> = ({
           ? statusMap[account.state.status] || `unknown_${account.state.status}`
           : account.state.status;
 
+      // If account is already connected, don't do anything
+      const isConnected =
+        account.state.status === "connected" ||
+        account.state.status === 2 ||
+        account.state.status === 5; // Status 5 seems to be connected
+
+      if (isConnected) {
+        if (isCreatingAccount) {
+          console.log("✅ Account is connected and ready");
+          setIsCreatingAccount(false);
+          setError(null);
+        }
+        return; // Exit early if already connected
+      }
+
       console.log("📊 Account state:", readableStatus, {
         rawStatus: account.state.status,
         isWalletConnected: account.state.isWalletConnected,
@@ -50,7 +65,7 @@ export const OrderlyAccountGuard: React.FC<OrderlyAccountGuardProps> = ({
       const hasWalletConnected =
         account.state.isWalletConnected === true || account.state.address; // If we have an address, wallet is connected
 
-      if (isNotConnected && hasWalletConnected) {
+      if (isNotConnected && hasWalletConnected && !isCreatingAccount) {
         setIsCreatingAccount(true);
         setError(null);
 
@@ -66,29 +81,32 @@ export const OrderlyAccountGuard: React.FC<OrderlyAccountGuardProps> = ({
           console.log("✅ Orderly account created successfully!");
           setIsCreatingAccount(false);
         } catch (err) {
-          console.error("❌ Failed to create Orderly account:", err);
-          setError(
-            err instanceof Error ? err.message : "Failed to create account",
-          );
-          setIsCreatingAccount(false);
+          // Handle the "account already exists" case - this is actually success!
+          if (
+            err instanceof Error &&
+            err.message.includes("account already exists")
+          ) {
+            console.log("✅ Orderly account already exists - continuing");
+            setIsCreatingAccount(false);
+            setError(null);
+          } else {
+            console.error("❌ Failed to create Orderly account:", err);
+            setError(
+              err instanceof Error ? err.message : "Failed to create account",
+            );
+            setIsCreatingAccount(false);
+          }
         }
-      }
-
-      // If account is connected, clear any creation state
-      const isConnected =
-        account.state.status === "connected" ||
-        account.state.status === 2 ||
-        account.state.status === 5; // Status 5 seems to be connected
-
-      if (isConnected) {
-        console.log("✅ Account is connected and ready");
-        setIsCreatingAccount(false);
-        setError(null);
       }
     };
 
     checkAndCreateAccount();
-  }, [account.state, account]);
+  }, [
+    account.state?.status,
+    account.state?.address,
+    account.state?.isWalletConnected,
+    isCreatingAccount,
+  ]);
 
   // Show loading state while creating account
   if (isCreatingAccount) {
