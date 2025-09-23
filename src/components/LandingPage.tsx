@@ -9,17 +9,18 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/kek-ui";
+import { cn } from "@/lib/utils";
 import Header from "./Header";
-import { OrderlyWalletConnector } from "./OrderlyWalletConnector";
 
 const Bars = dynamic(() => import("./Bars"), {
   ssr: false,
   loading: () => (
     <div className="absolute inset-0 w-full h-full overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#00FF37]/5 via-transparent to-[#00E0D0]/5 animate-pulse"></div>
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#00FF37]/10 rounded-full blur-3xl animate-bounce"></div>
-      <div className="absolute top-3/4 right-1/4 w-48 h-48 bg-[#00E0D0]/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-      <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-[#00FF37]/15 rounded-full blur-2xl animate-ping delay-500"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-kek-green/5 via-transparent to-kek-blue/5 animate-pulse"></div>
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-kek-green/10 rounded-full blur-3xl animate-bounce"></div>
+      <div className="absolute top-3/4 right-1/4 w-48 h-48 bg-kek-blue/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-kek-green/15 rounded-full blur-2xl animate-ping delay-500"></div>
     </div>
   ),
 });
@@ -33,11 +34,19 @@ export default function LandingPage() {
   }, []);
 
   const handleStartTrading = () => {
-    router.push("/en/perp/PERP_ETH_USDC");
+    console.log("LandingPage: Start Trading button clicked");
+    console.log("LandingPage: Current router:", router);
+    console.log("LandingPage: Navigating to /en/perp/PERP_ETH_USDC");
+    try {
+      router.push("/en/perp/PERP_ETH_USDC");
+      console.log("LandingPage: Navigation command sent successfully");
+    } catch (error) {
+      console.error("LandingPage: Navigation error:", error);
+    }
   };
 
   return (
-    <div className=" w-full min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#0F0F0F] to-[#0A0A0A] text-purple-100 overflow-hidden flex flex-col items-center justify-between">
+    <div className="w-full min-h-screen kek-bg-main  kek-text-primary overflow-hidden flex flex-col items-center justify-between">
       {/* Animated Background */}
 
       {/* Navigation */}
@@ -55,11 +64,11 @@ export default function LandingPage() {
           className={`relative z-20 text-center  transition-all duration-1000 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
         >
           <div className="flex flex-col items-center justify-center gap-8 font-bold mb-6">
-            <p className="font-mono lg:text-6xl text-4xl font-bold bg-gradient-to-r from-[#00FF37] via-[#00E0D0] to-[#00FF37] bg-clip-text text-transparent animate-gradient">
+            <p className="font-mono lg:text-6xl text-4xl font-bold kek-text-gradient animate-gradient">
               Trade Smarter. Trade KEK.
             </p>
 
-            <p className="text-purple-100 text-xl max-md:text-base max-w-3xl ">
+            <p className="kek-text-primary text-xl max-md:text-base max-w-3xl">
               The first DEX that fuses AI-powered strategy generation and
               smart-trading bots for low-risk perp + spot execution
             </p>
@@ -69,45 +78,50 @@ export default function LandingPage() {
             <Link
               href="https://kekkoin.com/docs"
               target="_blank"
-              className="px-8 py-4 border border-gray-600 text-purple-100 font-semibold text-lg rounded-xl hover:border-kek-green max-md:hidden hover:text-kek-green transition-all duration-300 w-full sm:w-auto"
+              className="px-8 py-2 border kek-border kek-text-primary font-semibold text-lg rounded-full hover:border-kek-green max-md:hidden hover:text-kek-green transition-all duration-300 w-full sm:w-auto text-center"
             >
               Documentation
             </Link>
-            <OrderlyWalletConnector className="px-8 py-4 border border-[#00FF37] text-[#00FF37] font-semibold text-lg rounded-xl hover:bg-[#00FF37] hover:text-black transition-all duration-300 w-full sm:w-auto">
-              Connect Wallet
-            </OrderlyWalletConnector>
-            <button
+
+            <Button
+              variant="primary"
+              size="md"
               onClick={handleStartTrading}
-              className="primary-button px-12 py-6 bg-gradient-to-r from-[#00FF37] to-[#00E0D0] text-black font-bold text-xl md:w-[180px] w-full h-[35px] rounded-full hover:shadow-2xl hover:shadow-[#00FF37]/30 transition-all duration-300 transform hover:scale-105"
+              className=" text-lg md:w-[200px] text-nowrap w-full kek-shadow-primary"
             >
               Start Trading
-            </button>
+            </Button>
           </div>
         </div>
 
         {/* Stats Section */}
         <div
-          className={`relative z-20 bg-black/50 backdrop-blur-sm p-10 rounded-full grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto transition-all duration-1000 delay-300 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+          className={cn(
+            "relative z-20 bg-black/50 backdrop-blur-sm p-10 rounded-full grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto transition-all duration-1000 delay-300",
+            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10",
+          )}
         >
           <div className="text-center">
-            <div className="text-2xl lg:text-5xl font-bold font-mono bg-gradient-to-r from-[#00FF37] to-[#00E0D0] bg-clip-text text-transparent mb-2">
+            <div className="text-2xl lg:text-5xl font-bold font-mono kek-text-gradient mb-2">
               200+
             </div>
-            <div className="text-purple-200 lg:text-lg">Markets supported</div>
+            <div className="kek-text-secondary lg:text-lg">
+              Markets supported
+            </div>
           </div>
 
           <div className="text-center">
-            <div className="text-2xl lg:text-5xl font-bold font-mono bg-gradient-to-r from-[#00FF37] to-[#00E0D0] bg-clip-text text-transparent mb-2">
+            <div className="text-2xl lg:text-5xl font-bold font-mono kek-text-gradient mb-2">
               $10B+
             </div>
-            <div className="text-purple-200 lg:text-lg">Trading volume</div>
+            <div className="kek-text-secondary lg:text-lg">Trading volume</div>
           </div>
 
           <div className="text-center">
-            <div className="text-2xl lg:text-5xl font-bold font-mono bg-gradient-to-r from-[#00FF37] to-[#00E0D0] bg-clip-text text-transparent mb-2">
+            <div className="text-2xl lg:text-5xl font-bold font-mono kek-text-gradient mb-2">
               60k+
             </div>
-            <div className="text-purple-200 lg:text-lg">Active traders</div>
+            <div className="kek-text-secondary lg:text-lg">Active traders</div>
           </div>
         </div>
       </div>
@@ -117,12 +131,11 @@ export default function LandingPage() {
         <div className="mx-auto">
           <div className="text-center mb-16">
             <div className="text-4xl lg:text-6xl flex flex-col gap-6 font-bold mb-6 items-center justify-center">
-              <p className="font-mono bg-gradient-to-r from-[#00FF37] to-[#00E0D0] bg-clip-text text-transparent">
+              <p className="font-mono kek-text-gradient">
                 Not just a DEX—an ecosystem.
               </p>
 
-              <p className="text-purple-200 lg:text-2xl mt-8 text-base max-w-4xl pb-12">
-                {" "}
+              <p className="kek-text-secondary lg:text-2xl mt-8 text-base max-w-4xl pb-12">
                 Share and copy strategies, compete on leaderboards, and grow
                 with a community of traders leveraging the same tools as pros.
               </p>
@@ -131,14 +144,14 @@ export default function LandingPage() {
 
           <div className="flex flex-wrap w-full items-center gap-8 justify-center">
             {/* Feature 1 */}
-            <div className="bg-gradient-to-b h-[350px] lg:w-[400px] w-full backdrop-blur-sm from-[#1b1b1bc0] to-[#0F0F0F] border border-[#3C3C3C] rounded-2xl p-8 hover:border-[#00FF37] transition-all duration-300 group">
-              <div className="w-12 h-12 bg-gradient-to-r from-[#00FF37] to-[#00E0D0] rounded-lg mb-6 group-hover:scale-110 flex items-center justify-center transition-transform duration-300">
+            <div className="h-[350px] lg:w-[400px] w-full bg-gradient-to-b hover:border-[#00FF37]  p-4 lg:p-6 rounded-xl border  border-[#1B1B1B] from-[#1B1B1B] to-transparent backdrop-blur-sm group">
+              <div className="w-12 h-12 flex items-center justify-center bg-gradient-to-r from-[#00FF37] to-[#00E0D0] rounded-lg mb-6 group-hover:scale-110 transition-transform duration-300">
                 <LuBrainCircuit className="w-6 h-6 text-black" />
               </div>
-              <h3 className="text-xl font-bold mb-6 text-purple-200">
+              <h3 className="text-xl font-bold mb-6 kek-text-secondary">
                 AI-Driven Strategy Generation
               </h3>
-              <p className="text-purple-200 text-base leading-relaxed pt-4">
+              <p className="kek-text-secondary text-base leading-relaxed pt-4">
                 Let KEK Mix&apos;s multi-agent AI pipeline analyze market
                 regimes, narratives, and assets to deliver validated strategies
                 ready for action.
@@ -146,14 +159,14 @@ export default function LandingPage() {
             </div>
 
             {/* Feature 2 */}
-            <div className="bg-gradient-to-b h-[350px] lg:w-[400px] w-full backdrop-blur-sm from-[#1b1b1bc0] to-[#0F0F0F] border border-[#3C3C3C] rounded-2xl p-8 hover:border-[#00FF37] transition-all duration-300 group">
-              <div className="w-12 flex items-center justify-center h-12 bg-gradient-to-r from-[#00FF37] to-[#00E0D0] rounded-lg mb-6 group-hover:scale-110 transition-transform duration-300">
+            <div className="h-[350px] lg:w-[400px] w-full bg-gradient-to-b hover:border-[#00FF37] border p-4 lg:p-6 rounded-xl  border-[#1B1B1B] from-[#1B1B1B] to-transparent backdrop-blur-sm group">
+              <div className="w-12 h-12 flex items-center justify-center bg-gradient-to-r from-[#00FF37] to-[#00E0D0] rounded-lg mb-6 group-hover:scale-110 transition-transform duration-300">
                 <BsRobot className="w-[28px] h-[28px] text-black" />
               </div>
-              <h3 className="text-xl font-bold mb-6 text-purple-200">
+              <h3 className="text-xl font-bold mb-6 kek-text-secondary">
                 Automated Trading Bots
               </h3>
-              <p className="text-purple-200 leading-relaxed pt-4">
+              <p className="kek-text-secondary leading-relaxed pt-4">
                 Deploy KEK Botz directly inside the DEX. Backtested,
                 paper-traded, and risk-controlled bots execute with speed and
                 discipline.
@@ -161,28 +174,28 @@ export default function LandingPage() {
             </div>
 
             {/* Feature 3 */}
-            <div className="bg-gradient-to-b h-[350px] lg:w-[400px] w-full backdrop-blur-sm from-[#1b1b1bc0] to-[#0F0F0F] border border-[#3C3C3C] rounded-2xl p-8 hover:border-[#00FF37] transition-all duration-300 group">
-              <div className="w-12 flex items-center justify-center h-12 bg-gradient-to-r from-[#00FF37] to-[#00E0D0] rounded-lg mb-6 group-hover:scale-110 transition-transform duration-300">
+            <div className="h-[350px] lg:w-[400px] w-full bg-gradient-to-b hover:border-[#00FF37] border p-4 lg:p-6 rounded-xl  border-[#1B1B1B] from-[#1B1B1B] to-transparent backdrop-blur-sm group">
+              <div className="w-12 h-12 flex items-center justify-center bg-gradient-to-r from-[#00FF37] to-[#00E0D0] rounded-lg mb-6 group-hover:scale-110 transition-transform duration-300">
                 <AiOutlineSafetyCertificate className="w-[28px] h-[28px] text-black" />
               </div>
-              <h3 className="text-xl font-bold mb-6 text-purple-200">
+              <h3 className="text-xl font-bold mb-6 kek-text-secondary">
                 Safety-First Execution
               </h3>
-              <p className="text-purple-200 leading-relaxed pt-4">
+              <p className="kek-text-secondary leading-relaxed pt-4">
                 Start with paper trading and institutional-grade risk
                 controls—before going live with real positions.
               </p>
             </div>
 
             {/* Feature 4 */}
-            <div className="bg-gradient-to-b h-[350px] lg:w-[400px] w-full backdrop-blur-sm from-[#1b1b1bc0] to-[#0F0F0F] border border-[#3C3C3C] rounded-2xl p-8 hover:border-[#00FF37] transition-all duration-300 group">
+            <div className="h-[350px] lg:w-[400px] w-full bg-gradient-to-b hover:border-[#00FF37] border p-4 lg:p-6 rounded-xl  border-[#1B1B1B] from-[#1B1B1B] to-transparent backdrop-blur-sm group">
               <div className="w-12 h-12 flex items-center justify-center bg-gradient-to-r from-[#00FF37] to-[#00E0D0] rounded-lg mb-6 group-hover:scale-110 transition-transform duration-300">
                 <FaUncharted className="w-[28px] h-[28px] text-black" />
               </div>
-              <h3 className="text-xl font-bold mb-6 text-purple-200">
+              <h3 className="text-xl font-bold mb-6 kek-text-secondary">
                 Built to Scale
               </h3>
-              <p className="text-purple-200 leading-relaxed pt-4">
+              <p className="kek-text-secondary leading-relaxed pt-4">
                 Orderly&apos;s omnichain infrastructure + KEK’s AI layer = deep
                 liquidity, resilient infrastructure, and a trading experience
                 that adapts to you.
@@ -196,27 +209,29 @@ export default function LandingPage() {
       <div className="relative min-h-[90vh] flex flex-col items-center justify-center z-10 py-20 px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <div className="text-4xl lg:text-6xl font-bold mb-8">
-            <p className="text-purple-200 font-extrabold">
+            <p className="kek-text-secondary font-extrabold">
               Your Edge Starts Here.
             </p>
-            <p className="text-purple-200 pt-6">
+            <p className="kek-text-secondary pt-6">
               AI-powered strategies, automated execution, real market depth—all
               in one DEX.
             </p>
-            <span className="font-mono bg-gradient-to-r from-[#00FF37] to-[#00E0D0] bg-clip-text text-transparent"></span>
+            <span className="font-mono kek-text-gradient"></span>
           </div>
 
-          <button
+          <Button
+            variant="primary"
+            size="lg"
             onClick={handleStartTrading}
-            className="primary-button px-12 py-6 bg-gradient-to-r from-[#00FF37] to-[#00E0D0] text-black font-bold text-xl w-[200px] h-[35px] rounded-full hover:shadow-2xl hover:shadow-[#00FF37]/30 transition-all duration-300 transform hover:scale-105"
+            className=" py-2 text-xl w-[280px] kek-shadow-primary text-nowrap"
           >
             Start Trading Now
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t bg-black/40 backdrop-blur-sm py-8 px-6 lg:px-8 w-full">
+      <footer className="relative z-10 border-t kek-border kek-bg-card/40 backdrop-blur-sm py-8 px-6 lg:px-8 w-full">
         <div className="flex flex-col md:flex-row justify-between items-end lg:mx-12">
           <div className="flex flex-col gap-3">
             <div className="flex items-center max-md:flex-col max-md:items-end space-x-2 mb-4 md:mb-0">
@@ -228,14 +243,14 @@ export default function LandingPage() {
                   height={50}
                   className=""
                 />
-                <span className="text-2xl font-bold font-mono text-purple-50">
+                <span className="text-2xl font-bold font-mono kek-text-primary">
                   KEK DEX
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="text-purple-200 text-sm flex flex-col items-end justify-end gap-2">
+          <div className="kek-text-secondary text-sm flex flex-col items-end justify-end gap-2">
             <div className="flex items-center gap-4 mb-4">
               <Link href="https://t.me/+1jKPWSYZYQVmYjYx" target="_blank">
                 <Image
@@ -270,12 +285,12 @@ export default function LandingPage() {
             </div>
             <div className="flex items-center mb-4 gap-6 max-md:gap-4 max-md:flex-col max-md:items-end">
               <Link href="/privacy" className=" ">
-                <p className="underline font-mono text-[#00FF37]">
+                <p className="underline font-mono text-kek-green">
                   Privacy Policy
                 </p>
               </Link>
               <Link href="/terms" className=" ">
-                <p className="underline font-mono text-[#00FF37]">
+                <p className="underline font-mono text-kek-green">
                   Terms of Service
                 </p>
               </Link>
@@ -286,7 +301,7 @@ export default function LandingPage() {
               <Link
                 href="https://orderly.network"
                 target="_blank"
-                className="text-purple-100"
+                className="kek-text-primary"
               >
                 Orderly Network
               </Link>

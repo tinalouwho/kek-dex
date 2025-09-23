@@ -19,9 +19,13 @@ const nextConfig: NextConfig = {
         https: require.resolve("https-browserify"),
         os: require.resolve("os-browserify"),
         url: require.resolve("url"),
+        util: require.resolve("util"),
+        global: false, // Use webpack's ProvidePlugin instead
         fs: false,
         net: false,
         tls: false,
+        // Add specific polyfills for LiFi compatibility
+        "crypto-browserify": require.resolve("crypto-browserify"),
       };
 
       // Define global Buffer for browser environment
@@ -31,6 +35,11 @@ const nextConfig: NextConfig = {
         new webpack.ProvidePlugin({
           Buffer: ["buffer", "Buffer"],
           process: "process/browser",
+          global: "globalThis",
+        }),
+        new webpack.DefinePlugin({
+          global: "globalThis",
+          "global.global": "globalThis",
         }),
       ];
     }

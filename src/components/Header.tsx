@@ -3,6 +3,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/kek-ui";
 import { OrderlyWalletConnector } from "./OrderlyWalletConnector";
 
 export default function Header() {
@@ -11,8 +12,15 @@ export default function Header() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const handleStartTrading = () => {
-    console.log("Button clicked, navigating to trading page...");
-    router.push("/en/perp/PERP_ETH_USDC");
+    console.log("Header: Start Trading button clicked");
+    console.log("Header: Current router:", router);
+    console.log("Header: Navigating to /en/perp/PERP_ETH_USDC");
+    try {
+      router.push("/en/perp/PERP_ETH_USDC");
+      console.log("Header: Navigation command sent successfully");
+    } catch (error) {
+      console.error("Header: Navigation error:", error);
+    }
   };
 
   const communityLinks = [
@@ -36,7 +44,7 @@ export default function Header() {
     },
   ];
   return (
-    <div className="header-component bg-black/75 backdrop-blur-sm w-full lg:px-4 px-2 lg:py-2 py-1 flex justify-between items-center relative z-20">
+    <div className="bg-black/25 backdrop-blur-sm w-full lg:px-4 px-2 lg:py-2 py-1 flex justify-between items-center relative z-20">
       <div className="flex items-center lg:space-x-2 ">
         <Link href="/" className="flex items-center lg:space-x-2 ">
           <Image
@@ -53,14 +61,14 @@ export default function Header() {
           <Link
             href="https://kekkoin.com/docs"
             target="_blank"
-            className=" text-purple-200 font-bold"
+            className=" font-bold hover:text-kek-green transition-colors duration-300"
           >
             Documentation
           </Link>
           <Link
             href="https://terminal.kekkoin.com"
             target="_blank"
-            className=" text-purple-200 font-bold"
+            className=" font-bold hover:text-kek-green transition-colors duration-300"
           >
             KEK Terminal
           </Link>
@@ -68,7 +76,7 @@ export default function Header() {
           <Link
             href="https://solscan.io/token/GXkoESRmdKJcQAPJrZCce6YR2bJe33QMC7fNVtTjvirt"
             target="_blank"
-            className=" text-purple-200 font-bold"
+            className="font-bold hover:text-kek-green transition-colors duration-300"
           >
             $KEK Token
           </Link>
@@ -78,7 +86,7 @@ export default function Header() {
             onMouseLeave={() => setShowCommunityPopup(false)}
             onClick={() => setShowCommunityPopup(!showCommunityPopup)}
           >
-            <button className="lg:text-2xl font-mono text-purple-200 font-bold hover:text-[#00FF37] transition-colors duration-300">
+            <button className=" font-bold hover:text-kek-green transition-colors duration-300">
               Community
             </button>
 
@@ -86,9 +94,9 @@ export default function Header() {
             {showCommunityPopup && (
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 pt-2 z-50">
                 {/* Invisible bridge to prevent gap issues */}
-                <div className="w-full h-2 bg-transparent"></div>
+                <div className="w-full h-2 bg-transparent backdrop-blur-sm"></div>
 
-                <div className="bg-black/90 backdrop-blur-sm border border-[#3C3C3C] rounded-xl p-4 shadow-2xl min-w-[200px]">
+                <div className="bg-black-50 backdrop-blur-sm border kek-border rounded-xl p-4 shadow-2xl min-w-[200px]">
                   <div className="flex flex-col gap-3">
                     {communityLinks.map((link, index) => (
                       <Link
@@ -96,7 +104,7 @@ export default function Header() {
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#00FF37]/10 transition-all duration-300 group"
+                        className="flex items-center gap-3 p-2 rounded-lg hover:bg-kek-green/10 transition-all duration-300 group"
                       >
                         <div className="w-8 h-8 relative">
                           <Image
@@ -107,7 +115,7 @@ export default function Header() {
                             className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
                           />
                         </div>
-                        <span className="text-purple-200 font-semibold group-hover:text-[#00FF37] transition-colors duration-300">
+                        <span className="kek-text-secondary font-semibold group-hover:text-kek-green transition-colors duration-300">
                           {link.name}
                         </span>
                       </Link>
@@ -115,7 +123,7 @@ export default function Header() {
                   </div>
 
                   {/* Arrow pointing up */}
-                  <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-black/90 border-l border-t border-[#3C3C3C] rotate-45"></div>
+                  <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 kek-bg-card border-l border-t kek-border rotate-45"></div>
                 </div>
               </div>
             )}
@@ -125,19 +133,21 @@ export default function Header() {
 
       {/* Desktop Connect Wallet & Start Trading Buttons */}
       <div className="flex items-center gap-3 max-[1200px]:hidden">
-        <OrderlyWalletConnector className="px-4 py-2 border border-[#00FF37] text-[#00FF37] font-semibold rounded-full hover:bg-[#00FF37] hover:text-black transition-all duration-300" />
-        <button
+        <OrderlyWalletConnector className="px-4 py-2" />
+        <Button
+          variant="primary"
+          size="md"
           onClick={handleStartTrading}
-          className="header-start-button z-50 hover:cursor-pointer flex items-center justify-center px-6 w-40 h-[35px] py-2 bg-gradient-to-r from-[#00FF37] to-[#00E0D0] text-black font-semibold rounded-full hover:text-black transition-all duration-300 transform hover:scale-105"
+          className="z-50 w-40"
         >
           Start Trading
-        </button>
+        </Button>
       </div>
 
       {/* Mobile Hamburger Menu */}
       <button
         onClick={() => setShowMobileMenu(true)}
-        className="min-[1201px]:hidden text-[#00FF37] transition-colors duration-300 z-50"
+        className="min-[1201px]:hidden text-kek-green transition-colors duration-300 z-50"
       >
         <GiHamburgerMenu size={24} />
       </button>
@@ -150,14 +160,14 @@ export default function Header() {
         >
           {/* Mobile Menu Sheet */}
           <div
-            className="fixed right-0 top-0 h-full w-80 bg-black/75 backdrop-blur-sm border-l border-[#dadada] shadow-2xl transform transition-transform duration-300 ease-out"
+            className="fixed right-0 top-0 h-full w-80 kek-bg-main backdrop-blur-sm border-l kek-border shadow-2xl transform transition-transform duration-300 ease-out"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
             <div className="flex justify-end p-4">
               <button
                 onClick={() => setShowMobileMenu(false)}
-                className="text-[#00FF37] transition-colors duration-300"
+                className="text-kek-green transition-colors duration-300"
               >
                 <svg
                   className="w-6 h-6"
@@ -180,7 +190,7 @@ export default function Header() {
               <Link
                 href="https://kekkoin.com/docs"
                 target="_blank"
-                className="text-purple-200 font-bold text-lg hover:text-[#00FF37] transition-colors duration-300"
+                className="kek-text-secondary font-bold text-lg hover:text-kek-green transition-colors duration-300"
                 onClick={() => setShowMobileMenu(false)}
               >
                 Documentation
@@ -188,7 +198,7 @@ export default function Header() {
               <Link
                 href="https://terminal.kekkoin.com"
                 target="_blank"
-                className="text-purple-200 font-bold text-lg hover:text-[#00FF37] transition-colors duration-300"
+                className="kek-text-secondary font-bold text-lg hover:text-kek-green transition-colors duration-300"
                 onClick={() => setShowMobileMenu(false)}
               >
                 KEK Terminal
@@ -196,7 +206,7 @@ export default function Header() {
               <Link
                 href="https://solscan.io/token/GXkoESRmdKJcQAPJrZCce6YR2bJe33QMC7fNVtTjvirt"
                 target="_blank"
-                className="text-purple-200 font-bold text-lg hover:text-[#00FF37] transition-colors duration-300"
+                className="kek-text-secondary font-bold text-lg hover:text-kek-green transition-colors duration-300"
                 onClick={() => setShowMobileMenu(false)}
               >
                 $KEK Token
@@ -204,24 +214,24 @@ export default function Header() {
 
               {/* Connect Wallet & Start Trading Buttons */}
               <div className="flex flex-col gap-4 pt-4">
-                <OrderlyWalletConnector className="px-4 py-3 border border-[#00FF37] text-[#00FF37] font-semibold rounded-full hover:bg-[#00FF37] hover:text-black transition-all duration-300 text-center">
-                  Connect Wallet
-                </OrderlyWalletConnector>
-                <button
+                <OrderlyWalletConnector className="px-4 py-3 text-center" />
+                <Button
+                  variant="primary"
+                  size="md"
                   onClick={() => {
                     handleStartTrading();
                     setShowMobileMenu(false);
                   }}
-                  className="px-6 py-3 bg-gradient-to-r from-[#00FF37] to-[#00E0D0] text-black font-semibold rounded-full hover:text-black transition-all duration-300 transform hover:scale-105"
+                  className="w-full"
                 >
                   Start Trading
-                </button>
+                </Button>
               </div>
             </div>
 
             {/* Social Links at Bottom */}
             <div className="absolute bottom-6 left-6 right-6">
-              <div className="border-t border-[#3C3C3C] pt-6">
+              <div className="border-t kek-border pt-6">
                 <div className="flex justify-center gap-6">
                   {communityLinks.map((link, index) => (
                     <Link
@@ -229,7 +239,7 @@ export default function Header() {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center w-12 h-12 rounded-full bg-[#3C3C3C]/50 hover:bg-[#00FF37]/20 transition-all duration-300 group"
+                      className="flex items-center justify-center w-12 h-12 rounded-full bg-kek-bg-border/50 hover:bg-kek-green/20 transition-all duration-300 group"
                       onClick={() => setShowMobileMenu(false)}
                     >
                       <div className="w-6 h-6 relative">

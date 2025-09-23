@@ -1,7 +1,8 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  important: true, // This adds !important to all Tailwind utilities to override Orderly CSS
+  // Removed aggressive !important strategy in favor of CSS Layers approach
+  // See src/styles/layers.css for the new layered styling strategy
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -53,8 +54,16 @@ const config: Config = {
         "cyan-400": "#00E0D0",
         "yellow-400": "#FEE107",
         "red-500": "#FF0000",
-        // Proper purple-100 from OKLCH
-        "purple-100": "rgb(240, 171, 252)", // oklch(94.6% 0.033 307.174)
+        // Proper purple colors matching Tailwind defaults
+        "purple-100": "#f3e8ff", // Tailwind purple-100
+        "purple-200": "#e9d5ff", // Tailwind purple-200
+      },
+      // Force generation of text utilities for custom colors
+      textColor: {
+        "kek-green": "#00FF37",
+        "kek-blue": "#00E0D0",
+        "kek-yellow": "#FEE107",
+        "kek-red": "#FF0000",
       },
       animation: {
         gradient: "gradient 3s ease infinite",

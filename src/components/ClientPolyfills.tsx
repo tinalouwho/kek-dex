@@ -12,6 +12,23 @@ if (typeof window !== "undefined") {
   (window as any).Buffer = Buffer;
   (window as any).process = process;
 
+  // Crypto polyfill for Orderly SDK compatibility
+  if (!window.crypto) {
+    const crypto = require("crypto-browserify");
+    (window as any).crypto = {
+      getRandomValues: (arr: any) => {
+        if (crypto.randomBytes) {
+          const bytes = crypto.randomBytes(arr.length);
+          for (let i = 0; i < arr.length; i++) {
+            arr[i] = bytes[i];
+          }
+        }
+        return arr;
+      },
+      subtle: crypto.webcrypto?.subtle,
+    };
+  }
+
   // Enhanced BigInt Buffer methods
   const addBigIntMethods = (proto: any) => {
     if (!proto) return;

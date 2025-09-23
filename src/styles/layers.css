@@ -1,0 +1,309 @@
+/**
+ * CSS Layers Strategy for KEK Terminal
+ * 
+ * This replaces the aggressive !important approach with a layered strategy
+ * that maintains Orderly compatibility while enabling clean KEK customization.
+ */
+
+/* Define CSS Layers in order of specificity (lowest to highest) */
+@layer base, orderly, kek-base, kek-components, kek-utilities;
+
+/* 
+ * BASE LAYER
+ * Foundation styles and CSS resets
+ */
+@layer base {
+  /* Font configuration */
+  :root {
+    --font-mono:
+      "Orbitron", ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+    --font-sans:
+      "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+      sans-serif;
+  }
+
+  /* Custom animations */
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+}
+
+/* 
+ * ORDERLY LAYER
+ * Orderly Network styles are imported here
+ * This layer has higher specificity than base but lower than KEK layers
+ */
+@layer orderly {
+  /* Orderly styles are imported in globals.css */
+  /* This layer declaration ensures proper cascade order */
+}
+
+/* 
+ * KEK BASE LAYER
+ * Core KEK theming and CSS custom properties
+ */
+@layer kek-base {
+  :root {
+    /* KEK Terminal brand colors */
+    --kek-green: 0 255 55; /* #00FF37 */
+    --kek-blue: 0 224 208; /* #00E0D0 */
+    --kek-yellow: 254 225 7; /* #FEE107 */
+    --kek-red: 255 0 0; /* #FF0000 */
+
+    /* Background system */
+    --kek-bg-main: 10 10 10; /* #0A0A0A */
+    --kek-bg-card: 27 27 27; /* #1B1B1B */
+    --kek-bg-border: 60 60 60; /* #3C3C3C */
+
+    /* Text colors - Updated to match Tailwind purple palette */
+    --kek-text-primary: 243 232 255; /* purple-100: #f3e8ff */
+    --kek-text-secondary: 233 213 255; /* purple-200: #e9d5ff */
+
+    /* Component system */
+    --kek-button-primary: linear-gradient(
+      135deg,
+      rgb(var(--kek-green)),
+      rgb(var(--kek-blue))
+    );
+    --kek-button-secondary: linear-gradient(
+      135deg,
+      rgb(var(--kek-blue)),
+      rgb(var(--kek-green))
+    );
+    --kek-shadow-primary: 0 0 20px rgba(0, 255, 55, 0.4);
+    --kek-shadow-blue: 0 0 20px rgba(0, 224, 208, 0.4);
+
+    /* Overrides for Orderly variables */
+    --oui-color-success: var(--kek-green);
+    --oui-color-danger: var(--kek-red);
+    --oui-color-warning: var(--kek-yellow);
+    --oui-color-primary: var(--kek-blue);
+  }
+
+  /* Font system */
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  .font-sans {
+    font-family: var(--font-sans);
+  }
+
+  /* KEK theme scoping */
+  .kek-theme {
+    color-scheme: dark;
+    --background: var(--kek-bg-main);
+    --foreground: var(--kek-text-primary);
+  }
+}
+
+/* 
+ * KEK COMPONENTS LAYER
+ * Reusable KEK UI components
+ */
+@layer kek-components {
+  /* Button system */
+  .kek-button {
+    padding: 0.5rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .kek-button-primary {
+    background: var(--kek-button-primary);
+    color: black;
+  }
+
+  .kek-button-primary:hover {
+    background: linear-gradient(
+      135deg,
+      rgb(var(--kek-blue)),
+      rgb(var(--kek-green))
+    );
+    color: black !important;
+    box-shadow: var(--kek-shadow-primary);
+    transform: scale(1.05);
+  }
+
+  .kek-button-primary:active {
+    transform: scale(0.98);
+  }
+
+  .kek-button-secondary {
+    background: transparent;
+    color: rgb(var(--kek-green));
+    border: 1px solid rgb(var(--kek-green));
+  }
+
+  .kek-button-secondary:hover {
+    background: rgb(var(--kek-green));
+    color: black;
+    box-shadow: var(--kek-shadow-primary);
+  }
+
+  /* Card system */
+  .kek-card {
+    background: rgb(var(--kek-bg-card));
+    border: 1px solid rgb(var(--kek-bg-border));
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+  }
+
+  .kek-card-hover {
+    transition: all 0.3s ease;
+  }
+
+  .kek-card-hover:hover {
+    border-color: rgb(var(--kek-green));
+    box-shadow: var(--kek-shadow-primary);
+  }
+
+  /* Layout components */
+  .kek-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .kek-section {
+    padding: 4rem 0;
+  }
+
+  /* Text styles */
+  .kek-heading {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    background: var(--kek-button-primary);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .kek-text-gradient {
+    background: var(--kek-button-primary);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* 
+ * KEK UTILITIES LAYER
+ * Utility classes and overrides (highest specificity)
+ */
+@layer kek-utilities {
+  /* Component isolation utilities */
+  .kek-scope button:not([class*="oui-"]) {
+    font-family: inherit;
+    line-height: inherit;
+  }
+
+  /* Trading-specific utilities */
+  .kek-buy-button {
+    background: var(--kek-button-primary);
+    color: black;
+  }
+
+  .kek-sell-button {
+    background: linear-gradient(
+      135deg,
+      rgb(var(--kek-red)),
+      rgb(var(--kek-yellow))
+    );
+    color: black;
+  }
+
+  /* Text color utilities */
+  .kek-text-primary {
+    color: rgb(var(--kek-text-primary));
+  }
+
+  .kek-text-secondary {
+    color: rgb(var(--kek-text-secondary));
+  }
+
+  .kek-text-success {
+    color: rgb(var(--kek-green));
+  }
+
+  .kek-text-danger {
+    color: rgb(var(--kek-red));
+  }
+
+  /* Background utilities */
+  .kek-bg-main {
+    background-color: rgb(var(--kek-bg-main));
+  }
+
+  .kek-bg-card {
+    background-color: rgb(var(--kek-bg-card));
+  }
+
+  /* Border utilities */
+  .kek-border {
+    border-color: rgb(var(--kek-bg-border));
+  }
+
+  .kek-border-primary {
+    border-color: rgb(var(--kek-green));
+  }
+
+  /* Shadow utilities */
+  .kek-shadow-primary {
+    box-shadow: var(--kek-shadow-primary);
+  }
+
+  .kek-shadow-blue {
+    box-shadow: var(--kek-shadow-blue);
+  }
+
+  /* Mobile responsive utilities */
+  @media (max-width: 768px) {
+    .kek-button {
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    .kek-card {
+      padding: 1rem;
+    }
+
+    .kek-section {
+      padding: 2rem 0;
+    }
+  }
+}

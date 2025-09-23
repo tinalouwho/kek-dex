@@ -1,11 +1,19 @@
-/* Font imports must come first */
+/* CSS Layers Strategy for KEK Terminal */
+@import "../styles/layers.css";
+
+/* Font imports */
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap");
 
-/* Font configuration is now handled in tailwind.config.ts */
+/* Layer imports in order */
 @import "tailwindcss";
-@import "@orderly.network/ui/dist/styles.css";
 
+/* Orderly styles in the orderly layer */
+@layer orderly {
+  @import "@orderly.network/ui/dist/styles.css";
+}
+
+/* Legacy theme and font imports (will be phased out) */
 @import "../styles/theme.css";
 @import "../styles/fonts.css";
 
@@ -123,71 +131,5 @@
   font-weight: 900 !important;
 }
 
-/* ===== CUSTOM COMPONENT ISOLATION ===== */
-/* This section isolates custom components from Orderly CSS interference */
-
-/* Landing Page Component Scope - Minimal Reset */
-.landing-page {
-  /* Minimal reset for custom buttons - Tailwind's important strategy handles the rest */
-  button:not(.oui-button):not(.oui-button-primary) {
-    font-family: inherit !important;
-    line-height: inherit !important;
-  }
-}
-
-/* Header Component Scope - Minimal Reset */
-.header-component {
-  /* Minimal reset for custom buttons - Tailwind's important strategy handles the rest */
-  button:not(.oui-button):not(.oui-button-primary) {
-    font-family: inherit !important;
-    line-height: inherit !important;
-  }
-}
-
-/* Header button specific styling */
-.header-start-button {
-  background: linear-gradient(to right, #00ff37, #00e0d0) !important;
-  color: black !important;
-  transition: all 0.3s ease !important;
-  cursor: pointer !important;
-  font-weight: 600 !important;
-}
-
-.header-start-button:hover {
-  background: linear-gradient(to right, #00e0d0, #00ff37) !important;
-  box-shadow: 0 0 20px rgba(0, 255, 55, 0.4) !important;
-  color: black !important;
-  transform: scale(1.05) !important;
-}
-
-.header-start-button:active {
-  transform: scale(0.98) !important;
-}
-
-/* Landing page primary button styles (Start Trading) */
-.landing-page .primary-button {
-  font-weight: 600 !important;
-  background: linear-gradient(to right, #00ff37, #00e0d0) !important;
-  color: black !important;
-  border: none !important;
-  transition: all 0.3s ease !important;
-}
-
-.landing-page .primary-button:hover {
-  background: linear-gradient(to right, #00e0d0, #00ff37) !important;
-  box-shadow: 0 0 20px rgba(0, 255, 55, 0.4) !important;
-  transform: scale(1.05) !important;
-}
-
-.landing-page .primary-button:active {
-  transform: scale(0.98) !important;
-}
-
-/* Additional isolation for any other custom components */
-.custom-component {
-  /* Minimal reset - Tailwind's important strategy handles the rest */
-  button:not(.oui-button):not(.oui-button-primary) {
-    font-family: inherit !important;
-    line-height: inherit !important;
-  }
-}
+/* Legacy CSS component isolation classes removed - now using KEK UI component system */
+/* See src/styles/layers.css for the new CSS Layers approach */

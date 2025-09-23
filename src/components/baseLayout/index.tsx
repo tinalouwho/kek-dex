@@ -1,7 +1,8 @@
 "use client";
 
 import { FC } from "react";
-import { Scaffold, ScaffoldProps } from "@orderly.network/ui-scaffold";
+import { ScaffoldProps } from "@orderly.network/ui-scaffold";
+import { KekScaffold } from "@/components/orderly";
 import { PathEnum } from "@/constant";
 import { useNav } from "@/hooks/useNav";
 import { useOrderlyConfig } from "@/hooks/useOrderlyConfig";
@@ -18,7 +19,7 @@ export const BaseLayout: FC<BaseLayoutProps> = (props) => {
   const { onRouteChange } = useNav();
 
   return (
-    <Scaffold
+    <KekScaffold
       mainNavProps={{
         ...config.scaffold.mainNavProps,
         initialMenu: props.initialMenu || PathEnum.Root,
@@ -28,8 +29,9 @@ export const BaseLayout: FC<BaseLayoutProps> = (props) => {
         onRouteChange,
       }}
       classNames={props.classNames}
+      className="kek-base-layout"
     >
       {props.children}
-    </Scaffold>
+    </KekScaffold>
   );
 };
