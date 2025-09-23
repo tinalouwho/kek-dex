@@ -9,8 +9,8 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ConnectWalletButton } from "./ConnectWalletButton";
 import Header from "./Header";
+import { OrderlyWalletConnector } from "./OrderlyWalletConnector";
 
 const Bars = dynamic(() => import("./Bars"), {
   ssr: false,
@@ -73,9 +73,9 @@ export default function LandingPage() {
             >
               Documentation
             </Link>
-            <ConnectWalletButton className="px-8 py-4 border border-[#00FF37] text-[#00FF37] font-semibold text-lg rounded-xl hover:bg-[#00FF37] hover:text-black transition-all duration-300 w-full sm:w-auto">
+            <OrderlyWalletConnector className="px-8 py-4 border border-[#00FF37] text-[#00FF37] font-semibold text-lg rounded-xl hover:bg-[#00FF37] hover:text-black transition-all duration-300 w-full sm:w-auto">
               Connect Wallet
-            </ConnectWalletButton>
+            </OrderlyWalletConnector>
             <button
               onClick={handleStartTrading}
               className="primary-button px-12 py-6 bg-gradient-to-r from-[#00FF37] to-[#00E0D0] text-black font-bold text-xl md:w-[180px] w-full h-[35px] rounded-full hover:shadow-2xl hover:shadow-[#00FF37]/30 transition-all duration-300 transform hover:scale-105"

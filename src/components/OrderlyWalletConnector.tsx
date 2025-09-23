@@ -1,47 +1,43 @@
 "use client";
 
 import React, { useState } from "react";
-import { useLogin, usePrivy } from "@privy-io/react-auth";
-import { useAccount } from "@orderly.network/hooks";
+import { useWalletConnector, useAccount } from "@orderly.network/hooks";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
-interface ConnectWalletButtonProps {
+interface OrderlyWalletConnectorProps {
   className?: string;
   children?: React.ReactNode;
 }
 
-export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
+export const OrderlyWalletConnector: React.FC<OrderlyWalletConnectorProps> = ({
   className = "px-6 py-2 bg-gradient-to-r from-[#00FF37] to-[#00E0D0] text-black font-semibold rounded-full hover:shadow-lg hover:shadow-[#00FF37]/30 transition-all duration-300 transform hover:scale-105",
   children = "Connect Wallet",
 }) => {
-  const { login } = useLogin();
-  const { user, authenticated } = usePrivy();
+  const { connect, connecting, wallet } = useWalletConnector();
   const account = useAccount();
   const { isMobileOrTablet } = useIsMobile();
   const [isConnecting, setIsConnecting] = useState(false);
 
   // Check if user is already connected
-  const isWalletConnected = authenticated && Boolean(account.state?.address);
+  const isWalletConnected = wallet && Boolean(account.state?.address);
 
   const handleConnect = async () => {
-    if (isConnecting) return; // Prevent double clicks
+    if (connecting || isConnecting) return; // Prevent double clicks
 
     try {
       setIsConnecting(true);
-      console.log("🔌 Connecting wallet...");
+      console.log("🔌 Connecting wallet using Orderly...");
       console.log("📱 Device:", isMobileOrTablet ? "Mobile/Tablet" : "Desktop");
-      console.log("🔍 Current auth state:", {
-        authenticated,
-        hasAddress: Boolean(account.state?.address),
+      console.log("🔍 Current wallet state:", {
+        wallet: wallet?.type,
+        address: account.state?.address,
+        status: account.state?.status,
       });
 
-      if (!authenticated) {
-        console.log("🔐 Opening Privy login modal...");
-        // Force the modal to show by calling login directly
-        await login();
-      } else {
-        console.log("✅ Already authenticated, checking account setup...");
-      }
+      // Use Orderly's connect method - this handles both EVM and Solana
+      await connect();
+
+      console.log("✅ Wallet connection initiated through Orderly");
     } catch (error) {
       console.error("❌ Wallet connection failed:", error);
     } finally {
@@ -69,7 +65,7 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
   }
 
   // Show connecting state
-  if (isConnecting) {
+  if (connecting || isConnecting) {
     return (
       <div className={className.replace("hover:scale-105", "cursor-wait")}>
         <span className="text-sm">Connecting...</span>
@@ -84,4 +80,4 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
   );
 };
 
-export default ConnectWalletButton;
+export default OrderlyWalletConnector;

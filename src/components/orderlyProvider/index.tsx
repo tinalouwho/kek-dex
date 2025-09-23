@@ -72,21 +72,10 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
     }
   }, [envConfig.network]);
 
-  // Get Privy configuration from environment
+  // Get Privy configuration from environment - simplified for Orderly
   const privyAppId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
 
-  // Mobile-specific Privy configuration
-  const getPrivyLoginMethods = useCallback((): Array<
-    "wallet" | "email" | "google" | "twitter"
-  > => {
-    if (isMobileOrTablet) {
-      // On mobile, ONLY show wallet to force wallet connections
-      return ["wallet"];
-    }
-    // On desktop, show all options
-    return ["wallet", "email", "google", "twitter"];
-  }, [isMobileOrTablet]);
-
+  // Simplified Privy config - let Orderly handle mobile detection and wallet types
   const getPrivyConfig = useCallback(
     () => ({
       appid: privyAppId!,
@@ -95,19 +84,17 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
           theme: "dark" as const,
           accentColor: "#00FF37" as `#${string}`,
           logo: "/images/keklogo2.png",
-          showWalletLoginFirst: true, // Always show wallet options first
-          landingHeader: isMobileOrTablet
-            ? "Connect Wallet"
-            : "Connect Your Wallet",
-          loginMessage: isMobileOrTablet
-            ? "Choose your wallet to start trading"
-            : "Connect your wallet or create an account",
+          showWalletLoginFirst: true,
+          landingHeader: "Connect Wallet",
+          loginMessage: "Choose your wallet to start trading",
         },
-        loginMethods: getPrivyLoginMethods(),
-        // Simplified for mobile compatibility
+        // Let Orderly determine appropriate login methods based on device
+        loginMethods: ["wallet", "email", "google", "twitter"] as Array<
+          "wallet" | "email" | "google" | "twitter"
+        >,
       },
     }),
-    [privyAppId, isMobileOrTablet, getPrivyLoginMethods],
+    [privyAppId],
   );
 
   // Simple client-side initialization without aggressive WebSocket checks
@@ -121,10 +108,10 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
         "📱 Device type:",
         isMobileOrTablet ? "Mobile/Tablet" : "Desktop",
       );
-      console.log("🔧 Privy login methods:", getPrivyLoginMethods());
+      console.log("🔧 Privy login methods: wallet, email, google, twitter");
       setIsReady(true);
     }
-  }, [privyAppId, envConfig.network, isMobileOrTablet, getPrivyLoginMethods]);
+  }, [privyAppId, envConfig.network, isMobileOrTablet]);
 
   const onLanguageChanged = async (lang: LocaleCode) => {
     window.history.replaceState({}, "", `/${lang}${path}`);
@@ -176,19 +163,9 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
         }
         privyConfig={getPrivyConfig()}
         wagmiConfig={{
-          connectors: [], // Let Privy handle connector configuration for better mobile support
+          // Let Orderly handle connector configuration automatically
+          connectors: undefined,
         }}
-        headerProps={
-          isMobileOrTablet
-            ? {
-                mobile: (
-                  <div className="text-purple-100 text-sm text-center py-2">
-                    Choose your wallet to connect
-                  </div>
-                ),
-              }
-            : undefined
-        }
         solanaConfig={{
           mainnetRpc:
             envConfig.network === "mainnet"
@@ -199,13 +176,10 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
             envConfig.network === "testnet"
               ? "https://api.devnet.solana.com"
               : undefined,
-          wallets: [], // Let the connector auto-detect wallets for mobile compatibility
-          onError: (error: Error, adapter?: unknown) => {
-            console.log(
-              "Solana wallet error (mobile optimized):",
-              error,
-              adapter,
-            );
+          // Let Orderly auto-detect and configure wallets for optimal mobile/desktop support
+          wallets: [],
+          onError: (error: Error) => {
+            console.log("Solana wallet error:", error.message);
           },
         }}
       >
