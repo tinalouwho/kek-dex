@@ -175,7 +175,7 @@ export default function LiFiTerminal() {
     <div className="relative h-full w-full flex flex-col">
       {/* Header with Instructions */}
       <div className="py-4 px-6 ">
-        <div className="flex items-center gap-1.5 mb-2">
+        <div className="flex items-center gap-1.5 ">
           <Image
             src="/images/keklogo2.png"
             alt="KEK logo"
@@ -199,7 +199,7 @@ export default function LiFiTerminal() {
             onClick={() => setInputToken("USDC")}
             className={`py-1 px-4 text-sm font-mono transition-all ${
               inputToken === "USDC"
-                ? "text-black font-bold bg-green-400 rounded-l-md"
+                ? "text-black font-bold bg-[#00FF37] rounded-l-md"
                 : "rounded-l-md text-purple-100 hover:font-bold"
             }`}
           >
@@ -209,7 +209,7 @@ export default function LiFiTerminal() {
             onClick={() => setInputToken("SOL")}
             className={`py-1 px-4 text-sm font-mono transition-all ${
               inputToken === "SOL"
-                ? "text-black font-bold bg-green-400 rounded-r-md"
+                ? "text-black font-bold bg-[#00FF37] rounded-r-md"
                 : "rounded-r-md text-purple-100 hover:font-bold"
             }`}
           >

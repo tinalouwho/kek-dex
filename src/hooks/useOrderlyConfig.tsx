@@ -34,10 +34,11 @@ export const useOrderlyConfig = () => {
             { name: t("common.trading"), href: PathEnum.Root },
             { name: t("common.portfolio"), href: PathEnum.Portfolio },
             { name: t("common.markets"), href: PathEnum.Markets },
-            {
-              name: t("tradingLeaderboard.leaderboard"),
-              href: PathEnum.Leaderboard,
-            },
+            // Temporarily hidden - Leaderboard
+            // {
+            //   name: t("tradingLeaderboard.leaderboard"),
+            //   href: PathEnum.Leaderboard,
+            // },
             { name: "$KEK", href: PathEnum.Kek },
             {
               name: t("tradingRewards.rewards"),
