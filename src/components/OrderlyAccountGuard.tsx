@@ -70,6 +70,15 @@ export const OrderlyAccountGuard: React.FC<OrderlyAccountGuardProps> = ({
         setError(null);
 
         try {
+          // Check crypto availability before proceeding
+          console.log("🔍 Crypto debug:", {
+            hasBuffer: typeof Buffer !== "undefined",
+            hasCrypto: typeof crypto !== "undefined",
+            hasWebCrypto: typeof window.crypto !== "undefined",
+            hasRandomValues:
+              typeof window.crypto?.getRandomValues === "function",
+          });
+
           console.log("🔑 Creating Orderly key pair...");
           // First create the key pair
           await account.createOrderlyKey(true); // true = remember the key
@@ -81,6 +90,12 @@ export const OrderlyAccountGuard: React.FC<OrderlyAccountGuardProps> = ({
           console.log("✅ Orderly account created successfully!");
           setIsCreatingAccount(false);
         } catch (err) {
+          console.error("❌ Account creation error details:", {
+            error: err,
+            message: err instanceof Error ? err.message : "Unknown error",
+            stack: err instanceof Error ? err.stack : undefined,
+          });
+
           // Handle the "account already exists" case - this is actually success!
           if (
             err instanceof Error &&
@@ -89,6 +104,34 @@ export const OrderlyAccountGuard: React.FC<OrderlyAccountGuardProps> = ({
             console.log("✅ Orderly account already exists - continuing");
             setIsCreatingAccount(false);
             setError(null);
+          } else if (
+            err instanceof Error &&
+            (err.message.includes("crypto") ||
+              err.message.includes("internal server error"))
+          ) {
+            // Crypto-related error - might be a timing issue, retry once after a delay
+            console.log(
+              "🔄 Crypto initialization issue detected, retrying in 2 seconds...",
+            );
+            setTimeout(async () => {
+              try {
+                await account.createOrderlyKey(true);
+                await account.createAccount();
+                console.log(
+                  "✅ Orderly account created successfully on retry!",
+                );
+                setIsCreatingAccount(false);
+                setError(null);
+              } catch (retryErr) {
+                console.error("❌ Retry failed:", retryErr);
+                setError(
+                  retryErr instanceof Error
+                    ? retryErr.message
+                    : "Failed to create account after retry",
+                );
+                setIsCreatingAccount(false);
+              }
+            }, 2000);
           } else {
             console.error("❌ Failed to create Orderly account:", err);
             setError(

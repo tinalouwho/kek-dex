@@ -1,3 +1,6 @@
+#!/bin/sh
+export PATH="/opt/homebrew/bin:/Users/tinalouwho/.npm-global/bin:$PATH:./node_modules/.bin"
+
 npx lint-staged
 npm run copyLocales
 git add public/locales/*.json

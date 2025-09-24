@@ -2,7 +2,9 @@
 
 import React, { useState } from "react";
 import { useWalletConnector, useAccount } from "@orderly.network/hooks";
+import { Button } from "@/components/kek-ui";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { cn } from "@/lib/utils";
 
 interface OrderlyWalletConnectorProps {
   className?: string;
@@ -10,7 +12,7 @@ interface OrderlyWalletConnectorProps {
 }
 
 export const OrderlyWalletConnector: React.FC<OrderlyWalletConnectorProps> = ({
-  className = "px-6 py-2 bg-gradient-to-r from-[#00FF37] to-[#00E0D0] text-black font-semibold rounded-full hover:shadow-lg hover:shadow-[#00FF37]/30 transition-all duration-300 transform hover:scale-105",
+  className,
   children = "Connect Wallet",
 }) => {
   const { connect, connecting, wallet } = useWalletConnector();
@@ -48,35 +50,35 @@ export const OrderlyWalletConnector: React.FC<OrderlyWalletConnectorProps> = ({
   // If already connected, show connected state
   if (isWalletConnected) {
     return (
-      <div
-        className={className
-          .replace("hover:scale-105", "cursor-default")
-          .replace(
-            "bg-gradient-to-r from-[#00FF37] to-[#00E0D0] text-black",
-            "bg-green-600 text-white",
-          )}
+      <Button
+        variant="outline"
+        className={cn("cursor-default", className)}
+        disabled
       >
         <span className="text-sm font-mono">
           ✅ {account.state?.address?.slice(0, 6)}...
           {account.state?.address?.slice(-4)}
         </span>
-      </div>
+      </Button>
     );
   }
 
   // Show connecting state
   if (connecting || isConnecting) {
     return (
-      <div className={className.replace("hover:scale-105", "cursor-wait")}>
-        <span className="text-sm">Connecting...</span>
-      </div>
+      <Button
+        variant="primary"
+        isLoading={true}
+        className={className}
+        disabled
+      />
     );
   }
 
   return (
-    <button onClick={handleConnect} className={className}>
+    <Button variant="primary" onClick={handleConnect} className={className}>
       {children}
-    </button>
+    </Button>
   );
 };
 

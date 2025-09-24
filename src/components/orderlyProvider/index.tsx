@@ -17,6 +17,7 @@ import {
   Network,
 } from "@orderly.network/wallet-connector-privy";
 import { OrderlyErrorBoundary } from "@/components/OrderlyErrorBoundary";
+import { KekThemeProvider } from "@/components/theme/KekThemeProvider";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useNav } from "@/hooks/useNav";
 import { useOrderlyConfig } from "@/hooks/useOrderlyConfig";
@@ -189,7 +190,9 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
           brokerName={envConfig.brokerName || "KEK DEX"}
           appIcons={config.orderlyAppProvider.appIcons}
         >
-          <OrderlyErrorBoundary>{props.children}</OrderlyErrorBoundary>
+          <KekThemeProvider>
+            <OrderlyErrorBoundary>{props.children}</OrderlyErrorBoundary>
+          </KekThemeProvider>
         </OrderlyAppProvider>
       </WalletConnectorPrivyProvider>
     </LocaleProvider>
