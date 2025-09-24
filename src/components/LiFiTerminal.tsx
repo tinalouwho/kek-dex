@@ -199,14 +199,9 @@ export default function LiFiTerminal() {
             onClick={() => setInputToken("USDC")}
             className={`py-1 px-4 text-sm font-mono transition-all ${
               inputToken === "USDC"
-                ? "text-black font-bold rounded-l-md"
-                : "rounded-l-md text-purple-100  hover:font-bold"
+                ? "text-black font-bold bg-green-400 rounded-l-md"
+                : "rounded-l-md text-purple-100 hover:font-bold"
             }`}
-            style={
-              inputToken === "USDC"
-                ? { backgroundColor: "rgb(var(--kek-green))" }
-                : {}
-            }
           >
             USDC
           </button>
@@ -214,14 +209,9 @@ export default function LiFiTerminal() {
             onClick={() => setInputToken("SOL")}
             className={`py-1 px-4 text-sm font-mono transition-all ${
               inputToken === "SOL"
-                ? "text-black font-bold rounded-r-md"
-                : "rounded-r-md text-purple-100  hover:font-bold"
+                ? "text-black font-bold bg-green-400 rounded-r-md"
+                : "rounded-r-md text-purple-100 hover:font-bold"
             }`}
-            style={
-              inputToken === "SOL"
-                ? { backgroundColor: "rgb(var(--kek-green))" }
-                : {}
-            }
           >
             SOL
           </button>

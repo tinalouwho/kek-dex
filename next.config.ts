@@ -6,6 +6,16 @@ const nextConfig: NextConfig = {
     // Fix Module not found: Can't resolve 'pino-pretty' warning
     config.externals = [...config.externals, "pino-pretty"];
 
+    // Add webpack DefinePlugin for both server and client
+    const webpack = require("webpack");
+    config.plugins = [
+      ...config.plugins,
+      new webpack.DefinePlugin({
+        "typeof globalThis": JSON.stringify("object"),
+        "typeof global": JSON.stringify("object"),
+      }),
+    ];
+
     // Only add client-side polyfills
     if (!isServer) {
       // Add Node.js polyfills for Solana compatibility (client-side only)
@@ -21,6 +31,7 @@ const nextConfig: NextConfig = {
         url: require.resolve("url"),
         util: require.resolve("util"),
         global: false, // Use webpack's ProvidePlugin instead
+        globalThis: false, // Let webpack handle globalThis
         fs: false,
         net: false,
         tls: false,
@@ -29,19 +40,14 @@ const nextConfig: NextConfig = {
       };
 
       // Define global Buffer for browser environment
-      const webpack = require("webpack");
-      config.plugins = [
-        ...config.plugins,
+      config.plugins.push(
         new webpack.ProvidePlugin({
           Buffer: ["buffer", "Buffer"],
           process: "process/browser",
           global: "globalThis",
+          globalThis: "globalThis",
         }),
-        new webpack.DefinePlugin({
-          global: "globalThis",
-          "global.global": "globalThis",
-        }),
-      ];
+      );
     }
 
     return config;
