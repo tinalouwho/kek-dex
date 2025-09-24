@@ -46,38 +46,70 @@ if (typeof window !== "undefined") {
     // Ignore if navigator is read-only
   }
 
-  // Enhanced crypto polyfill for Orderly SDK compatibility
-  if (!window.crypto || !window.crypto.getRandomValues) {
-    const crypto = require("crypto-browserify");
-
+  // Enhanced crypto polyfill - MUST be available before any wallet code loads
+  const setupCrypto = () => {
     const getRandomValues = (arr: any) => {
-      if (crypto.randomBytes) {
-        const bytes = crypto.randomBytes(arr.length);
-        for (let i = 0; i < arr.length; i++) {
-          arr[i] = bytes[i];
+      // Try native crypto first
+      if (
+        window.crypto &&
+        window.crypto.getRandomValues &&
+        typeof window.crypto.getRandomValues === "function"
+      ) {
+        try {
+          return window.crypto.getRandomValues(arr);
+        } catch (e) {
+          // Fall through to alternatives
         }
-      } else {
-        // Fallback using Math.random (less secure but functional)
-        for (let i = 0; i < arr.length; i++) {
-          arr[i] = Math.floor(Math.random() * 256);
+      }
+
+      // Try crypto-browserify
+      try {
+        const crypto = require("crypto-browserify");
+        if (crypto.randomBytes) {
+          const bytes = crypto.randomBytes(arr.length);
+          for (let i = 0; i < arr.length; i++) {
+            arr[i] = bytes[i];
+          }
+          return arr;
         }
+      } catch (e) {
+        // crypto-browserify failed, use Math.random fallback
+      }
+
+      // Fallback using Math.random (less secure but functional)
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = Math.floor(Math.random() * 256);
       }
       return arr;
     };
 
+    // Create or patch crypto object
     if (!window.crypto) {
-      (window as any).crypto = {
-        getRandomValues,
-        subtle: crypto.webcrypto?.subtle,
-      };
-    } else if (!window.crypto.getRandomValues) {
-      window.crypto.getRandomValues = getRandomValues;
+      (window as any).crypto = {};
     }
 
-    // Ensure crypto is available globally
-    (window as any).global.crypto = window.crypto;
-    globalThis.crypto = window.crypto;
-  }
+    // Always override getRandomValues to ensure it works
+    window.crypto.getRandomValues = getRandomValues;
+
+    // Make crypto available globally for libraries that expect it
+    try {
+      (window as any).global.crypto = window.crypto;
+      globalThis.crypto = window.crypto;
+    } catch (e) {
+      // Ignore if globalThis is read-only
+    }
+
+    // Test the implementation
+    try {
+      const testArray = new Uint8Array(8);
+      window.crypto.getRandomValues(testArray);
+      console.log("✅ crypto.getRandomValues is working");
+    } catch (e) {
+      console.error("❌ crypto.getRandomValues test failed:", e);
+    }
+  };
+
+  setupCrypto();
 
   // Enhanced BigInt Buffer methods
   const addBigIntMethods = (proto: any) => {

@@ -163,6 +163,7 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
             width={100}
             height={100}
             className="animate-pulse"
+            priority
           />
           <p className="text-purple-100 font-bold font-mono text-2xl text-center">
             {!privyAppId ? "Configuring Wallet..." : "Initializing KEK DEX..."}
