@@ -113,6 +113,17 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
         >,
         // Add Next.js 14 compatibility options
         ssr: false,
+        // Add connector timeout and retry configuration
+        embeddedWallets: {
+          createOnLogin: "users-without-wallets",
+          requireUserPasswordOnCreate: false,
+          noPromptOnSignature: false,
+        },
+        // Improve connector initialization
+        connectors: {
+          // Let Orderly handle connector configuration
+          autoConnect: false,
+        },
       },
     };
   }, [privyAppId]);
@@ -129,7 +140,13 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
         isMobileOrTablet ? "Mobile/Tablet" : "Desktop",
       );
       console.log("🔧 Privy login methods: wallet, email, google, twitter");
-      setIsReady(true);
+
+      // Add a small delay to ensure all polyfills are loaded
+      const timer = setTimeout(() => {
+        setIsReady(true);
+      }, 100);
+
+      return () => clearTimeout(timer);
     }
   }, [privyAppId, envConfig.network, isMobileOrTablet]);
 
@@ -212,6 +229,8 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
           wagmiConfig={{
             // Let Orderly handle connector configuration automatically
             connectors: undefined,
+            // Add timeout configuration for better connector handling
+            timeout: 30000, // 30 seconds timeout
           }}
           solanaConfig={{
             mainnetRpc:

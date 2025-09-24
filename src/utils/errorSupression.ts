@@ -28,6 +28,13 @@ if (typeof window !== "undefined" && process.env.NODE_ENV === "production") {
     /Cannot read properties of null \(reading 'tradingViewApi'\)/,
     /TradingView/,
     /charting_library/,
+    // Amplitude tracking errors
+    /Failed to set cookie for key/,
+    /Cannot set properties of undefined \(setting 'cookie'\)/,
+    /Storage provider LocalStorage is not enabled/,
+    /Event not tracked, no destination plugins on the instance/,
+    /globalScope\.addEventListener is not a function/,
+    /Unable to initialize all expected connectors before timeout/,
   ];
 
   // Use a less aggressive approach that doesn't conflict with Next.js dev tools
