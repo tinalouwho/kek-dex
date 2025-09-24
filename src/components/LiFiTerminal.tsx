@@ -16,6 +16,10 @@ const USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
 // Solana chain ID
 const SOLANA_CHAIN_ID = 1151111081099710; // Solana mainnet chain ID for LI.FI
 
+// KEK Terminal proxy URL - centralized Li.Fi proxy
+const KEK_TERMINAL_API_URL =
+  process.env.NEXT_PUBLIC_KEK_TERMINAL_URL || "http://localhost:3000";
+
 // Dynamically import LI.FI widget to avoid SSR issues
 const LiFiWidget = dynamic(
   () => import("@lifi/widget").then((mod) => ({ default: mod.LiFiWidget })),
@@ -69,12 +73,13 @@ export default function LiFiTerminal() {
       fromToken: inputToken === "USDC" ? USDC_MINT : SOL_MINT,
       toToken: KEK_MINT,
       direction: `${inputToken} → KEK`,
+      proxyUrl: KEK_TERMINAL_API_URL,
     });
   }, [inputToken]);
 
   // LI.FI widget configuration
   const widgetConfig: WidgetConfig = {
-    integrator: "kek-terminal",
+    integrator: "new-kek-dex",
     fromChain: SOLANA_CHAIN_ID,
     toChain: SOLANA_CHAIN_ID,
     fromToken: inputToken === "USDC" ? USDC_MINT : SOL_MINT,
@@ -90,18 +95,36 @@ export default function LiFiTerminal() {
     slippage: 0.005, // 0.5%
     // Set reasonable amount limits
     fromAmount: "1",
+    // SDK configuration to use KEK Terminal as proxy
+    sdkConfig: {
+      routeOptions: {
+        maxPriceImpact: 0.4,
+      },
+      // Use KEK Terminal as the centralized proxy for all Li.Fi API calls
+      apiUrl: KEK_TERMINAL_API_URL,
+      rpcUrls: {
+        [SOLANA_CHAIN_ID]: [
+          process.env.NEXT_PUBLIC_SOLANA_RPC_URL ||
+            "https://api.mainnet-beta.solana.com",
+        ],
+      },
+      // Additional config options
+      debug: true,
+    },
     theme: {
       container: {
-        border: "1px solid rgba(34, 197, 94, 0.3)",
+        border: "1px solid rgba(34, 197, 94, 0.2)",
         borderRadius: "12px",
         backgroundColor: "rgba(15, 15, 15, 0.9)",
+        boxShadow:
+          "0 1px 2px 0 rgba(0, 255, 55, 0.1), 0 1px 3px 0 rgba(0, 255, 55, 0.05)",
       },
       palette: {
         primary: {
-          main: "#22c55e", // green-500
+          main: "#d8b4fe", // purple-300
         },
         secondary: {
-          main: "#a855f7", // purple-500
+          main: "#f3e8ff", // purple-100
         },
         background: {
           default: "#0f0f0f",
@@ -109,7 +132,7 @@ export default function LiFiTerminal() {
         },
         text: {
           primary: "#ffffff",
-          secondary: "#a855f7",
+          secondary: "#f3e8ff",
         },
         grey: {
           800: "#1a1a1a",
@@ -152,7 +175,7 @@ export default function LiFiTerminal() {
     <div className="relative h-full w-full flex flex-col">
       {/* Header with Instructions */}
       <div className="py-4 px-6 ">
-        <div className="flex items-center gap-3 ">
+        <div className="flex items-center gap-1.5 mb-2">
           <Image
             src="/images/keklogo2.png"
             alt="KEK logo"
@@ -160,24 +183,30 @@ export default function LiFiTerminal() {
             height={35}
             className="rounded-full"
           />
-          <h3 className="kek-text-success font-mono ">KEK Token Swap</h3>
+          <h3 className="text-purple-100 font-mono">KEK Token Swap</h3>
         </div>
-        <p className="text-xs kek-text-secondary ">
-          Swap USDC or SOL for KEK tokens using LiFi&apos;s cross-chain protocol
+        <p className="text-xs text-purple-200 mb-2">
+          Swap USDC or SOL for <span className="font-mono">$&nbsp;KEK</span>{" "}
+          tokens using LiFi&apos;s cross-chain protocol.
         </p>
       </div>
 
       {/* Token Selector */}
       <div className="flex justify-center rounded-md bg-black/50 items-center gap-2 m-2 p-2">
         <p className="text-sm text-purple-200 mr-4">Buy KEK with:</p>
-        <div className="flex items-center rounded-md  divide-x divide-green-500/10">
+        <div className="flex items-center rounded-md border border-green-500/20 divide-x divide-green-500/20">
           <button
             onClick={() => setInputToken("USDC")}
             className={`py-1 px-4 text-sm font-mono transition-all ${
               inputToken === "USDC"
-                ? "kek-text-success bg-green-500/10 rounded-l-md"
-                : "rounded-l-md text-purple-200 bg-[#171717] kek-text-success hover:font-bold"
+                ? "text-black font-bold rounded-l-md"
+                : "rounded-l-md text-purple-100  hover:font-bold"
             }`}
+            style={
+              inputToken === "USDC"
+                ? { backgroundColor: "rgb(var(--kek-green))" }
+                : {}
+            }
           >
             USDC
           </button>
@@ -185,9 +214,14 @@ export default function LiFiTerminal() {
             onClick={() => setInputToken("SOL")}
             className={`py-1 px-4 text-sm font-mono transition-all ${
               inputToken === "SOL"
-                ? "kek-text-success bg-green-500/10 rounded-r-md"
-                : "rounded-r-md kek-text-secondary hover:font-bold"
+                ? "text-black font-bold rounded-r-md"
+                : "rounded-r-md text-purple-100  hover:font-bold"
             }`}
+            style={
+              inputToken === "SOL"
+                ? { backgroundColor: "rgb(var(--kek-green))" }
+                : {}
+            }
           >
             SOL
           </button>
@@ -200,15 +234,22 @@ export default function LiFiTerminal() {
           <LiFiWidget
             key={`lifi-widget-${widgetKey}-${inputToken}`}
             config={widgetConfig}
-            integrator="kek-terminal"
+            integrator="new-kek-dex"
           />
         </ClientOnly>
       </div>
 
+      {/* Powered by notice */}
+      <div className="p-2 text-center">
+        <p className="text-xs text-purple-300/60">
+          Powered by KEK Terminal • Fees benefit KEK ecosystem
+        </p>
+      </div>
+
       {/* Troubleshooting Footer */}
-      <div className="p-3 bg-black/30 border-t border-green-500/20 text-xs kek-text-secondary">
+      <div className="p-3 bg-black/30 border-t border-green-500/20 text-xs text-purple-200">
         <details className="cursor-pointer">
-          <summary className="font-mono kek-text-success mb-2">
+          <summary className="font-mono text-purple-100 mb-2">
             🔧 Troubleshooting
           </summary>
           <div className="space-y-1 pl-4">
@@ -217,8 +258,8 @@ export default function LiFiTerminal() {
               liquidity. Try smaller amounts.
             </p>
             <p>
-              • <strong>Rate limit errors:</strong> Wait 30 seconds and click
-              Refresh above.
+              • <strong>Rate limit errors:</strong> Using shared KEK Terminal
+              proxy - should have higher limits now.
             </p>
             <p>
               • <strong>Widget stuck:</strong> Switch between USDC/SOL tokens to
