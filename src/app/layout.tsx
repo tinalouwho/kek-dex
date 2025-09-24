@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Orbitron, Inter } from "next/font/google";
 import ClientPolyfills from "@/components/ClientPolyfills";
+import { NextJsErrorOverlayFix } from "@/components/NextJsErrorOverlayFix";
 import { OrderlyProvider } from "@/components/orderlyProvider";
 import "./globals.css";
 
@@ -39,6 +40,7 @@ export default async function RootLayout(props: RootLayoutProps) {
         <link rel="icon" type="image/png" href="/images/favicon.png" />
       </head>
       <body>
+        <NextJsErrorOverlayFix />
         <ClientPolyfills />
         <OrderlyProvider>{props.children}</OrderlyProvider>
       </body>

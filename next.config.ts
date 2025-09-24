@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  // Note: devIndicators are deprecated in Next.js 15.4.6, handled by NextJsErrorOverlayFix component instead
   webpack: (config, { isServer }) => {
     // Fix Module not found: Can't resolve 'pino-pretty' warning
     config.externals = [...config.externals, "pino-pretty"];

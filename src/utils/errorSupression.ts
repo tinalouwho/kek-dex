@@ -3,11 +3,8 @@
  * These are usually safe to ignore in production
  */
 
-if (typeof window !== "undefined") {
-  // Store original console methods
-  const originalError = console.error;
-  const originalWarn = console.warn;
-
+// Only apply suppression in production to avoid conflicts with Next.js dev tools
+if (typeof window !== "undefined" && process.env.NODE_ENV === "production") {
   // List of warning patterns to suppress
   const suppressPatterns = [
     /React does not recognize the `tipFormatter` prop/,
@@ -33,45 +30,36 @@ if (typeof window !== "undefined") {
     /charting_library/,
   ];
 
-  // Override the console methods more aggressively to handle third-party interceptors
-  const suppressError = (...args: any[]) => {
-    const message = args.join(" ");
-    const shouldSuppress = suppressPatterns.some((pattern) =>
-      pattern.test(message),
-    );
+  // Use a less aggressive approach that doesn't conflict with Next.js dev tools
+  const originalConsoleError = console.error;
+  const originalConsoleWarn = console.warn;
 
-    if (!shouldSuppress) {
-      originalError.apply(console, args);
-    }
-  };
+  // Only override if we're not already overridden by Next.js dev tools
+  if (!console.error.toString().includes("intercept")) {
+    console.error = (...args: any[]) => {
+      const message = args.join(" ");
+      const shouldSuppress = suppressPatterns.some((pattern) =>
+        pattern.test(message),
+      );
 
-  const suppressWarn = (...args: any[]) => {
-    const message = args.join(" ");
-    const shouldSuppress = suppressPatterns.some((pattern) =>
-      pattern.test(message),
-    );
+      if (!shouldSuppress) {
+        originalConsoleError(...args);
+      }
+    };
+  }
 
-    if (!shouldSuppress) {
-      originalWarn.apply(console, args);
-    }
-  };
+  if (!console.warn.toString().includes("intercept")) {
+    console.warn = (...args: any[]) => {
+      const message = args.join(" ");
+      const shouldSuppress = suppressPatterns.some((pattern) =>
+        pattern.test(message),
+      );
 
-  // Set initial console overrides
-  console.error = suppressError;
-  console.warn = suppressWarn;
-
-  // Set up interval to re-override console methods in case they get overridden by other libraries
-  const ensureSuppressionActive = () => {
-    if (console.error !== suppressError) {
-      console.error = suppressError;
-    }
-    if (console.warn !== suppressWarn) {
-      console.warn = suppressWarn;
-    }
-  };
-
-  // Re-check every 100ms to ensure our suppression stays active
-  setInterval(ensureSuppressionActive, 100);
+      if (!shouldSuppress) {
+        originalConsoleWarn(...args);
+      }
+    };
+  }
 
   // Global error handler for uncaught errors
   window.addEventListener("error", (event) => {
@@ -126,5 +114,60 @@ if (typeof window !== "undefined") {
     }
   });
 
-  console.log("🛡️ Error suppression and handling enabled");
+  console.log("🛡️ Error suppression and handling enabled for production");
+} else if (typeof window !== "undefined") {
+  // In development, just handle critical errors without console suppression
+  window.addEventListener("error", (event) => {
+    // Handle DecimalError specifically
+    if (
+      event.error?.message?.includes("DecimalError") ||
+      event.error?.message?.includes("Invalid argument: undefined")
+    ) {
+      console.log(
+        "🔧 DecimalError caught globally - likely market data timing issue",
+      );
+      event.preventDefault(); // Prevent error from crashing the app
+
+      // Show user-friendly message instead of crash
+      const errorMessage = document.createElement("div");
+      errorMessage.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.9);
+        color: #e9d5ff;
+        padding: 20px;
+        border-radius: 8px;
+        z-index: 10000;
+        text-align: center;
+        font-family: monospace;
+      `;
+      errorMessage.innerHTML = `
+        <h3 style="color: #00FF37; margin-bottom: 10px;">Loading Market Data...</h3>
+        <p>Please wait while we initialize the trading interface.</p>
+        <button onclick="window.location.reload()" style="
+          margin-top: 15px;
+          padding: 8px 16px;
+          background: linear-gradient(to right, #00FF37, #00E0D0);
+          color: black;
+          border: none;
+          border-radius: 20px;
+          cursor: pointer;
+          font-weight: bold;
+        ">Reload</button>
+      `;
+
+      document.body.appendChild(errorMessage);
+
+      // Auto-reload after 3 seconds
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+
+      return;
+    }
+  });
+
+  console.log("🔧 Development mode - critical error handling only");
 }

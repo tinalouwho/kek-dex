@@ -12,6 +12,17 @@ if (typeof window !== "undefined") {
   (window as any).Buffer = Buffer;
   (window as any).process = process;
 
+  // Ensure fetch is available globally (some libraries expect it)
+  if (!window.fetch) {
+    console.warn(
+      "⚠️ window.fetch not available, this may cause issues with some libraries",
+    );
+  } else {
+    // Make fetch available in global scope for libraries that expect it there
+    (window as any).global.fetch = window.fetch;
+    globalThis.fetch = window.fetch;
+  }
+
   // Crypto polyfill for Orderly SDK compatibility
   if (!window.crypto) {
     const crypto = require("crypto-browserify");
