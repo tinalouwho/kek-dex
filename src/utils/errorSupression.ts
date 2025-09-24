@@ -35,6 +35,10 @@ if (typeof window !== "undefined" && process.env.NODE_ENV === "production") {
     /Event not tracked, no destination plugins on the instance/,
     /globalScope\.addEventListener is not a function/,
     /Unable to initialize all expected connectors before timeout/,
+    // Nested button warnings from Orderly UI components
+    /cannot be a descendant of <button>/,
+    /cannot contain a nested <button>/,
+    /This will cause a hydration error/,
   ];
 
   // Use a less aggressive approach that doesn't conflict with Next.js dev tools

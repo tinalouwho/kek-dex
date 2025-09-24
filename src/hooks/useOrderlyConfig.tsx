@@ -56,9 +56,10 @@ export const useOrderlyConfig = () => {
                   description: t("extend.affiliate.description"),
                 },
                 {
-                  name: t("extend.staking"),
-                  href: "https://app.orderly.network/staking",
-                  description: t("extend.staking.description"),
+                  name: "Stake $KEK",
+                  href: "https://terminal.kekkoin.com/stake-kek",
+                  description:
+                    "Stake your KEK tokens to unlock premium trading features and enhanced benefits",
                   target: "_blank",
                   icon: <OrderlyIcon size={14} />,
                   activeIcon: <OrderlyActiveIcon size={14} />,
