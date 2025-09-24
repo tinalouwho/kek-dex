@@ -76,10 +76,28 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
   // Get Privy configuration from environment - simplified for Orderly
   const privyAppId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
 
+  // Debug Privy configuration
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      console.log(
+        "🔍 Privy App ID:",
+        privyAppId ? "✅ Configured" : "❌ Missing",
+      );
+      if (!privyAppId) {
+        console.error(
+          "❌ NEXT_PUBLIC_PRIVY_APP_ID is required for wallet functionality",
+        );
+      }
+    }
+  }, [privyAppId]);
+
   // Simplified Privy config - let Orderly handle mobile detection and wallet types
-  const getPrivyConfig = useCallback(
-    () => ({
-      appid: privyAppId!,
+  const getPrivyConfig = useCallback(() => {
+    if (!privyAppId) {
+      throw new Error("Privy App ID is required");
+    }
+    return {
+      appid: privyAppId,
       config: {
         appearance: {
           theme: "dark" as const,
@@ -93,10 +111,11 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
         loginMethods: ["wallet", "email", "google", "twitter"] as Array<
           "wallet" | "email" | "google" | "twitter"
         >,
+        // Add Next.js 14 compatibility options
+        ssr: false,
       },
-    }),
-    [privyAppId],
-  );
+    };
+  }, [privyAppId]);
 
   // Simple client-side initialization without aggressive WebSocket checks
   useEffect(() => {
@@ -134,7 +153,7 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
     }
   }, [pathname]);
 
-  if (!isReady) {
+  if (!isReady || !privyAppId) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-black">
         <div className="text-purple-100 font-bold font-mono flex flex-col items-center justify-center  text-2xl text-center">
@@ -146,8 +165,13 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
             className="animate-pulse"
           />
           <p className="text-purple-100 font-bold font-mono text-2xl text-center">
-            Initializing KEK DEX...
+            {!privyAppId ? "Configuring Wallet..." : "Initializing KEK DEX..."}
           </p>
+          {!privyAppId && (
+            <p className="text-red-400 text-sm mt-2">
+              Missing Privy App ID configuration
+            </p>
+          )}
         </div>
       </div>
     );
@@ -158,43 +182,65 @@ const OrderlyProvider: FC<{ children: ReactNode }> = (props) => {
       onLanguageChanged={onLanguageChanged}
       backend={{ loadPath }}
     >
-      <WalletConnectorPrivyProvider
-        network={
-          envConfig.network === "mainnet" ? Network.mainnet : Network.testnet
+      <OrderlyErrorBoundary
+        fallback={
+          <div className="flex items-center justify-center min-h-screen bg-black">
+            <div className="max-w-md w-full bg-red-900/20 border border-red-600 rounded-lg p-6">
+              <h2 className="text-xl font-bold text-red-400 mb-2">
+                Wallet Connection Error
+              </h2>
+              <p className="text-gray-300 mb-4">
+                Failed to initialize wallet provider. Please check your
+                configuration.
+              </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+              >
+                Reload Page
+              </button>
+            </div>
+          </div>
         }
-        privyConfig={getPrivyConfig()}
-        wagmiConfig={{
-          // Let Orderly handle connector configuration automatically
-          connectors: undefined,
-        }}
-        solanaConfig={{
-          mainnetRpc:
-            envConfig.network === "mainnet"
-              ? process.env.NEXT_PUBLIC_SOLANA_RPC_URL ||
-                "https://api.mainnet-beta.solana.com"
-              : undefined,
-          devnetRpc:
-            envConfig.network === "testnet"
-              ? "https://api.devnet.solana.com"
-              : undefined,
-          // Let Orderly auto-detect and configure wallets for optimal mobile/desktop support
-          wallets: [],
-          onError: (error: Error) => {
-            console.log("Solana wallet error:", error.message);
-          },
-        }}
       >
-        <OrderlyAppProvider
-          brokerId={envConfig.brokerId}
-          networkId={envConfig.network as "mainnet" | "testnet"}
-          brokerName={envConfig.brokerName || "KEK DEX"}
-          appIcons={config.orderlyAppProvider.appIcons}
+        <WalletConnectorPrivyProvider
+          network={
+            envConfig.network === "mainnet" ? Network.mainnet : Network.testnet
+          }
+          privyConfig={getPrivyConfig()}
+          wagmiConfig={{
+            // Let Orderly handle connector configuration automatically
+            connectors: undefined,
+          }}
+          solanaConfig={{
+            mainnetRpc:
+              envConfig.network === "mainnet"
+                ? process.env.NEXT_PUBLIC_SOLANA_RPC_URL ||
+                  "https://api.mainnet-beta.solana.com"
+                : undefined,
+            devnetRpc:
+              envConfig.network === "testnet"
+                ? "https://api.devnet.solana.com"
+                : undefined,
+            // Let Orderly auto-detect and configure wallets for optimal mobile/desktop support
+            wallets: [],
+            onError: (error: Error) => {
+              console.log("Solana wallet error:", error.message);
+            },
+          }}
         >
-          <KekThemeProvider>
-            <OrderlyErrorBoundary>{props.children}</OrderlyErrorBoundary>
-          </KekThemeProvider>
-        </OrderlyAppProvider>
-      </WalletConnectorPrivyProvider>
+          <OrderlyAppProvider
+            brokerId={envConfig.brokerId}
+            networkId={envConfig.network as "mainnet" | "testnet"}
+            brokerName={envConfig.brokerName || "KEK DEX"}
+            appIcons={config.orderlyAppProvider.appIcons}
+          >
+            <KekThemeProvider>
+              <OrderlyErrorBoundary>{props.children}</OrderlyErrorBoundary>
+            </KekThemeProvider>
+          </OrderlyAppProvider>
+        </WalletConnectorPrivyProvider>
+      </OrderlyErrorBoundary>
     </LocaleProvider>
   );
 };

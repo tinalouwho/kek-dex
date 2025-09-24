@@ -23,21 +23,50 @@ if (typeof window !== "undefined") {
     globalThis.fetch = window.fetch;
   }
 
-  // Crypto polyfill for Orderly SDK compatibility
-  if (!window.crypto) {
+  // Fix globalScope issues for analytics libraries
+  if (!(window as any).globalScope) {
+    (window as any).globalScope = window;
+  }
+
+  // Ensure document is available globally
+  (window as any).global.document = window.document;
+  globalThis.document = window.document;
+
+  // Ensure navigator is available globally
+  (window as any).global.navigator = window.navigator;
+  globalThis.navigator = window.navigator;
+
+  // Enhanced crypto polyfill for Orderly SDK compatibility
+  if (!window.crypto || !window.crypto.getRandomValues) {
     const crypto = require("crypto-browserify");
-    (window as any).crypto = {
-      getRandomValues: (arr: any) => {
-        if (crypto.randomBytes) {
-          const bytes = crypto.randomBytes(arr.length);
-          for (let i = 0; i < arr.length; i++) {
-            arr[i] = bytes[i];
-          }
+
+    const getRandomValues = (arr: any) => {
+      if (crypto.randomBytes) {
+        const bytes = crypto.randomBytes(arr.length);
+        for (let i = 0; i < arr.length; i++) {
+          arr[i] = bytes[i];
         }
-        return arr;
-      },
-      subtle: crypto.webcrypto?.subtle,
+      } else {
+        // Fallback using Math.random (less secure but functional)
+        for (let i = 0; i < arr.length; i++) {
+          arr[i] = Math.floor(Math.random() * 256);
+        }
+      }
+      return arr;
     };
+
+    if (!window.crypto) {
+      (window as any).crypto = {
+        getRandomValues,
+        subtle: crypto.webcrypto?.subtle,
+      };
+    } else if (!window.crypto.getRandomValues) {
+      window.crypto.getRandomValues = getRandomValues;
+    }
+
+    // Ensure crypto is available globally
+    (window as any).global.crypto = window.crypto;
+    globalThis.crypto = window.crypto;
   }
 
   // Enhanced BigInt Buffer methods
@@ -109,7 +138,33 @@ if (typeof window !== "undefined") {
     addBigIntMethods(Uint8Array.prototype);
   }
 
-  console.log("✅ Buffer BigInt methods patched immediately on module load");
+  // Add missing addEventListener for globalScope
+  if (
+    (window as any).globalScope &&
+    !(window as any).globalScope.addEventListener
+  ) {
+    (window as any).globalScope.addEventListener =
+      window.addEventListener.bind(window);
+    (window as any).globalScope.removeEventListener =
+      window.removeEventListener.bind(window);
+  }
+
+  // Ensure location is available globally
+  (window as any).global.location = window.location;
+  globalThis.location = window.location;
+
+  // Add polyfill for missing cookie access
+  if (!document.cookie && typeof document !== "undefined") {
+    Object.defineProperty(document, "cookie", {
+      get: () => "",
+      set: () => {},
+      configurable: true,
+    });
+  }
+
+  console.log(
+    "✅ Buffer BigInt methods and browser APIs patched immediately on module load",
+  );
 }
 
 export default function ClientPolyfills() {
