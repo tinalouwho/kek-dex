@@ -28,13 +28,23 @@ if (typeof window !== "undefined") {
     (window as any).globalScope = window;
   }
 
-  // Ensure document is available globally
-  (window as any).global.document = window.document;
-  globalThis.document = window.document;
+  // Ensure document is available globally (only if not already set)
+  try {
+    if (!(window as any).global.document) {
+      (window as any).global.document = window.document;
+    }
+  } catch (e) {
+    // Ignore if document is read-only
+  }
 
-  // Ensure navigator is available globally
-  (window as any).global.navigator = window.navigator;
-  globalThis.navigator = window.navigator;
+  // Ensure navigator is available globally (only if not already set)
+  try {
+    if (!(window as any).global.navigator) {
+      (window as any).global.navigator = window.navigator;
+    }
+  } catch (e) {
+    // Ignore if navigator is read-only
+  }
 
   // Enhanced crypto polyfill for Orderly SDK compatibility
   if (!window.crypto || !window.crypto.getRandomValues) {
@@ -149,17 +159,29 @@ if (typeof window !== "undefined") {
       window.removeEventListener.bind(window);
   }
 
-  // Ensure location is available globally
-  (window as any).global.location = window.location;
-  globalThis.location = window.location;
+  // Ensure location is available globally (only if not already set)
+  try {
+    if (!(window as any).global.location) {
+      (window as any).global.location = window.location;
+    }
+  } catch (e) {
+    // Ignore if location is read-only
+  }
 
   // Add polyfill for missing cookie access
-  if (!document.cookie && typeof document !== "undefined") {
-    Object.defineProperty(document, "cookie", {
-      get: () => "",
-      set: () => {},
-      configurable: true,
-    });
+  try {
+    if (
+      typeof document !== "undefined" &&
+      typeof document.cookie === "undefined"
+    ) {
+      Object.defineProperty(document, "cookie", {
+        get: () => "",
+        set: () => {},
+        configurable: true,
+      });
+    }
+  } catch (e) {
+    // Ignore if cookie property is read-only or already defined
   }
 
   console.log(
