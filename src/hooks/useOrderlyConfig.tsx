@@ -70,9 +70,24 @@ export const useOrderlyConfig = () => {
           initialMenu: PathEnum.Root,
         },
         footerProps: {
-          telegramUrl: "https://orderly.network",
-          discordUrl: "https://discord.com/invite/orderlynetwork",
-          twitterUrl: "https://twitter.com/OrderlyNetwork",
+          telegramUrl: "https://t.me/+1jKPWSYZYQVmYjYx",
+          twitterUrl: "https://x.com/KEK_DEX",
+          trailing: (
+            <a
+              href="https://dexscreener.com/solana/5hanztfqggnj13keqxmzxvfzwq2zbxhy3r6qxuw1qpvf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center hover:opacity-80 transition-opacity"
+            >
+              <Image
+                src="/dex-logo.png"
+                alt="DexScreener"
+                width={20}
+                height={20}
+                className="w-5 h-5"
+              />
+            </a>
+          ),
         },
       },
       orderlyAppProvider: {
